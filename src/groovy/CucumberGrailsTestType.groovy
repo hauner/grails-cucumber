@@ -22,19 +22,23 @@ import org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport
 class CucumberGrailsTestType extends GrailsTestTypeSupport {
 
     static final NAME = "cucumber"
-    
+
     CucumberGrailsTestType () {
         super (NAME, NAME)
     }
 
     @Override
     int doPrepare () {
-        return 0
+        return 1
     }
 
     @Override
     GrailsTestTypeResult doRun (GrailsTestEventPublisher eventPublisher) {
-        return null;
+        eventPublisher.testCaseStart('*** Cucumber Test Case Start ***')
+        //eventPublisher.testStart('** Cucumber Test Start **')
+        //eventPublisher.testEnd('** Cucumber Test End **')
+        eventPublisher.testCaseEnd('*** Cucumber Test Case End ***')
+        return new CucumberGrailsTestTypeResult ()
     }
 }
 
