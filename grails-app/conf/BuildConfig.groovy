@@ -34,9 +34,15 @@ grails.project.dependency.resolution = {
         test ':spock:0.5-groovy-1.7'
     }
 
+    cuke4duke = "0.4.4"
+    jruby     = "1.6.3"
+
     dependencies {
         // scopes: 'build', 'compile', 'runtime', 'test' or 'provided'
 
-        // runtime 'mysql:mysql-connector-java:5.1.13'
+        test ("org.jruby:jruby-complete:${jruby}")
+        test ("cuke4duke:cuke4duke:${cuke4duke}") {
+            transitive = false  // avoids ant errors
+        }
     }
 }
