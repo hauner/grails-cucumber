@@ -15,15 +15,65 @@
  */
 
 
+/*
+ http://grails.1312388.n4.nabble.com/plugin-classes-not-included-in-classpath-for-plugin-scripts-td2271962.html
+*/
+
+includeTargets << grailsScript ("_GrailsCompile")
+
+loadClass = { className ->
+    def load = { name ->
+        println "### loading ${name}"
+        classLoader.loadClass (name)
+    }
+
+    try {
+        println "### trying to load.."
+        load (className)
+    } catch (ClassNotFoundException e) {
+        println "### catching.."
+        compile ()
+        load (className)
+    }
+}
+
+cucumberGrailsTestType = {
+    loadClass ('CucumberGrailsTestType').newInstance ()
+}
+
+cuke4DukeInstaller = { p ->
+    loadClass ('Cuke4DukeInstaller').newInstance (p)
+}
+
+
+println "**** cucumberPluginDir: ${cucumberPluginDir}"
+
 cucumberTests = [
-    new CucumberGrailsTestType ()
+    // does not work, class unresolved
+    //new CucumberGrailsTestType ()
 ]
 
+
+
+
+install = {
+    installer = cuke4DukeInstaller ('XXXXX')
+    installer.run ()
+}
 
 eventAllTestsStart = {
     println "** Grails All Tests Start **"
 
-    phasesToRun << CucumberGrailsTestType.NAME
+    def testType = cucumberGrailsTestType ()
+
+    cucumberTests << testType
+    println "** cucumberTests: ${cucumberTests}"
+
+    phasesToRun << testType.NAME
+    //phasesToRun << CucumberGrailsTestType.NAME
+    println "** phasesToRun: ${phasesToRun}"
+
+    install ()
 }
 
 eventAllTestsEnd = {
@@ -65,3 +115,7 @@ eventTestSuiteStart = { typeName ->
 eventTestSuiteEnd = { typeName ->
     println "** Grails Test Suite End: $typeName **"
 }
+
+
+
+//println "BINDING: ${binding.variables}"
