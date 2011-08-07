@@ -44,5 +44,8 @@ grails.project.dependency.resolution = {
         test ("cuke4duke:cuke4duke:${cuke4duke}") {
             transitive = false  // avoids ant errors
         }
+
+        // spock helper
+        test ("org.objenesis:objenesis:1.2")
     }
 }

@@ -16,8 +16,9 @@
 
 
 /*
- http://grails.1312388.n4.nabble.com/plugin-classes-not-included-in-classpath-for-plugin-scripts-td2271962.html
-*/
+ * http://jira.grails.org/browse/GRAILS-6453
+ * http://grails.1312388.n4.nabble.com/plugin-classes-not-included-in-classpath-for-plugin-scripts-td2271962.html
+ */
 
 includeTargets << grailsScript ("_GrailsCompile")
 
@@ -37,14 +38,9 @@ loadClass = { className ->
     }
 }
 
-cucumberGrailsTestType = {
-    loadClass ('CucumberGrailsTestType').newInstance ()
+cucumberGrailsTestType = { home ->
+    loadClass ('CucumberGrailsTestType').newInstance (home)
 }
-
-cuke4DukeInstaller = { p ->
-    loadClass ('Cuke4DukeInstaller').newInstance (p)
-}
-
 
 println "**** cucumberPluginDir: ${cucumberPluginDir}"
 
@@ -53,18 +49,11 @@ cucumberTests = [
     //new CucumberGrailsTestType ()
 ]
 
-
-
-
-install = {
-    installer = cuke4DukeInstaller ('XXXXX')
-    installer.run ()
-}
-
 eventAllTestsStart = {
     println "** Grails All Tests Start **"
 
-    def testType = cucumberGrailsTestType ()
+    def testType = cucumberGrailsTestType (cucumberPluginDir as String)
+    testType.setup ()
 
     cucumberTests << testType
     println "** cucumberTests: ${cucumberTests}"
@@ -72,8 +61,6 @@ eventAllTestsStart = {
     phasesToRun << testType.NAME
     //phasesToRun << CucumberGrailsTestType.NAME
     println "** phasesToRun: ${phasesToRun}"
-
-    install ()
 }
 
 eventAllTestsEnd = {

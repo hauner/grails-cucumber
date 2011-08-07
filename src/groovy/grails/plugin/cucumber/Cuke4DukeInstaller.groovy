@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
+package grails.plugin.cucumber
+
 
 class Cuke4DukeInstaller {
     String pluginDir
 
 	Cuke4DukeInstaller () {
         println "** Cuke4DukeInstaller.new ()"
-        this.pluginDir = pluginDir
+        //this.pluginDir = pluginDir
     }
 
 	Cuke4DukeInstaller (pluginDir) {
         println "** Cuke4DukeInstaller.new (pluginDir)"
-        this.pluginDir = pluginDir
+        //this.pluginDir = pluginDir
     }
 
     void run () {
