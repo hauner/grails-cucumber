@@ -39,7 +39,8 @@ loadClass = { className ->
 }
 
 cucumberGrailsTestType = { home ->
-    loadClass ('CucumberGrailsTestType').newInstance (home)
+    loadClass ('grails.plugin.cucumber.CucumberGrailsTestType').newInstance (
+        home)
 }
 
 println "**** cucumberPluginDir: ${cucumberPluginDir}"

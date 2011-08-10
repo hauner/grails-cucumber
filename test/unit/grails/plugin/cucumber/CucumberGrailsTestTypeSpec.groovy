@@ -14,15 +14,26 @@
  * limitations under the License.
  */
 
-import org.codehaus.groovy.grails.test.GrailsTestTypeResult
+package grails.plugin.cucumber
+
+import grails.plugin.spock.*
 
 
-class CucumberGrailsTestTypeResult implements GrailsTestTypeResult {
-    int passCount
-    int failCount
+class CucumberGrailsTestTypeSpec extends UnitSpec {
 
-    CucumberGrailsTestTypeResult () {
-        passCount = 0
-        failCount = 1
+    def "the name is 'cucumber'" () {
+        when:
+        def testType = new CucumberGrailsTestType ()
+
+        then:
+        testType.name == "cucumber"
+    }
+
+    def "the relative source path is 'cucumber'" () {
+        when:
+        def testType = new CucumberGrailsTestType ()
+
+        then:
+        testType.relativeSourcePath == "cucumber"
     }
 }

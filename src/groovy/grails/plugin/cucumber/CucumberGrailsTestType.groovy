@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
+package grails.plugin.cucumber
+
 import org.codehaus.groovy.grails.test.GrailsTestTypeResult
 import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
 import org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport
-
-import grails.plugin.cucumber.Folder
-import grails.plugin.cucumber.JGem
-import grails.plugin.cucumber.Cuke4DukeSetup
-import grails.plugin.cucumber.Cuke4DukeInstaller
 
 
 class CucumberGrailsTestType extends GrailsTestTypeSupport {
