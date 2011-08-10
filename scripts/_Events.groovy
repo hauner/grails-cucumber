@@ -102,7 +102,3 @@ eventTestSuiteStart = { typeName ->
 eventTestSuiteEnd = { typeName ->
     println "** Grails Test Suite End: $typeName **"
 }
-
-
-
-//println "BINDING: ${binding.variables}"
