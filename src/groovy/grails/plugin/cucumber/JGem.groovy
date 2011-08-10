@@ -21,7 +21,7 @@ import org.jruby.embed.EvalFailedException
 import org.jruby.embed.LocalContextScope
 
 
-class JRubyGem {
+class JGem {
     final String JGEM_RESOURCE_PATH = '/META-INF/jruby.home/bin/jgem'
 
     void run (args) {

@@ -24,7 +24,7 @@ class Cuke4DukeInstallerSpec extends UnitSpec {
     def "runs jgem to install cuke4duke" () {
         def home = Mock (Folder)
         _ * home.path () >> "HomePath"
-        def jgem = Mock (JRubyGem)
+        def jgem = Mock (JGem)
         def installer = new Cuke4DukeInstaller (home, jgem)
 
         when:

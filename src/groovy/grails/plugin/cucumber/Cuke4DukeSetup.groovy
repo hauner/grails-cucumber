@@ -18,9 +18,8 @@ package grails.plugin.cucumber
 
 
 class Cuke4DukeSetup {
-    Cuke4DukeInstaller installer
     Folder home
-
+    Cuke4DukeInstaller installer
 
 	Cuke4DukeSetup (Folder home, Cuke4DukeInstaller installer) {
         this.installer = installer
@@ -32,11 +31,8 @@ class Cuke4DukeSetup {
             home.create ()
         }
 
-        if (!home.isEmpty ()) {
-            return
+        if (home.isEmpty ()) {
+            installer.run ()
         }
-
-        installer.run ()
     }
 }
-
