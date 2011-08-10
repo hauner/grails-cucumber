@@ -18,20 +18,25 @@ package grails.plugin.cucumber
 
 
 class Cuke4DukeInstaller {
-    String pluginDir
+    JRubyHome home
+    JRubyGem gem
 
-	Cuke4DukeInstaller () {
-        println "** Cuke4DukeInstaller.new ()"
-        //this.pluginDir = pluginDir
-    }
-
-	Cuke4DukeInstaller (pluginDir) {
-        println "** Cuke4DukeInstaller.new (pluginDir)"
-        //this.pluginDir = pluginDir
+	Cuke4DukeInstaller (JRubyHome home, JRubyGem gem) {
+        println "** Cuke4DukeInstaller.new () : ${home.path ()}"
+        this.home = home
+        this.gem = gem
     }
 
     void run () {
-        println "** Cuke4DukeInstaller.run () : ${pluginDir}"
+        println "** Cuke4DukeInstaller.run () : ${home.path ()}"
+
+        gem.run ([
+            "install",
+            "cuke4duke",
+            "--version",
+            "0.4.4",            // todo: get from config...
+            "--install-dir",
+            home.path ()
+        ])
     }
 }
-

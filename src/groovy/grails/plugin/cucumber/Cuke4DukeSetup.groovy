@@ -18,14 +18,13 @@ package grails.plugin.cucumber
 
 
 class Cuke4DukeSetup {
-
-    JRubyHome home
     Cuke4DukeInstaller installer
+    JRubyHome home
 
 
 	Cuke4DukeSetup (JRubyHome home, Cuke4DukeInstaller installer) {
-        this.home = home
         this.installer = installer
+        this.home = home
     }
 
     void run () {
