@@ -16,27 +16,28 @@
 
 package grails.plugin.cucumber
 
-
-class Cuke4DukeSetup {
-    Cuke4DukeInstaller installer
-    Folder home
+import grails.plugin.spock.*
 
 
-	Cuke4DukeSetup (Folder home, Cuke4DukeInstaller installer) {
-        this.installer = installer
-        this.home = home
-    }
+class Cuke4DukeInstallerSpec extends UnitSpec {
 
-    void run () {
-        if (!home.exists ()) {
-            home.create ()
-        }
+    def "runs jgem to install cuke4duke" () {
+        def home = Mock (Folder)
+        _ * home.path () >> "HomePath"
+        def jgem = Mock (JRubyGem)
+        def installer = new Cuke4DukeInstaller (home, jgem)
 
-        if (!home.isEmpty ()) {
-            return
-        }
-
+        when:
         installer.run ()
+
+        then:
+        1 * jgem.run ([
+            "install",
+            "cuke4duke",
+            "--version",
+            "0.4.4",
+            "--install-dir",
+            home.path ()
+        ])
     }
 }
-

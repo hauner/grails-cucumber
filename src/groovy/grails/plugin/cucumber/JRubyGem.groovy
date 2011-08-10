@@ -61,9 +61,6 @@ class JRubyGem {
 
         println "*** JRUBY run scriptlet"
 
-        //jruby.put('$GROOVY', 12345);
-        //def result = jruby.runScriptlet('puts $GROOVY.to_s(2)')
-
         def result = jruby.runScriptlet (reader, "jgem")
 
         println "*** JRUBY result: ${result}"

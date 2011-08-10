@@ -17,10 +17,10 @@
 package grails.plugin.cucumber
 
 
-class JRubyHome {
+class Folder {
     private File file
 
-    JRubyHome (File file) {
+    Folder (File file) {
         this.file = file
     }
 

@@ -18,8 +18,8 @@ import org.codehaus.groovy.grails.test.GrailsTestTypeResult
 import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
 import org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport
 
+import grails.plugin.cucumber.Folder
 import grails.plugin.cucumber.JRubyGem
-import grails.plugin.cucumber.JRubyHome
 import grails.plugin.cucumber.Cuke4DukeSetup
 import grails.plugin.cucumber.Cuke4DukeInstaller
 
@@ -35,7 +35,7 @@ class CucumberGrailsTestType extends GrailsTestTypeSupport {
     }
     
     void setup () {
-        def jrubyHome = new JRubyHome (
+        def jrubyHome = new Folder (
             new File ([pluginHome, "lib", ".jruby"].join (File.separator))
         )
 

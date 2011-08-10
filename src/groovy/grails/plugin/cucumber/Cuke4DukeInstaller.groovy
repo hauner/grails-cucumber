@@ -18,10 +18,10 @@ package grails.plugin.cucumber
 
 
 class Cuke4DukeInstaller {
-    JRubyHome home
+    Folder home
     JRubyGem gem
 
-	Cuke4DukeInstaller (JRubyHome home, JRubyGem gem) {
+	Cuke4DukeInstaller (Folder home, JRubyGem gem) {
         println "** Cuke4DukeInstaller.new () : ${home.path ()}"
         this.home = home
         this.gem = gem
