@@ -22,8 +22,30 @@ import org.jruby.embed.LocalContextScope
 
 
 class JGem {
-    final String JGEM_RESOURCE_PATH = '/META-INF/jruby.home/bin/jgem'
+    static final String JGEM_RESOURCE_PATH = '/META-INF/jruby.home/bin/jgem'
+    final String jgem
 
+    JGem () {
+        jgem = JGEM_RESOURCE_PATH
+    }
+
+    JGem (String jGemPath) {
+        jgem = jGemPath
+    }
+
+    Reader reader () {
+        InputStream stream = getClass().getResourceAsStream (jgem)
+
+        if (stream == null) {
+            throw new FileNotFoundException (jgem)
+        }
+
+        new InputStreamReader (stream)
+    }
+
+
+
+    
     void run (args) {
         // run as thread, otherwise we can not control the environment
         // on subsequent jruby calls.

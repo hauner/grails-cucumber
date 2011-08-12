@@ -32,24 +32,25 @@ class CucumberGrailsTestType extends GrailsTestTypeSupport {
     
     void setup () {
         def jrubyHome = new Folder (
-            new File ([pluginHome, "lib", ".jruby"].join (File.separator))
-        )
+            new File ([pluginHome, "lib", ".jruby"].join (File.separator)))
 
-        new Cuke4DukeSetup (jrubyHome, new Cuke4DukeInstaller (
-            jrubyHome, new JGem ())).run ()
+        def installer = new Cuke4DukeInstaller (jrubyHome, new JGem ())
+        def setup = new Cuke4DukeSetup (jrubyHome, installer)
+        setup.run ()
     }
 
     @Override
     int doPrepare () {
+        // todo
         return 1
     }
 
     @Override
     GrailsTestTypeResult doRun (GrailsTestEventPublisher eventPublisher) {
-        eventPublisher.testCaseStart('*** Cucumber Test Case Start ***')
+        //eventPublisher.testCaseStart('*** Cucumber Test Case Start ***')
         //eventPublisher.testStart('** Cucumber Test Start **')
         //eventPublisher.testEnd('** Cucumber Test End **')
-        eventPublisher.testCaseEnd('*** Cucumber Test Case End ***')
+        //eventPublisher.testCaseEnd('*** Cucumber Test Case End ***')
         return new CucumberGrailsTestTypeResult ()
     }
 }
