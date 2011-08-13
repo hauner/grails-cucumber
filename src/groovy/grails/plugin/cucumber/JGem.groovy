@@ -16,10 +16,6 @@
 
 package grails.plugin.cucumber
 
-import org.jruby.embed.ScriptingContainer
-import org.jruby.embed.EvalFailedException
-import org.jruby.embed.LocalContextScope
-
 
 class JGem {
     static final String JGEM_RESOURCE_PATH = '/META-INF/jruby.home/bin/jgem'
@@ -34,71 +30,16 @@ class JGem {
     }
 
     Reader reader () {
-        InputStream stream = getClass().getResourceAsStream (jgem)
+        InputStream stream = getClass().getResourceAsStream (name ())
 
         if (stream == null) {
-            throw new FileNotFoundException (jgem)
+            throw new FileNotFoundException (name ())
         }
 
         new InputStreamReader (stream)
     }
 
-
-
-    
-    void run (args) {
-        // run as thread, otherwise we can not control the environment
-        // on subsequent jruby calls.
-        def thread = Thread.start {
-            println "** THREAD START"
-            try {
-                runScript (args)
-            }
-            // ruby code calling "exit n" will throw, so we catch it.
-            catch (EvalFailedException e) {
-                println "jruby says: ${e.getMessage ()}"
-            }
-            finally {
-                println "jruby finally"
-            }
-            println "** THREAD END"
-        }
-        thread.join ()
-
-        println "** THREAD JOINED"
-    }
-
-
-    def runScript (args) {
-        println "*** CLASSPATH >>"
-        for (String property: System.getProperty ("java.class.path").split (":")) {
-            println property
-        }
-        println "*** CLASSPATH <<"
-
-        def jruby = new ScriptingContainer (LocalContextScope.THREADSAFE)
-        jruby.setArgv (args as String[])
-
-        Reader reader = jgemReader ()
-
-        println "*** JRUBY run scriptlet"
-
-        def result = jruby.runScriptlet (reader, "jgem")
-
-        println "*** JRUBY result: ${result}"
-    }
-
-    Reader jgemReader () {
-        InputStream stream = getClass().getResourceAsStream (JGEM_RESOURCE_PATH)
-
-        // todo: clean up, throw error if not found
-        if (stream == null) {
-            println "** did not find jgem"
-        }
-        else {
-            println "** found jgem"
-        }
-
-        new InputStreamReader (stream)
+    String name () {
+        jgem
     }
 }
