@@ -18,11 +18,10 @@ package grails.plugin.cucumber
 
 
 class Cuke4DukeSetup {
-    Folder home
     Cuke4DukeInstaller installer
+    Folder home
 
-    // todo: switch parameter
-	Cuke4DukeSetup (Folder home, Cuke4DukeInstaller installer) {
+	Cuke4DukeSetup (Cuke4DukeInstaller installer, Folder home) {
         this.installer = installer
         this.home = home
     }

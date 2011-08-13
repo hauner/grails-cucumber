@@ -24,7 +24,7 @@ class Cuke4DukeSetupSpec extends UnitSpec {
     def "creates jruby home if it does not exists" () {
         def home = Mock (Folder)
         def installer = Mock (Cuke4DukeInstaller)
-        def setup = new Cuke4DukeSetup (home, installer)
+        def setup = new Cuke4DukeSetup (installer, home)
 
         when:
         setup.run ()
@@ -38,7 +38,7 @@ class Cuke4DukeSetupSpec extends UnitSpec {
         def home = Mock (Folder)
         1 * home.isEmpty () >> true
         def installer = Mock (Cuke4DukeInstaller)
-        def setup = new Cuke4DukeSetup (home, installer)
+        def setup = new Cuke4DukeSetup (installer, home)
 
         when:
         setup.run ()
@@ -51,7 +51,7 @@ class Cuke4DukeSetupSpec extends UnitSpec {
         def home = Mock (Folder)
         1 * home.isEmpty () >> false
         def installer = Mock (Cuke4DukeInstaller)
-        def setup = new Cuke4DukeSetup (home, installer)
+        def setup = new Cuke4DukeSetup (installer, home)
 
         when:
         setup.run ()

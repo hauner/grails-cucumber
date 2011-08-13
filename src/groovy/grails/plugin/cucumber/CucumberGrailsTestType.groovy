@@ -48,8 +48,7 @@ class CucumberGrailsTestType extends GrailsTestTypeSupport {
         def jrubyHome = new Folder (new File (homepath ()))
         def runner = new JRubyRunner (new JRubyFactory ())
         def installer = new Cuke4DukeInstaller (runner, jrubyHome, new JGem ())
-        // todo switch parameter
-        def setup = new Cuke4DukeSetup (jrubyHome, installer)
+        def setup = new Cuke4DukeSetup (installer, jrubyHome)
         setup.run ()
     }
 
