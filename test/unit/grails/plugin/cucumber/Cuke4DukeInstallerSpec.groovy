@@ -22,7 +22,7 @@ import grails.plugin.spock.*
 
 class Cuke4DukeInstallerSpec extends UnitSpec {
 
-    def "calls jruby runner install cuke4duke" () {
+    def "installs cuke4duke" () {
         given:
         def home = Mock (Folder)
         _ * home.path () >> "HomePath"
@@ -30,6 +30,7 @@ class Cuke4DukeInstallerSpec extends UnitSpec {
         def reader = new StringReader ("jgem = true")
         def jgem = Mock (JGem)
         _ * jgem.reader () >> reader
+        _ * jgem.name () >> "jgem"
 
         def container = Mock (ScriptingContainer)
         def factory = Mock (JRubyFactory)
@@ -50,28 +51,7 @@ class Cuke4DukeInstallerSpec extends UnitSpec {
             "--install-dir",
             home.path ()
         ] as String[])
-        1 * container.runScriptlet (reader, _)
+        1 * container.runScriptlet (jgem.reader (), jgem.name ())
     }
 
-    /*
-    def "runs jgem to install cuke4duke" () {
-        def home = Mock (Folder)
-        _ * home.path () >> "HomePath"
-        def jgem = Mock (JGem)
-        def installer = new Cuke4DukeInstaller (home, jgem)
-
-        when:
-        installer.run ()
-
-        then:
-        1 * jgem.run ([
-            "install",
-            "cuke4duke",
-            "--version",
-            "0.4.4",
-            "--install-dir",
-            home.path ()
-        ])
-    }
-    */
 }

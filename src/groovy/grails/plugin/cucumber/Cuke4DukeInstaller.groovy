@@ -23,16 +23,12 @@ class Cuke4DukeInstaller {
     JGem gem
 
 	Cuke4DukeInstaller (JRubyRunner runner, Folder home, JGem gem) {
-        //println "** Cuke4DukeInstaller.new () : ${home.path ()}"
-
         this.runner = runner
         this.home = home
         this.gem = gem
     }
 
     void run () {
-        //println "** Cuke4DukeInstaller.run () : ${home.path ()}"
-
         runner.run { jruby ->
             jruby.setArgv ([
                 "install",
@@ -42,8 +38,8 @@ class Cuke4DukeInstaller {
                 "--install-dir",
                 home.path ()
             ] as String[])
-        
-            jruby.runScriptlet (gem.reader (), gem.JGEM_RESOURCE_PATH)
+
+            jruby.runScriptlet (gem.reader (), gem.name ())
         }
     }
 }
