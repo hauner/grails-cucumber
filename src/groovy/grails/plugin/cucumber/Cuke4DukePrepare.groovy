@@ -43,6 +43,10 @@ class Cuke4DukePrepare {
                 featurepath
             ] as String[])
 
+            // alternative way to set GEM_PATH
+            //java.util.Map env = new java.util.HashMap (ruby.getEnvironment ())
+            //env.put ("GEM_PATH", home)
+            //ruby.setEnvironment (env)
             jruby.runScriptlet ("ENV['GEM_PATH'] = \"${home.path ()}\"")
             jruby.runScriptlet (cuke4duke.reader (), cuke4duke.name ())
         }
