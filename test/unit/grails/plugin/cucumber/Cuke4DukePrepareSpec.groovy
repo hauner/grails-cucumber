@@ -24,6 +24,9 @@ class Cuke4DukePrepareSpec extends UnitSpec {
 
     def "run cuke4duke" () {
         given:
+        def home = Mock (Folder)
+        _ * home.path () >> "HomePath"
+
         def reader = new StringReader ("cuke4duke = true")
         def cuke = Mock (Cuke4Duke)
         _ * cuke.reader () >> reader
@@ -35,7 +38,7 @@ class Cuke4DukePrepareSpec extends UnitSpec {
 
         def cuketestpath = "test/cucumber"
         def runner = new JRubyRunner (factory)
-        def prepare = new Cuke4DukePrepare (runner, cuke, cuketestpath)
+        def prepare = new Cuke4DukePrepare (runner, home, cuke, cuketestpath)
 
         when:
         prepare.run ()
@@ -50,6 +53,9 @@ class Cuke4DukePrepareSpec extends UnitSpec {
             "test/cucumber"
         ] as String[])
 
+        //1 * container.runScriptlet ({
+        //        it.contains (home.path ())
+        //    })
         1 * container.runScriptlet (cuke.reader (), cuke.name ())
     }
 

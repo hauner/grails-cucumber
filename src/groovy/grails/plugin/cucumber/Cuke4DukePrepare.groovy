@@ -19,11 +19,14 @@ package grails.plugin.cucumber
 
 class Cuke4DukePrepare {
     JRubyRunner runner
+    Folder home
     Cuke4Duke cuke4duke
     String featurepath
 
-    Cuke4DukePrepare (JRubyRunner runner, Cuke4Duke cuke4duke, String featurepath) {
+    Cuke4DukePrepare (JRubyRunner runner, Folder home, Cuke4Duke cuke4duke,
+        String featurepath) {
         this.runner = runner
+        this.home = home
         this.cuke4duke = cuke4duke
         this.featurepath = featurepath
     }
@@ -31,6 +34,7 @@ class Cuke4DukePrepare {
     int run () {
         runner.run { jruby ->
             jruby.setArgv ([
+                //"--help"
                 "--dry-run",
                 //"--quiet",
                 //"format",
@@ -39,6 +43,7 @@ class Cuke4DukePrepare {
                 featurepath
             ] as String[])
 
+            jruby.runScriptlet ("ENV['GEM_PATH'] = \"${home.path ()}\"")
             jruby.runScriptlet (cuke4duke.reader (), cuke4duke.name ())
         }
         // todo result count from custom formatter
