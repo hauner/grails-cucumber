@@ -23,7 +23,7 @@ class CucumberGrailsTestTypeSpec extends UnitSpec {
 
     def "the name is 'cucumber'" () {
         when:
-        def testType = new CucumberGrailsTestType ()
+        def testType = new CucumberGrailsTestType ("home", "base")
 
         then:
         testType.name == "cucumber"
@@ -31,9 +31,10 @@ class CucumberGrailsTestTypeSpec extends UnitSpec {
 
     def "the relative source path is 'cucumber'" () {
         when:
-        def testType = new CucumberGrailsTestType ()
+        def testType = new CucumberGrailsTestType ("home", "base")
 
         then:
         testType.relativeSourcePath == "cucumber"
     }
+
 }
