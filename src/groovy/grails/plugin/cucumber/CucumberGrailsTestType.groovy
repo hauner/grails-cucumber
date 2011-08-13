@@ -55,11 +55,14 @@ class CucumberGrailsTestType extends GrailsTestTypeSupport {
 
     @Override
     int doPrepare () {
+        /* cuke4duke crashes with --dry-run!?
         def jrubyHome = new Folder (new File (homepath ()))
         def cuke = new Cuke4Duke (new File (cukebinpath ()))
         def runner = new JRubyRunner (new JRubyFactory ())
         def prepare = new Cuke4DukePrepare (runner, jrubyHome, cuke, featurepath ())
         prepare.run ()
+        */
+       1
     }
 
     @Override
