@@ -24,26 +24,41 @@ import org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport
 class CucumberGrailsTestType extends GrailsTestTypeSupport {
     static final NAME = "cucumber"
     String pluginHome
+    String basedir
 
-    CucumberGrailsTestType (String pluginHome) {
+    CucumberGrailsTestType (String pluginHome, String basedir) {
         super (NAME, NAME)
         this.pluginHome = pluginHome
+        this.basedir = basedir
     }
-    
-    void setup () {
-        def jrubyHome = new Folder (
-            new File ([pluginHome, "lib", ".jruby"].join (File.separator)))
 
+    String homepath () {
+        [pluginHome, "lib", ".jruby"].join (File.separator)
+    }
+
+    String cukebinpath () {
+        [homepath (), "bin", "cuke4duke"].join (File.separator)
+    }
+
+    String featurepath () {
+        [basedir, "test", relativeSourcePath].join (File.separator)
+    }
+
+    void setup () {
+        def jrubyHome = new Folder (new File (homepath ()))
         def runner = new JRubyRunner (new JRubyFactory ())
         def installer = new Cuke4DukeInstaller (runner, jrubyHome, new JGem ())
+        // todo switch parameter
         def setup = new Cuke4DukeSetup (jrubyHome, installer)
         setup.run ()
     }
 
     @Override
     int doPrepare () {
-        // todo
-        return 1
+        def cuke = new Cuke4Duke (new File (cukebinpath ()))
+        def runner = new JRubyRunner (new JRubyFactory ())
+        def prepare = new Cuke4DukePrepare (runner, cuke, featurepath ())
+        prepare.run ()
     }
 
     @Override

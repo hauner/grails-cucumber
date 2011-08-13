@@ -38,9 +38,9 @@ loadClass = { className ->
     }
 }
 
-cucumberGrailsTestType = { home ->
+cucumberGrailsTestType = { home, basedir ->
     loadClass ('grails.plugin.cucumber.CucumberGrailsTestType').newInstance (
-        home)
+        home, basedir)
 }
 
 println "**** cucumberPluginDir: ${cucumberPluginDir}"
@@ -53,7 +53,7 @@ cucumberTests = [
 eventAllTestsStart = {
     println "** Grails All Tests Start **"
 
-    def testType = cucumberGrailsTestType (cucumberPluginDir as String)
+    def testType = cucumberGrailsTestType (cucumberPluginDir as String, basedir)
     testType.setup ()
 
     cucumberTests << testType

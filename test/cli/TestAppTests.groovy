@@ -24,12 +24,22 @@ class TestAppTests extends AbstractCliTestCase {
         assertTrue output.contains ("Starting cucumber test phase ...")
     }
 
+    void verifyTestCount (count) {
+        assertTrue output.contains ("Running " +count+ " cucumber tests...")
+    }
+
     void testAppRunsCucumberTestPhase () {
         execute (["test-app", "cucumber:"])
-
         waitForProcess ()
 
         verifyHeader ()
         verifyPhase ()
+    }
+
+    void testAppReportsNumerOfScenariosThatWillRun () {
+        execute (["test-app", "cucumber:"])
+        waitForProcess ()
+
+        verifyTestCount (2)
     }
 }
