@@ -16,11 +16,44 @@
 
 package grails.plugin.cucumber
 
+import org.jruby.embed.ScriptingContainer
 import grails.plugin.spock.*
 
 
 class Cuke4DukeInstallerSpec extends UnitSpec {
 
+    def "calls jruby runner install cuke4duke" () {
+        given:
+        def home = Mock (Folder)
+        _ * home.path () >> "HomePath"
+
+        def reader = new StringReader ("jgem = true")
+        def jgem = Mock (JGem)
+        _ * jgem.reader () >> reader
+
+        def container = Mock (ScriptingContainer)
+        def factory = Mock (JRubyFactory)
+        _ * factory.container () >> container
+
+        def runner = new JRubyRunner (factory)
+        def installer = new Cuke4DukeInstaller (runner, home, jgem)
+
+        when:
+        installer.run ()
+
+        then:
+        1 * container.setArgv ([
+            "install",
+            "cuke4duke",
+            "--version",
+            "0.4.4",
+            "--install-dir",
+            home.path ()
+        ] as String[])
+        1 * container.runScriptlet (reader, _)
+    }
+
+    /*
     def "runs jgem to install cuke4duke" () {
         def home = Mock (Folder)
         _ * home.path () >> "HomePath"
@@ -40,4 +73,5 @@ class Cuke4DukeInstallerSpec extends UnitSpec {
             home.path ()
         ])
     }
+    */
 }
