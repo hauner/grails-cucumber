@@ -21,6 +21,7 @@ class Cuke4DukeSetup {
     Folder home
     Cuke4DukeInstaller installer
 
+    // todo: switch parameter
 	Cuke4DukeSetup (Folder home, Cuke4DukeInstaller installer) {
         this.installer = installer
         this.home = home
