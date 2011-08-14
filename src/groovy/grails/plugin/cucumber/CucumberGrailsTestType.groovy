@@ -66,6 +66,12 @@ class CucumberGrailsTestType extends GrailsTestTypeSupport {
 
     @Override
     GrailsTestTypeResult doRun (GrailsTestEventPublisher eventPublisher) {
+        def jrubyHome = new Folder (new File (homepath ()))
+        def cuke = new Cuke4Duke (new File (cukebinpath ()))
+        def runner = new JRubyRunner (new JRubyFactory ())
+        def run = new Cuke4DukeRun (runner, jrubyHome, cuke, featurepath ())
+        run.run ()
+
         //eventPublisher.testCaseStart('*** Cucumber Test Case Start ***')
         //eventPublisher.testStart('** Cucumber Test Start **')
         //eventPublisher.testEnd('** Cucumber Test End **')
