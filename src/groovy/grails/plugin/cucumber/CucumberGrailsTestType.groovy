@@ -44,6 +44,10 @@ class CucumberGrailsTestType extends GrailsTestTypeSupport {
         [basedir, "test", relativeSourcePath].join (File.separator)
     }
 
+    List<String> getTestExtensions () {
+        ["feature"]
+    }
+
     void setup () {
         def jrubyHome = new Folder (new File (homepath ()))
         def runner = new JRubyRunner (new JRubyFactory ())
@@ -54,28 +58,32 @@ class CucumberGrailsTestType extends GrailsTestTypeSupport {
 
     @Override
     int doPrepare () {
-        /* cuke4duke crashes with --dry-run!?
+        // cuke4duke crashes with --dry-run!?
+        /*
         def jrubyHome = new Folder (new File (homepath ()))
         def cuke = new Cuke4Duke (new File (cukebinpath ()))
         def runner = new JRubyRunner (new JRubyFactory ())
         def prepare = new Cuke4DukePrepare (runner, jrubyHome, cuke, featurepath ())
         prepare.run ()
-        */
-       1
+        */1
     }
 
     @Override
     GrailsTestTypeResult doRun (GrailsTestEventPublisher eventPublisher) {
+        def result = new CucumberGrailsTestTypeResult ()
+        def formatter = new Cuke4DukeFormatter (eventPublisher, result)
+
         def jrubyHome = new Folder (new File (homepath ()))
         def cuke = new Cuke4Duke (new File (cukebinpath ()))
         def runner = new JRubyRunner (new JRubyFactory ())
         def run = new Cuke4DukeRun (runner, jrubyHome, cuke, featurepath ())
+        run.formatter = formatter // todo pass to constructor
         run.run ()
 
         //eventPublisher.testCaseStart('*** Cucumber Test Case Start ***')
         //eventPublisher.testStart('** Cucumber Test Start **')
         //eventPublisher.testEnd('** Cucumber Test End **')
         //eventPublisher.testCaseEnd('*** Cucumber Test Case End ***')
-        return new CucumberGrailsTestTypeResult ()
+        result
     }
 }

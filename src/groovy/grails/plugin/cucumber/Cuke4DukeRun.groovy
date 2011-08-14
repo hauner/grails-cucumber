@@ -22,6 +22,7 @@ class Cuke4DukeRun {
     Folder home
     Cuke4Duke cuke4duke
     String featurepath
+    Cuke4DukeFormatter formatter
 
     Cuke4DukeRun (JRubyRunner runner, Folder home, Cuke4Duke cuke4duke,
         String featurepath) {
@@ -31,9 +32,11 @@ class Cuke4DukeRun {
         this.featurepath = featurepath
     }
 
-    int run () {
+    void run () {
         runner.run { jruby ->
             jruby.setArgv ([
+                "--format",
+                "Grails::Formatter",
                 //"--help"
                 //"--dry-run",
                 //"--quiet",
@@ -43,6 +46,7 @@ class Cuke4DukeRun {
                 featurepath
             ] as String[])
 
+            jruby.put ('$grails_formatter', formatter)
             // alternative way to set GEM_PATH
             //java.util.Map env = new java.util.HashMap (ruby.getEnvironment ())
             //env.put ("GEM_PATH", home)
@@ -50,8 +54,6 @@ class Cuke4DukeRun {
             jruby.runScriptlet ("ENV['GEM_PATH'] = \"${home.path ()}\"")
             jruby.runScriptlet (cuke4duke.reader (), cuke4duke.name ())
         }
-        // todo result count from custom formatter
-        1
     }
 
 }
