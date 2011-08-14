@@ -71,13 +71,13 @@ eventAllTestsEnd = {
 cucumberTestPhasePreparation = {
     println "** Cucumber Test Phase Preparation **"
 
-    //functionalTestPhasePreparation()
+    //functionalTestPhasePreparation ()
 }
 
 cucumberTestPhaseCleanUp = {
     println "** Cucumber Test Phase Clean Up **"
 
-    //functionalTestPhaseCleanUp()
+    //functionalTestPhaseCleanUp ()
 }
 
 eventTestPhasesStart = { phases ->
