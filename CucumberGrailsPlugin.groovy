@@ -27,7 +27,7 @@ class CucumberGrailsPlugin {
     ]
 
     def author = "Martin Hauner"
-    def authorEmail = "hauner@web.de"
+    def authorEmail = "martin.hauner@gmx.net"
     def title = "Cucumber Plugin"
     def description = "Test your Grails apps with Cucumber"
     def documentation = "http://github.com/hauner/grails-cucumber"
