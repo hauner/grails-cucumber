@@ -1,9 +1,14 @@
-Feature: dummy
+Feature: dummy feature
     As a dummy
     I want to dummy
     So that dummy
 
-Scenario: Dummy Scenario
-    Given Dummy Given
-    When  Dummy When
-    Then  Dummy Then
+Scenario: First Dummy_Scenario
+    Given Dummy_Given
+    When  Dummy_When
+    Then  Dummy_Then
+
+Scenario: Second Dummy_Scenario
+    Given Dummy_Given
+    When  Dummy_When
+    Then  Dummy_Then

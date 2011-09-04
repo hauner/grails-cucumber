@@ -1,14 +1,13 @@
 # What's this? #
 
-grails-cucumber is a [Grails](http://grails.org) plugin for
+grails-cucumber-jvm is a [Grails](http://grails.org) plugin for
 [Cucumber](http://cukes.info).
 
 
 ## Goals ##
 
-* integrate cucumber (via cuke4duke) into the grails test runner as a
-  grails test type "cucumber" and run the cucumber scenarios with
-  `grails test-app`
+* integrate cucumber (via cucumber-jvm) into the grails test runner as a
+  grails test type "cucumber" to run cucumber scenarios via `grails test-app`
 * use [Geb](http://www.gebish.org/) in cucumber (groovy) steps definitions
 
 
@@ -16,7 +15,7 @@ grails-cucumber is a [Grails](http://grails.org) plugin for
 
 It is not yet finished... but it is basically working:
 
-* it does run the plugin test feature "dummy.feature" with groovy step
+* it does run a super simple test feature "dummy.feature" with groovy step
   definitions.
 * the cucumber features are stored in the `test/cucumber` folder (along the
   other grails test stuff) and the (groovy) step definitions in
@@ -26,15 +25,13 @@ It is not yet finished... but it is basically working:
 
 ### Todo ###
 
-* create grails like test-report
+* create grails like test-report (done)
+* the test report summary prints "Testcase: unknown took 0.065 sec", I do not
+  yet understand why it prints unknown instead of the sceario name
 * remove progress/debug println stuff
 * run cucumber scenarios against the grails app (enable `functionalTestPhase`)
+* use grails like configuration for tags, language
 * examples
-* setup cuke4duke when installing the plugin (did not work!?)
-* get scenario count by running cucumber with --dry-run (cuke4duke crashes!?)
-* use grails like configuration
-* remove hardcoded jruby/cuke4duke versions
-* make geb work, extend cucumber classpath
 
 
 ## Approach ##
@@ -42,6 +39,7 @@ It is not yet finished... but it is basically working:
 The plugin adds a a new grails custom test type called "cucumber" based on
 the article [Grails custom test type](
 http://ldaley.com/post/615966534/custom-grails-test).
+
 
 Cucumber gets started via cuke4duke. The plugin does not use the cuke4duke
 ant tasks. It does run cuke4duke directly using JRubys embed api (Red Bridge).

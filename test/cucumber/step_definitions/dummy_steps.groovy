@@ -1,15 +1,23 @@
+import static groovy.util.GroovyTestCase.assertEquals
 
-this.metaClass.mixin(cuke4duke.GroovyDsl)
+this.metaClass.mixin (cucumber.runtime.groovy.Hooks)
+this.metaClass.mixin (cucumber.runtime.groovy.EN)
 
 
-Given (~"Dummy Given") {
-    println "Given"
+World {
+    println "WORLD!"
 }
 
-When (~"Dummy When") {
-    println "When"
+Given(~"^Dummy_Given\$") { ->
+    println "Step Given"
+    assertEquals ("success", "failure")
 }
 
-Then (~"Dummy Then") {
-    println "Then"
+Then(~"^Dummy_Then\$") { ->
+    println "Step When"
+    //int i = 20 / 0
+}
+
+When(~"^Dummy_When\$") { ->
+    println "Step Then"
 }

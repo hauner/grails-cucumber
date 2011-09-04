@@ -50,11 +50,17 @@ cucumberTests = [
     //new CucumberGrailsTestType ()
 ]
 
+//eventClasspathStart = {
+//    classpathSet = false
+//    println "$basedir"
+//    rootLoader.addURL (new File ("$basedir/test/cucumber").toURI().toURL())
+//}
+
 eventAllTestsStart = {
     println "** Grails All Tests Start **"
 
     def testType = cucumberGrailsTestType (cucumberPluginDir as String, basedir)
-    testType.setup ()
+    //testType.setup ()
 
     cucumberTests << testType
     println "** cucumberTests: ${cucumberTests}"
