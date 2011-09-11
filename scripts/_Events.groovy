@@ -17,7 +17,8 @@
 
 /*
  * http://jira.grails.org/browse/GRAILS-6453
- * http://grails.1312388.n4.nabble.com/plugin-classes-not-included-in-classpath-for-plugin-scripts-td2271962.html
+ * http://grails.1312388.n4.nabble.com/
+ *   plugin-classes-not-included-in-classpath-for-plugin-scripts-td2271962.html
  */
 
 includeTargets << grailsScript ("_GrailsCompile")
@@ -38,35 +39,25 @@ loadClass = { className ->
     }
 }
 
-cucumberGrailsTestType = { home, basedir ->
-    loadClass ('grails.plugin.cucumber.CucumberGrailsTestType').newInstance (
-        home, basedir)
+cucumberGrailsTestType = { basedir ->
+    loadClass ('grails.plugin.cucumber.CucumberTestType').newInstance (basedir)
 }
 
 println "**** cucumberPluginDir: ${cucumberPluginDir}"
 
 cucumberTests = [
-    // does not work, class unresolved
-    //new CucumberGrailsTestType ()
+    //new CucumberTestType () // fails with class unresolved
 ]
-
-//eventClasspathStart = {
-//    classpathSet = false
-//    println "$basedir"
-//    rootLoader.addURL (new File ("$basedir/test/cucumber").toURI().toURL())
-//}
 
 eventAllTestsStart = {
     println "** Grails All Tests Start **"
 
-    def testType = cucumberGrailsTestType (cucumberPluginDir as String, basedir)
-    //testType.setup ()
+    def testType = cucumberGrailsTestType (basedir)
 
     cucumberTests << testType
     println "** cucumberTests: ${cucumberTests}"
 
     phasesToRun << testType.NAME
-    //phasesToRun << CucumberGrailsTestType.NAME
     println "** phasesToRun: ${phasesToRun}"
 }
 

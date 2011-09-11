@@ -16,30 +16,33 @@
 
 package grails.plugin.cucumber
 
+import grails.plugin.spock.*
 
-class JGem {
-    static final String JGEM_RESOURCE_PATH = '/META-INF/jruby.home/bin/jgem'
-    final String jgem
 
-    JGem () {
-        jgem = JGEM_RESOURCE_PATH
+class CucumberTestTypeSpec extends UnitSpec {
+
+    def "the name is 'cucumber'" () {
+        when:
+        def testType = new CucumberTestType ("base")
+
+        then:
+        testType.name == "cucumber"
     }
 
-    JGem (String jGemPath) {
-        jgem = jGemPath
+    def "the relative source path is 'cucumber'" () {
+        when:
+        def testType = new CucumberTestType ("base")
+
+        then:
+        testType.relativeSourcePath == "cucumber"
     }
 
-    Reader reader () {
-        InputStream stream = getClass().getResourceAsStream (name ())
+    def "the test extension is 'feature'" () {
+        when:
+        def testType = new CucumberTestType ("base")
 
-        if (stream == null) {
-            throw new FileNotFoundException (name ())
-        }
-
-        new InputStreamReader (stream)
-    }
-
-    String name () {
-        jgem
+        then:
+        testType.testExtensions.size() == 1
+        testType.testExtensions.contains ("feature")
     }
 }

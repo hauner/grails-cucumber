@@ -17,24 +17,25 @@
 package grails.plugin.cucumber
 
 import grails.plugin.spock.*
+import static grails.plugin.cucumber.GherkinSpec.*
+import org.codehaus.groovy.grails.test.report.junit.JUnitReports
 
 
-class CucumberGrailsTestTypeSpec extends UnitSpec {
+class FeatureReportSpec extends UnitSpec {
+    def helper = Mock (FeatureReportHelper)
+    def uat = new FeatureReport (helper)
 
-    def "the name is 'cucumber'" () {
+    @SuppressWarnings(["GroovyPointlessArithmetic", "GroovyAssignabilityCheck"])
+    def "create new report for each feature" () {
+        helper.createReport (!null) >> Mock (JUnitReports)
+
         when:
-        def testType = new CucumberGrailsTestType ("home", "base")
+        uat.startFeature (FEATURE_NAME_A)
+        uat.startFeature (FEATURE_NAME_B)
 
         then:
-        testType.name == "cucumber"
-    }
-
-    def "the relative source path is 'cucumber'" () {
-        when:
-        def testType = new CucumberGrailsTestType ("home", "base")
-
-        then:
-        testType.relativeSourcePath == "cucumber"
+        1 * helper.createReport (FEATURE_NAME_A)
+        1 * helper.createReport (FEATURE_NAME_B)
     }
 
 }

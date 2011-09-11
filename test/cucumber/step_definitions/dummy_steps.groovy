@@ -10,7 +10,7 @@ World {
 
 Given(~"^Dummy_Given\$") { ->
     println "Step Given"
-    assertEquals ("success", "failure")
+    //assertEquals ("success", "failure")
 }
 
 Then(~"^Dummy_Then\$") { ->

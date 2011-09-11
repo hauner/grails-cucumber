@@ -16,28 +16,28 @@
 
 package grails.plugin.cucumber
 
+import grails.plugin.spock.*
 
-class Folder {
-    private File file
 
-    Folder (File file) {
-        this.file = file
+class CucumberTestTypeResultSpec extends UnitSpec {
+
+    def "number of passed tests without failures" () {
+        when:
+        def passed = 10
+        def result = new CucumberTestTypeResult (passed, 0, 0)
+
+        then:
+        result.passCount == passed
     }
 
-    def path () {
-        file.canonicalPath
+    def "number of passed tests with failures" () {
+        when:
+        def passed = 10
+        def failures = 3
+        def result = new CucumberTestTypeResult (passed, failures, 0)
+
+        then:
+        result.passCount == 7
     }
 
-    def exists () {
-        file.exists ()
-    }
-
-    def create () {
-        file.mkdirs ()
-    }
-
-    def isEmpty () {
-        file.list ().length == 0
-    }
 }
-

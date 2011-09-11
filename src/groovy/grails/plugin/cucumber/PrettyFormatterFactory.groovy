@@ -16,23 +16,11 @@
 
 package grails.plugin.cucumber
 
+import gherkin.formatter.PrettyFormatter
 
-class Cuke4DukeSetup {
-    Cuke4DukeInstaller installer
-    Folder home
 
-	Cuke4DukeSetup (Cuke4DukeInstaller installer, Folder home) {
-        this.installer = installer
-        this.home = home
-    }
-
-    void run () {
-        if (!home.exists ()) {
-            home.create ()
-        }
-
-        if (home.isEmpty ()) {
-            installer.run ()
-        }
+class PrettyFormatterFactory {
+    PrettyFormatter createFormatter (PrintStream out) {
+        return new PrettyFormatter (out, true, true)
     }
 }

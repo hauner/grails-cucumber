@@ -16,15 +16,29 @@
 
 package grails.plugin.cucumber
 
-import org.jruby.embed.ScriptingContainer
-import org.jruby.embed.LocalContextScope
-import org.jruby.embed.LocalVariableBehavior
+import org.codehaus.groovy.grails.test.GrailsTestTypeResult
 
 
-class JRubyFactory {
-    ScriptingContainer container () {
-        new ScriptingContainer (
-            LocalContextScope.THREADSAFE/*,
-            LocalVariableBehavior.TRANSIENT*/)
+class CucumberTestTypeResult implements GrailsTestTypeResult {
+    int run
+    int failures
+    int errors
+
+    CucumberTestTypeResult (int runCnt, int failureCnt, int errorCnt) {
+        this.run = runCnt
+        this.failures = failureCnt
+        this.errors = errorCnt
+    }
+
+    int getRunCount () {
+        run
+    }
+
+    int getPassCount () {
+        run - getFailCount ()
+    }
+
+    int getFailCount () {
+        failures + errors
     }
 }

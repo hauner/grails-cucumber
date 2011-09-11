@@ -16,15 +16,21 @@
 
 package grails.plugin.cucumber
 
-import org.codehaus.groovy.grails.test.GrailsTestTypeResult
 
+class ClassPathExtender {
+    def classLoader
 
-class CucumberGrailsTestTypeResult implements GrailsTestTypeResult {
-    int passCount
-    int failCount
+    ClassPathExtender (ClassLoader classLoader) {
+        this.classLoader = classLoader
+    }
 
-    CucumberGrailsTestTypeResult () {
-        passCount = 0
-        failCount = 1
+    void add (URL path) {
+        classLoader.addURL (path)
+    }
+
+    void print (PrintStream out) {
+        classLoader.URLs.each {
+            out << "### classpath ###: $it\n"
+        }
     }
 }
