@@ -33,16 +33,3 @@ It is not yet finished... but it is basically working:
 * use grails like configuration for tags, language
 * examples
 
-
-## Approach ##
-
-The plugin adds a a new grails custom test type called "cucumber" based on
-the article [Grails custom test type](
-http://ldaley.com/post/615966534/custom-grails-test).
-
-
-Cucumber gets started via cuke4duke. The plugin does not use the cuke4duke
-ant tasks. It does run cuke4duke directly using JRubys embed api (Red Bridge).
-
-JRuby will be provided by grails dependencies mechanism and the plugin will
-automatically install the cuke4duke gem at first run.
