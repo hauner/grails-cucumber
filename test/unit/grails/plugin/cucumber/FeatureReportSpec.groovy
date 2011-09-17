@@ -38,4 +38,8 @@ class FeatureReportSpec extends UnitSpec {
         1 * helper.createReport (FEATURE_NAME_B)
     }
 
+    def "x" () {
+
+    }
+
 }

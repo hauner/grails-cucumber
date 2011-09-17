@@ -1,7 +1,8 @@
 # What's this? #
 
-grails-cucumber-jvm is a [Grails](http://grails.org) plugin for
-[Cucumber](http://cukes.info).
+grails-cucumber is a [Grails](http://grails.org) plugin for [Cucumber]
+(http://cukes.info) based on cucumber-jvm [Cucumber-JVM]
+(https://github.com/cucumber/cucumber-jvm).
 
 
 ## Goals ##
@@ -13,7 +14,7 @@ grails-cucumber-jvm is a [Grails](http://grails.org) plugin for
 
 ## Current State ##
 
-It is not yet finished... but it is basically working:
+It is not yet production ready... but it is basically working:
 
 * it does run a super simple test feature "dummy.feature" with groovy step
   definitions.
@@ -27,9 +28,8 @@ It is not yet finished... but it is basically working:
 
 * create grails like test-report (done)
 * the test report summary prints "Testcase: unknown took 0.065 sec", I do not
-  yet understand why it prints unknown instead of the sceario name
+  yet understand why it prints unknown instead of the scenario name
 * remove progress/debug println stuff
 * run cucumber scenarios against the grails app (enable `functionalTestPhase`)
 * use grails like configuration for tags, language
 * examples
-

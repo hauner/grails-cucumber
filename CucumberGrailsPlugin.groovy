@@ -15,7 +15,7 @@
  */
 
 class CucumberGrailsPlugin {
-    def version = "0.0.1"
+    def version = "0.0.1-SNAPSHOT"
     def grailsVersion = "1.3.0 > *"
     def dependsOn = [:]
     def pluginExcludes = [
@@ -28,7 +28,14 @@ class CucumberGrailsPlugin {
 
     def author = "Martin Hauner"
     def authorEmail = "martin.hauner@gmx.net"
+    def license = "APACHE"
     def title = "Cucumber Plugin"
     def description = "Test your Grails apps with Cucumber"
-    def documentation = "http://github.com/hauner/grails-cucumber"
+    def documentation = "https://github.com/hauner/grails-cucumber/wiki"
+    //def issueManagement = [
+    //    system: "github", url: "https://github.com/hauner/grails-cucumber/issues"
+    //]
+    def scm = [
+        url: "https://github.com/hauner/grails-cucumber"
+    ]
 }
