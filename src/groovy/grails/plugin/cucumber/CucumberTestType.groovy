@@ -88,13 +88,15 @@ class CucumberTestType extends GrailsTestTypeSupport {
 
     @Override
     GrailsTestTypeResult doRun (GrailsTestEventPublisher eventPublisher) {
-        def report = new FeatureReport (new FeatureReportHelper (
-            createSystemOutAndErrSwapper (), createJUnitReportsFactory()
-        ))
+        def swapper = createSystemOutAndErrSwapper ()
+        def factory =  createJUnitReportsFactory ()
+
+        def report = new FeatureReport (new FeatureReportHelper (swapper, factory))
         def pretty = new PrettyFormatterWrapper (new PrettyFormatterFactory ())
 
-//        def formatter = new CucumberFormatter2 (eventPublisher, report, pretty, pretty)
-        def formatter = new CucumberFormatter (eventPublisher, new PrettyFormatterFactory (), createJUnitReportsFactory (), createSystemOutAndErrSwapper ())
+        def formatter = new CucumberFormatter2 (eventPublisher, report, pretty, pretty)
+//        def formatter = new CucumberFormatter (eventPublisher, new PrettyFormatterFactory (), factory, swapper)
+//        formatter.report = report
 
         for (CucumberFeature cucumberFeature : cucumberFeatures) {
             cucumberFeature.run (cucumberRuntime, formatter, formatter)

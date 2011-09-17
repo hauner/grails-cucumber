@@ -64,11 +64,10 @@ class CucumberFormatter2 implements Formatter, Reporter {
     void finish () {
         sysout << "CF(finish)\n"
 
-        //report.endScenario ()
-        report.endFeature ()
+        report.endScenario ()
         publisher.testEnd (activeScenario.getName ())
 
-//        report.endFeature ()
+        report.endFeature ()
         publisher.testCaseEnd (activeFeature.getName ())
     }
 
@@ -191,6 +190,8 @@ class CucumberFormatter implements Formatter, Reporter {
     JUnitReportsFactory reportsFactory
     SystemOutAndErrSwapper outAndErrSwapper
 
+    FeatureReport report
+
     def sysout
 
 
@@ -238,12 +239,18 @@ class CucumberFormatter implements Formatter, Reporter {
 
         eventPublisher.testCaseStart (activeFeature.getName ())
 
-        ///
-        outAndErrSwapper.swapIn ()
-        reports = reportsFactory.createReports (activeFeature.getName ())
-        testSuite = new JUnitTest (activeFeature.getName ())
-        reports.startTestSuite (testSuite)
-        startTime = System.currentTimeMillis ()
+
+        report.startFeature (activeFeature.getName ())
+
+        //outAndErrSwapper.swapIn ()
+        //reports = reportsFactory.createReports (activeFeature.getName ())
+        //report.report = reports
+        reports = report.report
+
+        //testSuite = new JUnitTest (activeFeature.getName ())
+        //testSuite = report.suite
+        //reports.startTestSuite (testSuite)
+        //startTime = System.currentTimeMillis ()
 
         //def pretty = new PrettyFormatter (sysout/*System.out*/, true, true)
         formatter = new PrettyFormatter (System.out, true, true)
@@ -256,15 +263,15 @@ class CucumberFormatter implements Formatter, Reporter {
     private void finishFeature () {
         sysout << "GF(finishFeature): (${activeFeature.getName ()})\n"
 
+        report.endFeature ()
         //
-        testSuite.runTime = System.currentTimeMillis () - startTime
+        //testSuite.runTime = System.currentTimeMillis () - startTime
+        //testSuite.setCounts (runCount, failureCount, errorCount)
 
-        testSuite.setCounts (runCount, failureCount, errorCount)
-
-        def (out, err) = outAndErrSwapper.swapOut ()*.toString ()
-        reports.systemOutput = out
-        reports.systemError = err
-        reports.endTestSuite (testSuite)
+        //def (out, err) = outAndErrSwapper.swapOut ()*.toString ()
+        //reports.systemOutput = out
+        //reports.systemError = err
+        //reports.endTestSuite (testSuite)
         //
 
         eventPublisher.testCaseEnd (activeFeature.getName ())
@@ -304,17 +311,22 @@ class CucumberFormatter implements Formatter, Reporter {
 
         eventPublisher.testStart (activeScenario.getName ())
 
+        /*
         runCount++
         [System.out, System.err]*.println ("\n--Output from ${activeScenario.getName ()}--")
 
         test = new CucumberTest ()
         reports.startTest (test)
+        */
+        report.startScenario (activeScenario.getName ())
     }
 
     private void finishScenario () {
         sysout << "GF(finishScenario): (${activeScenario.getName ()})\n"
 
-        reports.endTest (test)
+        //reports.endTest (test)
+        report.endScenario ()
+
         eventPublisher.testEnd (activeScenario.getName ())
     }
 
@@ -379,7 +391,8 @@ class CucumberFormatter implements Formatter, Reporter {
                 sysout << "GR(result): failure\n"
 
                 failureCount++
-                reports.addFailure (test, exception)
+                //reports.addFailure (test, exception)
+                report.addFailure (exception)
 
                 eventPublisher.testFailure (activeStep.getName (), exception)
             }
@@ -387,7 +400,8 @@ class CucumberFormatter implements Formatter, Reporter {
                 sysout << "GR(result): error\n"
 
                 errorCount++
-                reports.addError (test, exception)
+                //reports.addError (test, exception)
+                report.addError (exception)
 
                 eventPublisher.testFailure (activeStep.getName (), exception, true)
             }

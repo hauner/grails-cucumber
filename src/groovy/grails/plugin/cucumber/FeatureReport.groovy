@@ -48,6 +48,10 @@ class FeatureReportHelper {
         new JUnitTest (feature)
     }
 
+    CucumberTest createTest (String scenario) {
+        new CucumberTest (scenario)
+    }
+
     long now () {
         System.currentTimeMillis ()
     }
@@ -75,12 +79,12 @@ class FeatureReport {
 
     void startFeature (String feature) {
         sysout << "\nFR(startFeature)\n"
-        //helper.replaceOutAndErr ()
+        helper.replaceOutAndErr ()
 
         report = helper.createReport (feature)
         suite = helper.createTestSuite (feature)
-
         report.startTestSuite (suite)
+
         start = helper.now ()
     }
 
@@ -92,10 +96,9 @@ class FeatureReport {
         suite.runTime = runtime
         suite.setCounts (runCount, failureCount, errorCount)
 
-//        def (out, err) = helper.restoreOutAndErr ()*.toString ()
-
-        //        report.systemOutput = out
-        //        report.systemError = err
+        def (out, err) = helper.restoreOutAndErr ()*.toString ()
+        report.systemOutput = out
+        report.systemError = err
         report.endTestSuite (suite)
     }
 
@@ -103,7 +106,7 @@ class FeatureReport {
         sysout << "FR(startScenario)\n"
         [System.out, System.err]*.println ("\n--Output from ${scenario}--")
 
-        test = new CucumberTest (scenario)
+        test = helper.createTest (scenario)
         report.startTest (test)
 
         runCount++
@@ -111,6 +114,7 @@ class FeatureReport {
 
     void endScenario () {
         sysout << "FR(endScenario)\n"
+
         report.endTest (test)
     }
 
