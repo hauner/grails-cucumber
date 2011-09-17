@@ -4,6 +4,9 @@ grails.project.test.reports.dir = "target/test-reports"
 //grails.project.plugins.dir = 'plugins'
 //grails.plugin.location."my-plugin" = "../my-plugin"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
+grails.release.scm.enabled = false
+grails.project.repos.default = "grailsCentral"
+
 
 grails.project.dependency.resolution = {
 
