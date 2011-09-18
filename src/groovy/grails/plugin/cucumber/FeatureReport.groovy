@@ -16,115 +16,60 @@
 
 package grails.plugin.cucumber
 
-import org.codehaus.groovy.grails.test.report.junit.JUnitReportsFactory
-import org.codehaus.groovy.grails.test.report.junit.JUnitReports
-import org.codehaus.groovy.grails.test.io.SystemOutAndErrSwapper
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest
 import junit.framework.AssertionFailedError
 
 
-class FeatureReportHelper {
-    SystemOutAndErrSwapper swapper
-    JUnitReportsFactory factory
-
-    FeatureReportHelper (SystemOutAndErrSwapper swapper, JUnitReportsFactory factory) {
-        this.swapper = swapper
-        this.factory = factory
-    }
-
-    List<OutputStream> replaceOutAndErr () {
-        swapper.swapIn ()
-    }
-
-    List<OutputStream> restoreOutAndErr () {
-        swapper.swapOut ()
-    }
-
-    JUnitReports createReport (String feature) {
-        factory.createReports (feature)
-    }
-
-    JUnitTest createTestSuite (String feature) {
-        new JUnitTest (feature)
-    }
-
-    CucumberTest createTest (String scenario) {
-        new CucumberTest (scenario)
-    }
-
-    long now () {
-        System.currentTimeMillis ()
-    }
-}
-
-
 class FeatureReport {
-    FeatureReportHelper helper
-    JUnitReports report
+    FeatureReportHelper factory
 
-    long start
+    Report report
     JUnitTest suite
     CucumberTest test
-
-    int runCount
-    int failureCount
-    int errorCount
 
     def sysout
 
     FeatureReport (FeatureReportHelper helper) {
-        this.helper = helper
+        this.factory = helper
         this.sysout = System.out
     }
 
     void startFeature (String feature) {
-        sysout << "\nFR(startFeature)\n"
-        helper.replaceOutAndErr ()
+        //sysout << "\nFR(startFeature)\n"
 
-        report = helper.createReport (feature)
-        suite = helper.createTestSuite (feature)
+        report = factory.createReport (feature)
+        suite = factory.createTestSuite (feature)
         report.startTestSuite (suite)
-
-        start = helper.now ()
     }
 
     void endFeature () {
-        sysout << "FR(endFeature)\n"
+        //sysout << "FR(endFeature)\n"
 
-        long runtime = helper.now () - start
-
-        suite.runTime = runtime
-        suite.setCounts (runCount, failureCount, errorCount)
-
-        def (out, err) = helper.restoreOutAndErr ()*.toString ()
-        report.systemOutput = out
-        report.systemError = err
         report.endTestSuite (suite)
     }
 
     void startScenario (String scenario) {
-        sysout << "FR(startScenario)\n"
-        [System.out, System.err]*.println ("\n--Output from ${scenario}--")
+        //sysout << "FR(startScenario)\n"
 
-        test = helper.createTest (scenario)
+        test = factory.createTest (scenario)
         report.startTest (test)
-
-        runCount++
     }
 
     void endScenario () {
-        sysout << "FR(endScenario)\n"
+        //sysout << "FR(endScenario)\n"
 
         report.endTest (test)
     }
 
     void addFailure (AssertionFailedError failure) {
+        //sysout << "FR(addFailure)\n"
+
         report.addFailure (test, failure)
-        failureCount++
     }
 
     void addError (Throwable error) {
+        //sysout << "FR(addError)\n"
+
         report.addError (test, error)
-        errorCount++
     }
 }

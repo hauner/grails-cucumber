@@ -152,7 +152,7 @@ class CucumberFormatter2 implements Formatter, Reporter {
     void result (Result result) {
         sysout << "CF(result)\n"
 
-        if (result.getErrorMessage () != null) {
+        if (result.error != null) {
             
             if (result.error instanceof AssertionFailedError) {
                 report.addFailure ((AssertionFailedError)result.error)
@@ -161,7 +161,7 @@ class CucumberFormatter2 implements Formatter, Reporter {
                 failureCount++
             }
             else {
-                report.addError (error)
+                report.addError (result.error)
                 publisher.testFailure (activeStep.getName (), result.error, true)
 
                 errorCount++
