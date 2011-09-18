@@ -17,16 +17,10 @@
 import grails.test.AbstractCliTestCase
 
 
-// ... very slow ...
 class TestAppTests extends AbstractCliTestCase {
-
-    void verifyPhase () {
-        assertTrue output.contains ("Starting cucumber test phase ...")
-    }
-
-    void verifyTestCount (count) {
-        assertTrue output.contains ("Running " +count+ " cucumber tests...")
-    }
+    static final int TEST_COUNT = 4
+    static final int TEST_PASSED = 2
+    static final int TEST_FAILED = 2
 
     void testAppRunsCucumberTestPhase () {
         execute (["test-app", "cucumber:"])
@@ -36,10 +30,58 @@ class TestAppTests extends AbstractCliTestCase {
         verifyPhase ()
     }
 
-    void testAppReportsNumerOfScenariosThatWillRun () {
+    void testAppReportsNumberOfScenariosThatWillRun () {
         execute (["test-app", "cucumber:"])
         waitForProcess ()
 
-        verifyTestCount (2)
+        verifyTestCounts ()
+    }
+
+    void testAppReportsSuccessfulTestFeatures () {
+        execute (["test-app", "cucumber:"])
+        waitForProcess ()
+
+        verifyTestFeaturePassed ()
+    }
+
+    void testAppReportsIssuesOfTestFeatures () {
+        execute (["test-app", "cucumber:"])
+        waitForProcess ()
+
+        verifyTestFeatureIssues ()
+    }
+
+    void testAppReportsStepSnippets () {
+        execute (["test-app", "cucumber:"])
+        waitForProcess ()
+
+        verifyTestFeatureSnippets ()
+    }
+
+    private void verifyPhase () {
+        assertTrue output.contains ("Starting cucumber test phase ...")
+    }
+
+    private void verifyTestCounts () {
+        assertTrue output.contains ("Running " +TEST_COUNT+ " cucumber tests...")
+        assertTrue output.contains ("Tests passed: " +TEST_PASSED)
+        assertTrue output.contains ("Tests failed: " +TEST_FAILED)
+    }
+
+    private void verifyTestFeaturePassed () {
+        assertTrue output.contains ("Running test test-app with succeeding features...PASSED")
+    }
+
+    private void verifyTestFeatureIssues () {
+        assertTrue output.contains ("report the failing step...FAILED")
+        assertTrue output.contains ("report the erroneous step...FAILED")
+    }
+
+    private void verifyTestFeatureSnippets () {
+        assertTrue output.contains ("You can implement missing steps with the snippets below")
+        // fails if checked as single string with \n line feeds
+        assertTrue output.contains ("And(~\"^an unimplemented step is found\$\") { ->")
+        assertTrue output.contains ("    // Express the Regexp above with the code you wish you had")
+        assertTrue output.contains ("}")
     }
 }
