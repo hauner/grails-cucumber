@@ -32,9 +32,9 @@ class CucumberGrailsPlugin {
     def title = "Cucumber Plugin"
     def description = "Test your Grails apps with Cucumber"
     def documentation = "https://github.com/hauner/grails-cucumber/wiki"
-    //def issueManagement = [
-    //    system: "github", url: "https://github.com/hauner/grails-cucumber/issues"
-    //]
+    def issueManagement = [
+        system: "github", url: "https://github.com/hauner/grails-cucumber/issues"
+    ]
     def scm = [
         url: "https://github.com/hauner/grails-cucumber"
     ]
