@@ -58,7 +58,7 @@ class CucumberFormatter implements Formatter, Reporter {
     }
 
     void finish () {
-        sysout << "CF(finish)\n"
+        //sysout << "CF(finish)\n"
 
         report.endScenario ()
         publisher.testEnd (activeScenario.getName ())
@@ -80,13 +80,13 @@ class CucumberFormatter implements Formatter, Reporter {
 
     void feature (Feature feature) {
         if (activeFeature) {
-            sysout << "CF(feature end)\n"
+            //sysout << "CF(feature end)\n"
 
             report.endFeature ()
             publisher.testCaseEnd (activeFeature.getName ())
         }
 
-        sysout << "CF(feature start)\n"
+        //sysout << "CF(feature start)\n"
         activeFeature = feature
         publisher.testCaseStart (activeFeature.getName ())
         report.startFeature (activeFeature.getName ())
@@ -100,13 +100,13 @@ class CucumberFormatter implements Formatter, Reporter {
 
     void scenario (Scenario scenario) {
         if (activeScenario) {
-            sysout << "CF(scenario end)\n"
+            //sysout << "CF(scenario end)\n"
 
             report.endScenario ()
             publisher.testEnd (activeScenario.getName ())
         }
 
-        sysout << "CF(scenario start)\n"
+        //sysout << "CF(scenario start)\n"
         activeScenario = scenario
         publisher.testStart (activeScenario.getName ())
         report.startScenario (activeScenario.getName ())
@@ -125,7 +125,7 @@ class CucumberFormatter implements Formatter, Reporter {
     }
 
     void step (Step step) {
-        sysout << "CF(step)\n"
+        //sysout << "CF(step)\n"
 
         activeStep = step
 
@@ -144,9 +144,8 @@ class CucumberFormatter implements Formatter, Reporter {
      * Reporter
      */
 
-    // TODO test happy path
     void result (Result result) {
-        sysout << "CF(result)\n"
+        //sysout << "CF(result)\n"
 
         if (result.error != null) {
             

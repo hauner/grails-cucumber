@@ -14,26 +14,16 @@
  * limitations under the License.
  */
 
-
-/*
- * http://jira.grails.org/browse/GRAILS-6453
- * http://grails.1312388.n4.nabble.com/
- *   plugin-classes-not-included-in-classpath-for-plugin-scripts-td2271962.html
- */
-
 includeTargets << grailsScript ("_GrailsCompile")
 
 loadClass = { className ->
     def load = { name ->
-        println "### loading ${name}"
         classLoader.loadClass (name)
     }
 
     try {
-        println "### trying to load.."
         load (className)
     } catch (ClassNotFoundException e) {
-        println "### catching.."
         compile ()
         load (className)
     }
@@ -43,40 +33,47 @@ cucumberGrailsTestType = { basedir ->
     loadClass ('grails.plugin.cucumber.CucumberTestType').newInstance (basedir)
 }
 
-println "**** cucumberPluginDir: ${cucumberPluginDir}"
+
+//  unfortunately we can't just new the CucumberTestType () here, it fails with a
+//  "class unresolved" error. To work around this issue we need the loadClass stuff
+//  above. For an explanation see:
+//  http://jira.grails.org/browse/GRAILS-6453
+//  http://grails.1312388.n4.nabble.com/plugin-classes-not-included-in-classpath-for-plugin-scripts-td2271962.html
 
 cucumberTests = [
-    //new CucumberTestType () // fails with class unresolved
+    //new CucumberTestType ()
 ]
 
 eventAllTestsStart = {
-    println "** Grails All Tests Start **"
-
+    //println "** Grails All Tests Start **"
     def testType = cucumberGrailsTestType (basedir)
 
     cucumberTests << testType
-    println "** cucumberTests: ${cucumberTests}"
-
     phasesToRun << testType.NAME
-    println "** phasesToRun: ${phasesToRun}"
+
+    //println "** cucumberTests: ${cucumberTests}"
+    //println "** phasesToRun: ${phasesToRun}"
 }
 
 eventAllTestsEnd = {
-    println "** Grails All Tests End **"
+    //println "** Grails All Tests End **"
 }
 
 cucumberTestPhasePreparation = {
-    println "** Cucumber Test Phase Preparation **"
+    //println "** Cucumber Test Phase Preparation **"
 
+    // TODO
     //functionalTestPhasePreparation ()
 }
 
 cucumberTestPhaseCleanUp = {
-    println "** Cucumber Test Phase Clean Up **"
+    //println "** Cucumber Test Phase Clean Up **"
 
+    // TODO
     //functionalTestPhaseCleanUp ()
 }
 
+/*
 eventTestPhasesStart = { phases ->
     println "** Grails Test PhaseS Start: $phases **"
 }
@@ -100,3 +97,4 @@ eventTestSuiteStart = { typeName ->
 eventTestSuiteEnd = { typeName ->
     println "** Grails Test Suite End: $typeName **"
 }
+*/
