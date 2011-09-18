@@ -137,4 +137,17 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         1 * report.addError (error)
     }
 
+    @SuppressWarnings("GroovyAssignabilityCheck")
+    def "does only report step when it succeeds" () {
+        def result = Mock (Result)
+        result.error >> null
+
+        when:
+        uat.step (stepStub ())
+        uat.result (result)
+
+        then:
+        0 * report.addError (_)
+        0 * report.addError (_)
+    }
 }
