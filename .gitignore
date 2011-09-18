@@ -1,5 +1,3 @@
 target/
 plugin.xml
 stacktrace.log
-/test/..:lib:.jruby/
-/lib/.jruby/
