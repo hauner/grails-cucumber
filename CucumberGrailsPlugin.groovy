@@ -15,7 +15,7 @@
  */
 
 class CucumberGrailsPlugin {
-    def version = "0.0.1-SNAPSHOT"
+    def version = "0.1.0-SNAPSHOT"
     def grailsVersion = "1.3.0 > *"
     def dependsOn = [:]
     def pluginExcludes = [
