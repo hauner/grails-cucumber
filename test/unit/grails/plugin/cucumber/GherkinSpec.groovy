@@ -111,7 +111,7 @@ class GherkinSpec extends UnitSpec {
     }
 
     def formatter () {
-        new CucumberFormatter2 (
+        new CucumberFormatter (
             Mock (GrailsTestEventPublisher),
             Mock (FeatureReport),
             Mock (Formatter),
@@ -120,7 +120,7 @@ class GherkinSpec extends UnitSpec {
     }
 
     def formatter (FeatureReport report) {
-        new CucumberFormatter2 (
+        new CucumberFormatter (
             Mock (GrailsTestEventPublisher),
             report,
             Mock (Formatter),
@@ -129,7 +129,7 @@ class GherkinSpec extends UnitSpec {
     }
 
     def formatter (GrailsTestEventPublisher publisher) {
-        new CucumberFormatter2 (
+        new CucumberFormatter (
             publisher,
             Mock (FeatureReport),
             Mock (Formatter),
@@ -138,7 +138,7 @@ class GherkinSpec extends UnitSpec {
     }
 
     def formatter (Formatter formatter, Reporter reporter) {
-        new CucumberFormatter2 (
+        new CucumberFormatter (
             Mock (GrailsTestEventPublisher),
             Mock (FeatureReport),
             formatter,

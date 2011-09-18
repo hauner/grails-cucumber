@@ -94,9 +94,7 @@ class CucumberTestType extends GrailsTestTypeSupport {
         def report = new FeatureReport (new FeatureReportHelper (factory, swapper))
         def pretty = new PrettyFormatterWrapper (new PrettyFormatterFactory ())
 
-        def formatter = new CucumberFormatter2 (eventPublisher, report, pretty, pretty)
-//        def formatter = new CucumberFormatter (eventPublisher, new PrettyFormatterFactory (), factory, swapper)
-//        formatter.report = report
+        def formatter = new CucumberFormatter (eventPublisher, report, pretty, pretty)
 
         for (CucumberFeature cucumberFeature : cucumberFeatures) {
             cucumberFeature.run (cucumberRuntime, formatter, formatter)
