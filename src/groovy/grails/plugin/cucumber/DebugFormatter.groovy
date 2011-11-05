@@ -37,6 +37,16 @@ class DebugFormatter implements Formatter, Reporter {
         this.pretty = pretty
     }
 
+    void finish () {
+        sysout << "D(finish)\n"
+    }
+
+    CucumberTestTypeResult getResult () {
+        sysout << "D(getResult)\n"
+
+        new CucumberTestTypeResult (1, 0, 0)
+    }
+
     /*
      * Formatter
      */
@@ -64,15 +74,15 @@ class DebugFormatter implements Formatter, Reporter {
     }
 
     void scenarioOutline (ScenarioOutline scenarioOutline) {
-        sysout << "F(scenarioOutline): (${scenarioOutline.getName ()}})\n"
+        sysout << "F(scenarioOutline): (${scenarioOutline.getName ()})\n"
     }
 
     void examples (Examples examples) {
-        sysout << "F(examples): (${examples.getName ()}})\n"
+        sysout << "F(examples): (${examples.getName ()})\n"
     }
 
     void step (Step step) {
-        sysout << "F(step): (${step.getName ()}})\n"
+        sysout << "F(step): (${step.getName ()})\n"
     }
 
     void eof () {
@@ -83,6 +93,11 @@ class DebugFormatter implements Formatter, Reporter {
         sysout << "F(syntaxError)\n"
     }
 
+    void close () {
+        sysout << "F(close)\n"
+
+        pretty.close ()
+    }
 
     /*
      * Reporter

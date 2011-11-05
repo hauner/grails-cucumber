@@ -81,7 +81,10 @@ class PrettyFormatterWrapper implements Formatter, Reporter {
         pretty.syntaxError (state, event, legalEvents, uri, line)
     }
 
-
+    void close () {
+        pretty.close ()
+    }
+    
     /*
      * Reporter
      */

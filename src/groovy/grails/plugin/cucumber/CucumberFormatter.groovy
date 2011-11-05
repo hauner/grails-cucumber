@@ -140,6 +140,10 @@ class CucumberFormatter implements Formatter, Reporter {
         formatter.syntaxError (state, event, legalEvents, uri, line)
     }
 
+    void close () {
+        formatter.close ()
+    }
+
     /*
      * Reporter
      */

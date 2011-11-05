@@ -19,11 +19,11 @@ package grails.plugin.cucumber
 import cucumber.resources.Consumer
 import cucumber.resources.Resource
 import cucumber.resources.Resources
-import cucumber.runtime.FeatureBuilder
 import cucumber.runtime.Runtime
-import cucumber.runtime.SnippetPrinter
-import cucumber.runtime.groovy.GroovyBackend
+import cucumber.runtime.FeatureBuilder
 import cucumber.runtime.model.CucumberFeature
+import cucumber.runtime.snippets.SummaryPrinter
+
 import org.codehaus.groovy.grails.test.GrailsTestTypeResult
 import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
 import org.codehaus.groovy.grails.test.report.junit.JUnitReportsFactory
@@ -37,6 +37,7 @@ class CucumberTestType extends GrailsTestTypeSupport {
     Runtime               cucumberRuntime
     List<CucumberFeature> cucumberFeatures
     List<Object>          cucumberFilters
+    List<String>          cucumberPaths
 
 
     CucumberTestType (String basedir) {
@@ -62,9 +63,11 @@ class CucumberTestType extends GrailsTestTypeSupport {
         addBaseDirToClasspath ()
 
         // setup state
-        cucumberRuntime = new Runtime (new GroovyBackend (testpath ()))
         cucumberFeatures = new ArrayList<CucumberFeature> ()
         cucumberFilters = new ArrayList ()
+        cucumberPaths = new ArrayList<String>()
+        cucumberPaths.add (testpath ())
+        cucumberRuntime = new Runtime (cucumberPaths, false)
 
         FeatureBuilder builder = new FeatureBuilder (cucumberFeatures)
 
@@ -81,7 +84,7 @@ class CucumberTestType extends GrailsTestTypeSupport {
         // count scenarios
         def scenarioCount = 0
         cucumberFeatures.each {
-            scenarioCount += it.getCucumberScenarios ().size ()
+            scenarioCount += it.getFeatureElements().size ()
         }
         scenarioCount
     }
@@ -94,15 +97,20 @@ class CucumberTestType extends GrailsTestTypeSupport {
         def report = new FeatureReport (new FeatureReportHelper (factory, swapper))
         def pretty = new PrettyFormatterWrapper (new PrettyFormatterFactory ())
 
-        def formatter = new CucumberFormatter (eventPublisher, report, pretty, pretty)
+        //def formatter = new CucumberFormatter (eventPublisher, report, pretty, pretty)
+        def formatter = new DebugFormatter (System.out, pretty)
 
-        for (CucumberFeature cucumberFeature : cucumberFeatures) {
-            cucumberFeature.run (cucumberRuntime, formatter, formatter)
-        }
+        cucumberRuntime.run (cucumberPaths, cucumberFilters, formatter, formatter)
+
+        //for (CucumberFeature cucumberFeature : cucumberFeatures) {
+        //    cucumberRuntime.run (cucumberFeature, formatter, formatter)
+        //}
+        // todo merge finish into close!?
         formatter.finish ()
+        formatter.close ()
 
-        new SnippetPrinter (System.out).printSnippets (cucumberRuntime)
-        
+        new SummaryPrinter (System.out).print (cucumberRuntime);
+
         formatter.getResult ()
     }
 
