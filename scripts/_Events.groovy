@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2011-2012 Martin Hauner
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 includeTargets << grailsScript ("_GrailsCompile")
 
+
 loadClass = { className ->
     def load = { name ->
         classLoader.loadClass (name)
@@ -29,72 +30,30 @@ loadClass = { className ->
     }
 }
 
-cucumberGrailsTestType = { basedir ->
-    loadClass ('grails.plugin.cucumber.CucumberTestType').newInstance (basedir)
-}
-
-
-//  unfortunately we can't just new the CucumberTestType () here, it fails with a
-//  "class unresolved" error. To work around this issue we need the loadClass stuff
-//  above. For an explanation see:
+//  See the following links to understand why we have to manually load the test type class.
 //  http://jira.grails.org/browse/GRAILS-6453
 //  http://grails.1312388.n4.nabble.com/plugin-classes-not-included-in-classpath-for-plugin-scripts-td2271962.html
 
-cucumberTests = [
-    //new CucumberTestType ()
-]
 
 eventAllTestsStart = {
     //println "** Grails All Tests Start **"
-    def testType = cucumberGrailsTestType (basedir)
 
-    cucumberTests << testType
-    phasesToRun << testType.NAME
+    if (!binding.variables.containsKey ("functionalTests")) {
+        return
+    }
 
-    //println "** cucumberTests: ${cucumberTests}"
-    //println "** phasesToRun: ${phasesToRun}"
-}
+    def testType = loadClass ('grails.plugin.cucumber.CucumberTestType')
 
-eventAllTestsEnd = {
-    //println "** Grails All Tests End **"
-}
-
-cucumberTestPhasePreparation = {
-    //println "** Cucumber Test Phase Preparation **"
-
-    // TODO
-    //functionalTestPhasePreparation ()
-}
-
-cucumberTestPhaseCleanUp = {
-    //println "** Cucumber Test Phase Clean Up **"
-
-    // TODO
-    //functionalTestPhaseCleanUp ()
+    [functional: functionalTests].each { name, types ->
+        if (!types.any {it.class == testType}) {
+            types << testType.newInstance (name,
+                grailsSettings.baseDir.path, grailsSettings.testClassesDir.path)
+        }
+    }
 }
 
 /*
-eventTestPhasesStart = { phases ->
-    println "** Grails Test PhaseS Start: $phases **"
-}
-
-eventTestPhasesEnd = { phases ->
-    println "** Grails Test PhaseS End: **"
-}
-
-eventTestPhaseStart = { phaseName ->
-    println "** Grails Test Phase Start: $phaseName **"
-}
-
-eventTestPhaseEnd = { phaseName ->
-    println "** Grails Test Phase End: $phaseName **"
-}
-
-eventTestSuiteStart = { typeName ->
-    println "** Grails Test Suite Start: $typeName **"
-}
-
-eventTestSuiteEnd = { typeName ->
-    println "** Grails Test Suite End: $typeName **"
+eventAllTestsEnd = {
+    //println "** Grails All Tests End **"
 }
 */

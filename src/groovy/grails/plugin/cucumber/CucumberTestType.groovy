@@ -16,13 +16,6 @@
 
 package grails.plugin.cucumber
 
-import cucumber.resources.Consumer
-import cucumber.resources.Resource
-import cucumber.resources.Resources
-import cucumber.runtime.Runtime
-import cucumber.runtime.FeatureBuilder
-import cucumber.runtime.model.CucumberFeature
-import cucumber.runtime.snippets.SummaryPrinter
 
 import org.codehaus.groovy.grails.test.GrailsTestTypeResult
 import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
@@ -32,25 +25,15 @@ import org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport
 
 class CucumberTestType extends GrailsTestTypeSupport {
     static final NAME = "cucumber"
-    String basedir
+    String testClassesDir
+    String baseDir
 
-    Runtime               cucumberRuntime
-    List<CucumberFeature> cucumberFeatures
-    List<Object>          cucumberFilters
-    List<String>          cucumberPaths
+    Cucumber cucumber
 
-
-    CucumberTestType (String basedir) {
-        super (NAME, NAME)
-        this.basedir = basedir
-    }
-
-    String testpath () {
-        ["test", relativeSourcePath].join (File.separator)
-    }
-
-    URL basedirURL () {
-        new File (basedir).toURI ().toURL ()
+    CucumberTestType (String relativeSourcePath, String baseDir, String testClassesDir) {
+        super (NAME, relativeSourcePath)
+        this.testClassesDir = testClassesDir
+        this.baseDir = baseDir
     }
 
     @Override
@@ -60,68 +43,94 @@ class CucumberTestType extends GrailsTestTypeSupport {
 
     @Override
     int doPrepare () {
-        addBaseDirToClasspath ()
-
-        // setup state
-        cucumberFeatures = new ArrayList<CucumberFeature> ()
-        cucumberFilters = new ArrayList ()
-        cucumberPaths = new ArrayList<String>()
-        cucumberPaths.add (testpath ())
-        cucumberRuntime = new Runtime (cucumberPaths, false)
-
-        FeatureBuilder builder = new FeatureBuilder (cucumberFeatures)
-
-        // load gherkin files
-        Resources.scan (testpath (), ".feature",
-          new Consumer() {
-            @Override
-            public void consume (Resource resource) {
-              builder.parse (resource, cucumberFilters)
-            }
-          }
-        )
-
-        // count scenarios
-        def scenarioCount = 0
-        cucumberFeatures.each {
-            scenarioCount += it.getFeatureElements().size ()
-        }
-        scenarioCount
+        prepareClasspath ()
+        prepareCucumber ()
+        loadFeatures ()
+        countScenarios ()
     }
 
     @Override
     GrailsTestTypeResult doRun (GrailsTestEventPublisher eventPublisher) {
+        runFeatures (eventPublisher)
+    }
+    
+    private void prepareClasspath () {
+        // Cucumber scans the classpath for feature "resources". To find features
+        // relative to the basedir we put the basedir on the class path.
+        addBaseDirToClasspath ()
+
+        // Cucumber uses GroovyShell to parse the steps. To use geb in the steps
+        // we need to add it to GroovyShell class path.
+        addTestClassesDirToGroovyShellClasspath ()
+    }
+
+    private void addBaseDirToClasspath () {
+        def extender = new ClassPathExtender (Thread.currentThread ().contextClassLoader)
+        extender.add (baseDirURL ())
+        //extender.print (System.out)
+    }
+
+    private void addTestClassesDirToGroovyShellClasspath () {
+        def shellClassLoader = GroovyShell.class.getClassLoader()
+        def extender = new ClassPathExtender (shellClassLoader)
+        extender.add (testClassesURL ())
+        //extender.print (System.out)
+    }
+
+    private void prepareCucumber () {
+        cucumber = new Cucumber(featurePath ())
+    }
+
+    private void loadFeatures () {
+        cucumber.loadFeatures ()
+    }
+
+    private int countScenarios () {
+        cucumber.countScenarios ()
+    }
+
+    private GrailsTestTypeResult runFeatures (def publisher) {
+        def formatter = createFormatter (publisher)
+
+        cucumber.run (formatter, formatter)
+
+        // todo merge finish into done!?
+        formatter.finish ()
+        formatter.done ()
+
+        cucumber.printSummary (System.out)
+
+        formatter.getResult ()
+    }
+
+    private def createFormatter (def publisher) {
         def swapper = createSystemOutAndErrSwapper ()
         def factory = createJUnitReportsFactory ()
 
         def report = new FeatureReport (new FeatureReportHelper (factory, swapper))
         def pretty = new PrettyFormatterWrapper (new PrettyFormatterFactory ())
 
-        //def formatter = new CucumberFormatter (eventPublisher, report, pretty, pretty)
-        def formatter = new DebugFormatter (System.out, pretty)
-
-        cucumberRuntime.run (cucumberPaths, cucumberFilters, formatter, formatter)
-
-        //for (CucumberFeature cucumberFeature : cucumberFeatures) {
-        //    cucumberRuntime.run (cucumberFeature, formatter, formatter)
-        //}
-        // todo merge finish into close!?
-        formatter.finish ()
-        formatter.close ()
-
-        new SummaryPrinter (System.out).print (cucumberRuntime);
-
-        formatter.getResult ()
-    }
-
-    private void addBaseDirToClasspath () {
-        def extender = new ClassPathExtender (Thread.currentThread ().contextClassLoader)
-        extender.add (basedirURL ())
-        //extender.print (System.out)
+        //new CucumberFormatter (publisher, report, pretty, pretty)
+        new DebugFormatter (System.out, pretty)
     }
 
     private JUnitReportsFactory createJUnitReportsFactory () {
         JUnitReportsFactory.createFromBuildBinding (buildBinding)
     }
 
+    private String featurePath () {
+        ["test", NAME].join (File.separator)
+    }
+
+    private URL baseDirURL () {
+        new File (baseDir).toURI ().toURL ()
+    }
+
+    private String testClassesPath () {
+        [baseDir, testClassesDir, relativeSourcePath].join (File.separator)
+    }
+
+    private URL testClassesURL () {
+        new File (testClassesPath ()).toURI ().toURL ()
+    }
 }
