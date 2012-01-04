@@ -1,6 +1,5 @@
 target/
 plugins/
-plugin.xml
 stacktrace.log
-grails-cucumber-*.zip
+chromedriver.log
 
