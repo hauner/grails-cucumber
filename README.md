@@ -60,4 +60,7 @@ undefined steps are all reported by grails as FAILED. The normal cucumber output
 * the plugin has a number of unit tests and a single "cli" test. There are also a number
 of cucumber tests which are not meant to be run directly. They are only used by the "cli"
 test. You can run the cli test with
-  grails test-app other:cli
+
+```
+grails test-app other:cli
+```
