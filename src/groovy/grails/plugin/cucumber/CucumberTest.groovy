@@ -31,7 +31,7 @@ class CucumberTest implements Test, Describable {
     }
 
     CucumberTest (description) {
-        System.out << "CT(CucumberTest(description))\n"
+        //System.out << "CT(CucumberTest($description))\n"
         this.description = description
     }
 
@@ -46,8 +46,8 @@ class CucumberTest implements Test, Describable {
 
     @Override
     String toString () {
-        System.out << "CT(toString)\n"
-        return description//"CucumberTestToString"
+        //System.out << "CT(toString:$description)\n"
+        return description
     }
 
     Description getDescription () {
