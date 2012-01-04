@@ -93,10 +93,10 @@ class DebugFormatter implements Formatter, Reporter {
         sysout << "F(syntaxError)\n"
     }
 
-    void close () {
+    void done () {
         sysout << "F(close)\n"
 
-        pretty.close ()
+        pretty.done ()
     }
 
     /*
