@@ -1,7 +1,7 @@
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
-//grails.project.plugins.dir = 'plugins'
+grails.project.plugins.dir = 'plugins'
 //grails.plugin.location."my-plugin" = "../my-plugin"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 grails.release.scm.enabled = false
@@ -19,28 +19,29 @@ grails.project.dependency.resolution = {
     log "warn" // Ivy resolver: 'error', 'warn', 'info', 'debug' or 'verbose'
 
     repositories {
-        grailsPlugins()
-        grailsHome()
-        grailsCentral()
+        grailsPlugins ()
+        grailsHome ()
+        grailsCentral ()
+        mavenLocal (null)
         //mavenRepo "https://oss.sonatype.org/content/repositories/snapshots"
         //mavenCentral()
-        mavenLocal()
     }
 
+    def cucumberVersion = "1.0.0.RC2-SNAPSHOT"
+    
     plugins {
         test ':spock:0.5-groovy-1.7'
     }
 
-    cucumber = "1.0.0-SNAPSHOT"
-
     dependencies {
         // scopes: 'build', 'compile', 'runtime', 'test' or 'provided'
 
-        compile ("info.cukes:cucumber-groovy:${cucumber}") {
+        // cucumber
+        compile ("info.cukes:cucumber-groovy:${cucumberVersion}") {
            excludes 'ant'   // avoid ant version conflict
         }
 
-        // spock helper
+        // spock
         test ("org.objenesis:objenesis:1.2")
     }
 }
