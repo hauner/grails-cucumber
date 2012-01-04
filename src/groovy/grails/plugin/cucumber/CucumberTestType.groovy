@@ -54,6 +54,11 @@ class CucumberTestType extends GrailsTestTypeSupport {
         runFeatures (eventPublisher)
     }
     
+    @Override
+    String toString () {
+        NAME
+    }
+    
     private void prepareClasspath () {
         // Cucumber scans the classpath for feature "resources". To find features
         // relative to the basedir we put the basedir on the class path.
@@ -110,8 +115,8 @@ class CucumberTestType extends GrailsTestTypeSupport {
         def report = new FeatureReport (new FeatureReportHelper (factory, swapper))
         def pretty = new PrettyFormatterWrapper (new PrettyFormatterFactory ())
 
-        //new CucumberFormatter (publisher, report, pretty, pretty)
-        new DebugFormatter (System.out, pretty)
+        new CucumberFormatter (publisher, report, pretty, pretty)
+        //new DebugFormatter (System.out, pretty)
     }
 
     private JUnitReportsFactory createJUnitReportsFactory () {
