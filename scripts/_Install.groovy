@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2011-2012 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,3 +17,5 @@
 ant.mkdir (dir: "${basedir}/test/cucumber")
 ant.mkdir (dir: "${basedir}/test/cucumber/step_definitions")
 ant.mkdir (dir: "${basedir}/test/cucumber/support")
+
+ant.mkdir (dir: "${basedir}/test/functional")
