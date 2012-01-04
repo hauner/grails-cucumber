@@ -17,7 +17,6 @@
 package grails.plugin.cucumber
 
 import gherkin.formatter.model.Result
-import junit.framework.AssertionFailedError
 
 
 @SuppressWarnings("GroovyPointlessArithmetic")
@@ -112,32 +111,58 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
     }
 
     def "reports step failures" () {
-        def result = Mock (Result)
-        def failure = new AssertionFailedError ()
-        result.error >> failure
+        def result = resultStubFail ()
 
         when:
-        uat.step (stepStub ())
+        uat.feature (featureStub ())
+        uat.scenario (scenarioStub ())
+        uat.step (stepStubFail ())
+        
         uat.result (result)
 
         then:
-        1 * report.addFailure (failure)
+        1 * report.addFailure ((AssertionError)result.error)
     }
 
     def "reports step errors" () {
-        def result = Mock (Result)
-        def error = new Throwable ()
-        result.error >> error
+        def result = resultStubError ()
 
         when:
+        uat.feature (featureStub ())
+        uat.scenario (scenarioStub ())
+        uat.step (stepStubError ())
+        uat.result (result)
+
+        then:
+        1 * report.addError (result.error)
+    }
+
+    def "reports skipped step" () {
+        def result = Result.SKIPPED
+        
+        when:
+        uat.feature (featureStub ())
+        uat.scenario (scenarioStub ())
         uat.step (stepStub ())
         uat.result (result)
 
         then:
-        1 * report.addError (error)
+        1 * report.addSkipped ()
     }
+    
+    def "reports undefined step" () {
+        def result = Result.UNDEFINED
+        
+        when:
+        uat.feature (featureStub ())
+        uat.scenario (scenarioStub ())
+        uat.step (stepStub ())
+        uat.result (result)
 
-    @SuppressWarnings("GroovyAssignabilityCheck")
+        then:
+        1 * report.addUndefined ()
+    }
+    
     def "does only report step when it succeeds" () {
         def result = Mock (Result)
         result.error >> null
@@ -147,7 +172,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.result (result)
 
         then:
-        0 * report.addError (_)
-        0 * report.addError (_)
+        0 * report.addError ((Throwable)_)
+        0 * report.addError ((Throwable)_)
     }
 }

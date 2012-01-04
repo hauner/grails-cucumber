@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2011-2012 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,11 +45,25 @@ class GherkinSpec extends UnitSpec {
     static def EXAMPLES_NAME = "Test Examples"
     static def STEP_NAME = "Test Step"
     static def STEP_NAME_A = "Test Step A"
+    static def STEP_NAME_B = "Test Step B"
+    static def STEP_NAME_PASS = "Test Step PASS"
+    static def STEP_NAME_FAIL = "Test Step FAIL"
+    static def STEP_NAME_ERROR = "Test Step ERROR"
+    static def STEP_NAME_UNDEF_A = "Test Step UNDEFINED A"
+    static def STEP_NAME_UNDEF_B = "Test Step UNDEFINED B"
 
     static def dummyUri = "Test Dummy URI"
 
     def featureStub () {
         featureStub (FEATURE_NAME)
+    }
+
+    def featureStubA () {
+        featureStub (FEATURE_NAME_A)
+    }
+    
+    def featureStubB () {
+        featureStub (FEATURE_NAME_B)
     }
 
     def featureStub (String name) {
@@ -74,6 +88,14 @@ class GherkinSpec extends UnitSpec {
         stub
     }
 
+    def scenarioStubA () {
+        scenarioStub (SCENARIO_NAME_A)
+    }
+
+    def scenarioStubB () {
+        scenarioStub (SCENARIO_NAME_B)
+    }
+    
     def scenarioOutlineStub () {
         def stub = Mock (ScenarioOutline)
         stub.getName () >> SCENARIO_OUTLINE_NAME
@@ -95,17 +117,35 @@ class GherkinSpec extends UnitSpec {
         stub.getName () >> name
         stub
     }
-
-    def resultStub () {
-        resultStub (new Throwable ())
+    
+    def stepStubFail () {
+        stepStub (STEP_NAME_FAIL)
     }
 
-    def resultStub (error) {
+    def stepStubError () {
+        stepStub (STEP_NAME_ERROR)
+    }
+
+    def resultStubPass () {
         def stub = Mock (Result)
-        stub.getError () >> error
+        stub.status >> Result.PASSED
+        stub
+    }
+    
+    def resultStubFail () {
+        def stub = Mock (Result)
+        stub.status >> Result.FAILED
+        stub.error >> new AssertionError ()
         stub
     }
 
+    def resultStubError () {
+        def stub = Mock (Result)
+        stub.status >> Result.FAILED
+        stub.error >> new Throwable ()
+        stub
+    }
+    
     def matchStub () {
         Mock (Match)
     }

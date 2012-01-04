@@ -23,7 +23,7 @@ class CucumberTestTypeSpec extends UnitSpec {
 
     def "the name is 'cucumber'" () {
         when:
-        def testType = new CucumberTestType ("base")
+        def testType = new CucumberTestType ('base', null, null)
 
         then:
         testType.name == "cucumber"
@@ -31,15 +31,15 @@ class CucumberTestTypeSpec extends UnitSpec {
 
     def "the relative source path is 'cucumber'" () {
         when:
-        def testType = new CucumberTestType ("base")
+        def testType = new CucumberTestType ('base', null, null)
 
         then:
-        testType.relativeSourcePath == "cucumber"
+        testType.relativeSourcePath == 'base'
     }
 
     def "the test extension is 'feature'" () {
         when:
-        def testType = new CucumberTestType ("base")
+        def testType = new CucumberTestType ('base', null, null)
 
         then:
         testType.testExtensions.size() == 1

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2011-2012 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ import gherkin.formatter.model.Result
 import gherkin.formatter.model.Match
 
 import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
-import junit.framework.AssertionFailedError
 
 
 class CucumberFormatter implements Formatter, Reporter {
@@ -39,14 +38,15 @@ class CucumberFormatter implements Formatter, Reporter {
 
     Feature activeFeature
     Scenario activeScenario
-    Step activeStep
-
+    List<Step> steps = []
+    
     int runCount
-    int failureCount
-    int errorCount
+    Set<String> failed    = new HashSet<String> ()
+    Set<String> erroneous = new HashSet<String> ()
 
     def sysout
 
+    
     CucumberFormatter (GrailsTestEventPublisher publisher, FeatureReport report,
         Formatter formatter, Reporter reporter) {
         this.publisher = publisher
@@ -68,7 +68,7 @@ class CucumberFormatter implements Formatter, Reporter {
     }
 
     CucumberTestTypeResult getResult () {
-        new CucumberTestTypeResult (runCount, failureCount, errorCount)
+        new CucumberTestTypeResult (runCount, failed.size (), erroneous.size ())
     }
     
     /*
@@ -127,7 +127,7 @@ class CucumberFormatter implements Formatter, Reporter {
     void step (Step step) {
         //sysout << "CF(step)\n"
 
-        activeStep = step
+        steps.add (step)
 
         formatter.step (step)
     }
@@ -140,40 +140,67 @@ class CucumberFormatter implements Formatter, Reporter {
         formatter.syntaxError (state, event, legalEvents, uri, line)
     }
 
-    void close () {
-        formatter.close ()
+    void done () {
+        formatter.done ()
     }
 
     /*
      * Reporter
      */
 
-    void result (Result result) {
-        //sysout << "CF(result)\n"
-
-        if (result.error != null) {
-            
-            if (result.error instanceof AssertionFailedError) {
-                report.addFailure ((AssertionFailedError)result.error)
-                publisher.testFailure (activeStep.getName (), result.error)
-
-                failureCount++
-            }
-            else {
-                report.addError (result.error)
-                publisher.testFailure (activeStep.getName (), result.error, true)
-
-                errorCount++
-            }
-        }
-
-        reporter.result (result)
-    }
-
     void match (Match match) {
         reporter.match (match)
     }
 
+    void result (Result result) {
+        //sysout << "CF(result)\n"
+        def currentStep = steps.head ()
+        steps = steps.tail ()
+
+        if (result.status == Result.FAILED) {
+            if (result.error instanceof AssertionError) {
+                report.addFailure ((AssertionError)result.error)
+                publisher.testFailure (currentStep.getName (), result.error)
+                
+                fail (activeScenario.getName ())
+            }
+            else {
+                report.addError (result.error)
+                publisher.testFailure (currentStep.getName (), result.error, true)
+                
+                error (activeScenario.getName ())
+            }            
+        }
+        else if (result == Result.SKIPPED) {
+            report.addSkipped ()
+            //publisher.testFailure (currentStep.getName (), "skipped")
+            //fail (activeScenario.getName ())
+        }
+        else if (result == Result.UNDEFINED) {
+            report.addUndefined ()
+            publisher.testFailure (currentStep.getName (), "undefined")
+            
+            fail (activeScenario.getName ())
+        }
+        else if (result.status == Result.PASSED) {
+            report.addPassed ()
+        }
+        
+        reporter.result (result)
+    }
+
+    private void fail (String scenario) {
+        if (erroneous.count (scenario) == 0) {
+            failed.add (scenario)
+        }
+    }
+    
+    private void error (String scenario) {
+        if (failed.count (scenario) == 0) {
+            erroneous.add (scenario)
+        }
+    }
+    
     void embedding (String s, byte[] bytes) {
         reporter.embedding (s, bytes)
     }

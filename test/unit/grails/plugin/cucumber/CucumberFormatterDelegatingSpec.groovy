@@ -121,7 +121,7 @@ class CucumberFormatterDelegatingSpec extends GherkinSpec {
     def "delegates result() to reporter" () {
         given:
         def step = stepStub ()
-        def result = resultStub ()
+        def result = resultStubPass ()
 
         when:
         uat.step (step)

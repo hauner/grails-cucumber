@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2011-2012 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -170,13 +170,13 @@ class ReportSpec extends GherkinSpec {
 
     def "reports failure" () {
         def test = Mock (CucumberTest)
-        def failure = Mock (AssertionFailedError)
+        def failure = Mock (AssertionError)
 
         when:
         uat.addFailure (test, failure)
 
         then:
-        1 * report.addFailure (test, failure)
+        1 * report.addFailure (test, (AssertionFailedError)_)
     }
 
     def "reports error" () {

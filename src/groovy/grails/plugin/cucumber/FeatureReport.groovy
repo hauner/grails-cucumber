@@ -61,7 +61,7 @@ class FeatureReport {
         report.endTest (test)
     }
 
-    void addFailure (AssertionFailedError failure) {
+    void addFailure (AssertionError failure) {
         //sysout << "FR(addFailure)\n"
 
         report.addFailure (test, failure)
@@ -71,5 +71,17 @@ class FeatureReport {
         //sysout << "FR(addError)\n"
 
         report.addError (test, error)
+    }
+    
+    void addPassed () {
+        
+    }
+    
+    void addSkipped () {
+        
+    }
+    
+    void addUndefined () {
+        
     }
 }
