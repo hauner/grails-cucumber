@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2011-2012 Martin Hauner
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,69 +19,79 @@ import grails.test.AbstractCliTestCase
 
 class TestAppTests extends AbstractCliTestCase {
     static final int TEST_COUNT = 4
-    static final int TEST_PASSED = 2
-    static final int TEST_FAILED = 2
+    static final int TEST_PASSED = 1
+    static final int TEST_FAILED = 3
 
-    void testAppRunsCucumberTestPhase () {
-        execute (["test-app", "cucumber:"])
-        waitForProcess ()
+    /* cli test are very slow, so we test all conditions in a single test */
+    void testCucumberTestOutput () {
+        runTestApp ()
+
 
         verifyHeader ()
         verifyPhase ()
-    }
-
-    void testAppReportsNumberOfScenariosThatWillRun () {
-        execute (["test-app", "cucumber:"])
-        waitForProcess ()
-
+        
+        verifyTestFeaturePassed ()
+        verifyTestFeatureIssues ()
+        verifyTestFeatureSnippets ()
+        
         verifyTestCounts ()
     }
 
-    void testAppReportsSuccessfulTestFeatures () {
-        execute (["test-app", "cucumber:"])
+    
+    private void runTestApp () {
+        execute (["test-app", "functional:cucumber"])
         waitForProcess ()
-
-        verifyTestFeaturePassed ()
     }
-
-    void testAppReportsIssuesOfTestFeatures () {
-        execute (["test-app", "cucumber:"])
-        waitForProcess ()
-
-        verifyTestFeatureIssues ()
-    }
-
-    void testAppReportsStepSnippets () {
-        execute (["test-app", "cucumber:"])
-        waitForProcess ()
-
-        verifyTestFeatureSnippets ()
-    }
-
+    
     private void verifyPhase () {
-        assertTrue output.contains ("Starting cucumber test phase ...")
-    }
-
-    private void verifyTestCounts () {
-        assertTrue output.contains ("Running " +TEST_COUNT+ " cucumber tests...")
-        assertTrue output.contains ("Tests passed: " +TEST_PASSED)
-        assertTrue output.contains ("Tests failed: " +TEST_FAILED)
+        assertTrue (
+            "phase does not match",
+            output.contains ("Starting functional test phase ...")
+        )
     }
 
     private void verifyTestFeaturePassed () {
-        assertTrue output.contains ("Running test test-app with succeeding features...PASSED")
+        assertTrue (
+            "passed feature does not match",
+            output.contains ("Running test test-app with a passing cucumber feature...PASSED")
+        )
     }
-
+    
     private void verifyTestFeatureIssues () {
-        assertTrue output.contains ("report the failing step...FAILED")
-        assertTrue output.contains ("report the erroneous step...FAILED")
+        assertTrue (
+            "failing step does not match",
+            output.contains ("it should fail...FAILED")
+        )
+        assertTrue (
+            "erroneous step does not match",
+            output.contains ("it should error...FAILED")
+        )
     }
 
     private void verifyTestFeatureSnippets () {
-        assertTrue output.contains ("You can implement missing steps with the snippets below")
-        // fails if checked as single string with \n line feeds
-        assertTrue output.contains ("And(~\"^an unimplemented step is found\$\") { ->")
-        assertTrue output.contains ("    // Express the Regexp above with the code you wish you had")
-        assertTrue output.contains ("}")
+        assertTrue (
+            "missing step header does not match",
+            output.contains ("You can implement missing steps with the snippets below:")
+        )
+
+        assertTrue (
+            "missing unimplemented step snippet",
+            output.contains ('When(~"^an unimplemented step is found$")')
+        )
+    }
+    
+    private void verifyTestCounts () {
+        assertTrue (
+            "number of tests does not match",
+            output.contains ("Running " +TEST_COUNT+ " cucumber tests...")
+        )
+        assertTrue (
+            "number of passed tests does not match",
+            output.contains ("Tests passed: " +TEST_PASSED)
+        )
+        assertTrue (
+            "number of failed tests does not match",
+            output.contains ("Tests failed: " +TEST_FAILED)
+        )
     }
 }
