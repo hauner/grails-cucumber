@@ -19,7 +19,6 @@ package grails.plugin.cucumber
 import org.codehaus.groovy.grails.test.io.SystemOutAndErrSwapper
 import org.codehaus.groovy.grails.test.report.junit.JUnitReports
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest
-import junit.framework.AssertionFailedError
 
 
 class Report {
@@ -69,8 +68,8 @@ class Report {
         report.endTest (test)
     }
 
-    void addFailure (CucumberTest test, AssertionFailedError failure) {
-        report.addFailure (test, failure)
+    void addFailure (CucumberTest test, AssertionError failure) {
+        report.addFailure (test, new FakeAssertionFailedError (failure))
         failures++
     }
 
