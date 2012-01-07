@@ -29,7 +29,7 @@ class ElementListPage extends Page {
         }
     }
 
-    def checkElement (String element, int rowNumber) {
+    def checkElementAtRow (String element, int rowNumber) {
         if (element == "Gold") {
             assert row (rowNumber).id.number
             assert row (rowNumber).atomicNumber == "79"

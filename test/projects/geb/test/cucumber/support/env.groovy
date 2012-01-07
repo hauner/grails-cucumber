@@ -7,15 +7,18 @@ this.metaClass.mixin (cucumber.runtime.groovy.EN)
 
 def bindingUpdater
 
+/*
+World {
+}
+*/
+
 Before () {
-    println "Before Hook"
+    ElementFactory.clearElements()
 
     bindingUpdater = new BindingUpdater (binding, new Browser ())
     bindingUpdater.initialize ()
 }
 
 After () {
-    println "After Hook"
-
     bindingUpdater.remove ()
 }
