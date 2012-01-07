@@ -36,10 +36,13 @@ grails.project.dependency.resolution = {
     dependencies {
         // scopes: 'build', 'compile', 'runtime', 'test' or 'provided'
 
+        // to have a stable version of cucumber-jvm we provide the jars inside
+        // the lib folder and we do not download them via grails dependencies
+
         // cucumber
-        compile ("info.cukes:cucumber-groovy:${cucumberVersion}") {
-           excludes 'ant'   // avoid ant version conflict
-        }
+        //compile ("info.cukes:cucumber-groovy:${cucumberVersion}") {
+        //   excludes 'ant'   // avoid ant version conflict
+        //}
 
         // spock
         test ("org.objenesis:objenesis:1.2")

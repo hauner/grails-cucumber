@@ -22,8 +22,7 @@ class CucumberGrailsPlugin {
         "**/.gitignore",
         "grails-app/**",
         "src/java/**",
-        "web-app/**",
-        "lib/*"
+        "web-app/**"
     ]
 
     def author = "Martin Hauner"
