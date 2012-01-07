@@ -9,8 +9,11 @@ based on [Cucumber-JVM](https://github.com/cucumber/cucumber-jvm).
 
 ## Current State ##
 It is not yet production ready... it is still a bit experimental but it is basically working. You
-can run cucumber scenarios with the steps implemented in geb. Currently you can't call grails stuff
-though. See the TODO list below.
+can run cucumber scenarios with the steps implemented in geb and you can use grails domain classes
+in the steps as well. Take a look at the geb demo application in `tests/projects/geb`.
+
+Cucumber-JVM is still a moving target, i.e. its api is still changing and it might brake the plugin
+code when you are using the master branch code.
 
 * cucumber is implemented as grails test type that gets added to the `functional` test phase, e.g.
 to run the cucumber tests only use
@@ -49,9 +52,9 @@ undefined steps are all reported by grails as FAILED. The normal cucumber output
 
 ## Todo ##
 
-* make grails available to steps, i.e. create & save domain objects
-* the test report summary prints "Testcase: unknown took 0.065 sec", I do not yet
-  understand why it prints unknown instead of the scenario name
+* keep up with api changes in cucumber-jvm
+* the test report summary prints "Testcase: unknown took 0.065 sec", I do not yet understand why
+  it prints "unknown" instead of the scenario name
 * use grails like configuration for tags, language
 * extend example
 
