@@ -18,6 +18,11 @@ this.metaClass.mixin (cucumber.runtime.groovy.Hooks)
 this.metaClass.mixin (cucumber.runtime.groovy.EN)
 
 
+/*
+World {
+}
+*/
+
 Before () {
     //println "Before Hook"
 }

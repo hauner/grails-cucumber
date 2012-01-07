@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2012 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,6 @@
 import static org.junit.Assert.assertTrue
 this.metaClass.mixin (cucumber.runtime.groovy.Hooks)
 this.metaClass.mixin (cucumber.runtime.groovy.EN)
-
-
-
-World {
-
-}
 
 
 Given(~'^I run test-app functional:cucumber$') { ->
