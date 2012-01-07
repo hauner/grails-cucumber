@@ -32,8 +32,6 @@ loadClass = { className ->
 
 
 eventAllTestsStart = {
-    //println "** Grails All Tests Start **"
-
     // See the following links to understand why we have to manually load the test type class.
     // http://jira.grails.org/browse/GRAILS-6453
     // http://grails.1312388.n4.nabble.com/plugin-classes-not-included-in-classpath-for-plugin-scripts-td2271962.html
@@ -41,13 +39,9 @@ eventAllTestsStart = {
 
     [functional: functionalTests].each { name, types ->
         if (!types.any {it.class == testType}) {
-            types << testType.newInstance (name,
-                grailsSettings.baseDir.path, grailsSettings.testClassesDir.path)
+            types << testType.newInstance (name, grailsSettings.baseDir.path, groovyShell)
         }
     }
-
-    //println "### phasesToRun:     $phasesToRun"
-    //println "### functionalTests: $functionalTests"
 }
 
 /*

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2011-2012 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,43 +18,33 @@ package grails.plugin.cucumber
 
 import gherkin.formatter.Reporter
 import gherkin.formatter.Formatter
-import cucumber.resources.Consumer
-import cucumber.resources.Resource
-import cucumber.resources.Resources
 import cucumber.runtime.Runtime
 import cucumber.runtime.model.CucumberFeature
-import cucumber.runtime.FeatureBuilder
 import cucumber.runtime.snippets.SummaryPrinter
-
+import cucumber.io.FileResourceLoader
+import cucumber.runtime.groovy.GroovyBackend
 
 class Cucumber {
     String featureDir
 
-    def features = new ArrayList<CucumberFeature> ()
+    def features
     def filters = new ArrayList ()
     def paths = new ArrayList<String>()
+    def resourceLoader
+    def backends
     def runtime
 
-    Cucumber (String featureDir) {
+    Cucumber (GroovyShell shell, String featureDir) {
         this.featureDir = featureDir
         paths.add (featureDir)
 
-        runtime = new Runtime (paths, false)
+        resourceLoader = new FileResourceLoader ()
+        backends = [new GroovyBackend (shell, resourceLoader)]
+        runtime = new Runtime (paths, resourceLoader, backends, false)
     }
 
     void loadFeatures () {
-        // duplicates code from cucumber Runtime.load
-        FeatureBuilder builder = new FeatureBuilder (features)
-
-        // load gherkin files
-        Resources.scan (featureDir, ".feature",
-          new Consumer() {
-            @Override
-            public void consume (Resource resource) {
-              builder.parse (resource, filters)
-            }
-          }
-        )
+        features = CucumberFeature.load (resourceLoader, paths, filters)
     }
 
     int countScenarios () {

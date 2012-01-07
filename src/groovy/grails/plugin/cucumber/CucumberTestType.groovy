@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2011-2012 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,14 +25,14 @@ import org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport
 
 class CucumberTestType extends GrailsTestTypeSupport {
     static final NAME = "cucumber"
-    String testClassesDir
+    GroovyShell grailsShell
     String baseDir
 
     Cucumber cucumber
 
-    CucumberTestType (String relativeSourcePath, String baseDir, String testClassesDir) {
-        super (NAME, relativeSourcePath)
-        this.testClassesDir = testClassesDir
+    CucumberTestType (String relativeSourcePath, String baseDir, GroovyShell grailsShell) {
+        super(NAME, relativeSourcePath)
+        this.grailsShell = grailsShell
         this.baseDir = baseDir
     }
 
@@ -43,7 +43,6 @@ class CucumberTestType extends GrailsTestTypeSupport {
 
     @Override
     int doPrepare () {
-        prepareClasspath ()
         prepareCucumber ()
         loadFeatures ()
         countScenarios ()
@@ -53,37 +52,15 @@ class CucumberTestType extends GrailsTestTypeSupport {
     GrailsTestTypeResult doRun (GrailsTestEventPublisher eventPublisher) {
         runFeatures (eventPublisher)
     }
-    
+
     @Override
     String toString () {
         NAME
     }
-    
-    private void prepareClasspath () {
-        // Cucumber scans the classpath for feature "resources". To find features
-        // relative to the basedir we put the basedir on the class path.
-        addBaseDirToClasspath ()
-
-        // Cucumber uses GroovyShell to parse the steps. To use geb in the steps
-        // we need to add it to GroovyShell class path.
-        addTestClassesDirToGroovyShellClasspath ()
-    }
-
-    private void addBaseDirToClasspath () {
-        def extender = new ClassPathExtender (Thread.currentThread ().contextClassLoader)
-        extender.add (baseDirURL ())
-        //extender.print (System.out)
-    }
-
-    private void addTestClassesDirToGroovyShellClasspath () {
-        def shellClassLoader = GroovyShell.class.getClassLoader()
-        def extender = new ClassPathExtender (shellClassLoader)
-        extender.add (testClassesURL ())
-        //extender.print (System.out)
-    }
 
     private void prepareCucumber () {
-        cucumber = new Cucumber(featurePath ())
+        def shell = new GroovyShell (getTestClassLoader (), grailsShell.context)
+        cucumber = new Cucumber (shell, featurePath ())
     }
 
     private void loadFeatures () {
@@ -125,17 +102,5 @@ class CucumberTestType extends GrailsTestTypeSupport {
 
     private String featurePath () {
         ["test", NAME].join (File.separator)
-    }
-
-    private URL baseDirURL () {
-        new File (baseDir).toURI ().toURL ()
-    }
-
-    private String testClassesPath () {
-        [baseDir, testClassesDir, relativeSourcePath].join (File.separator)
-    }
-
-    private URL testClassesURL () {
-        new File (testClassesPath ()).toURI ().toURL ()
     }
 }
