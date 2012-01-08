@@ -30,7 +30,9 @@ grails.project.dependency.resolution = {
     def cucumberVersion = "1.0.0.RC2-SNAPSHOT"
     
     plugins {
-        test ':spock:0.5-groovy-1.7'
+        test (':spock:0.5-groovy-1.7') {
+            export = false
+        }
     }
 
     dependencies {
@@ -42,6 +44,8 @@ grails.project.dependency.resolution = {
         }
 
         // spock
-        test ("org.objenesis:objenesis:1.2")
+        test ('org.objenesis:objenesis:1.2') {
+            export = false
+        }
     }
 }
