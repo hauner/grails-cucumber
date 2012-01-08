@@ -1,0 +1,12 @@
+grails-cucumber Version 0.2.1 (8th January 2012, tags/0.2.1)
+
+  * do not export the plugins test dependencies
+
+_____________________________________________________________________________
+grails-cucumber Version 0.2.0 (7th January 2012, tags/0.2.0)
+
+  * first usable version
+  * use geb to implement steps
+  * call domain class foo from steps
+
+_____________________________________________________________________________
