@@ -31,10 +31,14 @@ loadClass = { className ->
 }
 
 
-eventAllTestsStart = {
-    // See the following links to understand why we have to manually load the test type class.
-    // http://jira.grails.org/browse/GRAILS-6453
-    // http://grails.1312388.n4.nabble.com/plugin-classes-not-included-in-classpath-for-plugin-scripts-td2271962.html
+eventTestPhasesStart = { phases ->
+    //classLoader.URLs.each { println "classLoader: $it" }
+
+    if (! phases.contains ('functional')) {
+        return
+    }
+
+    // see comment at end of file why we soft load the class...
     def testType = loadClass ('grails.plugin.cucumber.CucumberTestType')
 
     [functional: functionalTests].each { name, types ->
@@ -45,7 +49,13 @@ eventAllTestsStart = {
 }
 
 /*
-eventAllTestsEnd = {
-    //println "** Grails All Tests End **"
+eventTestPhasesEnd = {
+
 }
+*/
+
+/*
+See the following links to understand why we have to manually load the test type class.
+http://jira.grails.org/browse/GRAILS-6453
+http://grails.1312388.n4.nabble.com/plugin-classes-not-included-in-classpath-for-plugin-scripts-td2271962.html
 */
