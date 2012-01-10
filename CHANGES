@@ -1,3 +1,8 @@
+grails-cucumber Version 0.2.2 (10th January 2012, tags/0.2.2)
+
+  * fixed grails 2.0.0 incompatibility
+
+_____________________________________________________________________________
 grails-cucumber Version 0.2.1 (8th January 2012, tags/0.2.1)
 
   * do not export the plugins test dependencies
