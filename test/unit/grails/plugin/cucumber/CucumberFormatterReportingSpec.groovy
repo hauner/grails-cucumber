@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2011-2012 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import gherkin.formatter.model.Result
 
 @SuppressWarnings("GroovyPointlessArithmetic")
 class CucumberFormatterReportingSpec extends GherkinSpec {
-    def report = Mock (FeatureReport)
+    FeatureReport report = Mock (FeatureReport)
     def uat = formatter (report)
 
 
@@ -39,7 +39,6 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         1 * report.startFeature (FEATURE_NAME_B)
     }
 
-    @SuppressWarnings("GroovyAssignabilityCheck")
     def "finishes feature report before initializing a new feature report" () {
         given:
         def featureA = featureStub (FEATURE_NAME_A)
@@ -68,7 +67,6 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         1 * report.startScenario (SCENARIO_NAME_B)
     }
 
-    @SuppressWarnings("GroovyAssignabilityCheck")
     def "report test end for previous scenario before each new scenario" () {
         given:
         def scenarioA = scenarioStub (SCENARIO_NAME_A)
@@ -164,7 +162,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
     }
     
     def "does only report step when it succeeds" () {
-        def result = Mock (Result)
+        Result result = Mock (Result)
         result.error >> null
 
         when:
@@ -174,5 +172,16 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         then:
         0 * report.addError ((Throwable)_)
         0 * report.addError ((Throwable)_)
+    }
+
+    def "reports hook errors when there is no scenario or step" () {
+        def result = resultStubError ()
+
+        when:
+        uat.feature (featureStub ())
+        uat.result (result)
+
+        then:
+        1 * report.addError (result.error)
     }
 }
