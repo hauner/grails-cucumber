@@ -17,7 +17,7 @@
 package grails.plugin.cucumber
 
 import grails.plugin.spock.UnitSpec
-//import spock.lang.Ignore
+
 
 import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
 import gherkin.formatter.model.Feature
@@ -32,7 +32,6 @@ import gherkin.formatter.Formatter
 import gherkin.formatter.Reporter
 
 
-//@Ignore
 class GherkinSpec extends UnitSpec {
     static def FEATURE_NAME = "Test Feature"
     static def FEATURE_NAME_A = "Test Feature A"
