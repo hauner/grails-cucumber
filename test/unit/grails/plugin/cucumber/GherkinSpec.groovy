@@ -17,7 +17,7 @@
 package grails.plugin.cucumber
 
 import grails.plugin.spock.UnitSpec
-import spock.lang.Ignore
+
 
 import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
 import gherkin.formatter.model.Feature
@@ -32,7 +32,6 @@ import gherkin.formatter.Formatter
 import gherkin.formatter.Reporter
 
 
-@Ignore
 class GherkinSpec extends UnitSpec {
     static def FEATURE_NAME = "Test Feature"
     static def FEATURE_NAME_A = "Test Feature A"
@@ -66,7 +65,7 @@ class GherkinSpec extends UnitSpec {
         featureStub (FEATURE_NAME_B)
     }
 
-    def featureStub (String name) {
+    Feature featureStub (String name) {
         def stub = Mock (Feature)
         stub.getName () >> name
         stub
@@ -82,7 +81,7 @@ class GherkinSpec extends UnitSpec {
         scenarioStub (SCENARIO_NAME)
     }
 
-    def scenarioStub (String name) {
+    Scenario scenarioStub (String name) {
         def stub = Mock (Scenario)
         stub.getName () >> name
         stub
@@ -112,7 +111,7 @@ class GherkinSpec extends UnitSpec {
         stepStub (STEP_NAME)
     }
 
-    def stepStub (String name) {
+    Step stepStub (String name) {
         def stub = Mock (Step)
         stub.getName () >> name
         stub
@@ -132,14 +131,14 @@ class GherkinSpec extends UnitSpec {
         stub
     }
     
-    def resultStubFail () {
+    Result resultStubFail () {
         def stub = Mock (Result)
         stub.status >> Result.FAILED
         stub.error >> new AssertionError ()
         stub
     }
 
-    def resultStubError () {
+    Result resultStubError () {
         def stub = Mock (Result)
         stub.status >> Result.FAILED
         stub.error >> new Throwable ()
