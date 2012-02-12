@@ -1,8 +1,3 @@
-grails-cucumber Version 0.2.3 (unreleased)
-
-  * fixed formatter crash when a before hook throws.
-
-_____________________________________________________________________________
 grails-cucumber Version 0.2.2 (10th January 2012, tags/0.2.2)
 
   * fixed grails 2.0.0 incompatibility
@@ -18,3 +13,5 @@ grails-cucumber Version 0.2.0 (7th January 2012, tags/0.2.0)
   * first usable version
   * use geb to implement steps
   * call domain class foo from steps
+
+_____________________________________________________________________________
