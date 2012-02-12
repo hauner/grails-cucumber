@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Martin Hauner
+ * Copyright 2011 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,27 +17,23 @@
 package grails.plugin.cucumber
 
 import grails.plugin.spock.*
-import static GherkinSpec.*
+import static grails.plugin.cucumber.GherkinSpec.*
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest
+import spock.lang.Ignore
 import junit.framework.AssertionFailedError
 
 
 @SuppressWarnings(["GroovyPointlessArithmetic"])
 class FeatureReportSpec extends UnitSpec {
-    def report
-    def factory
-    def uat
+    def report = Mock (Report)
+    def factory = Mock (FeatureReportHelper)
+    def uat = new FeatureReport (factory)
 
-    def setup () {
-        report = Mock (Report)
-        factory = Mock (FeatureReportHelper)
-        factory.createReport (!null) >> report
-        uat = new FeatureReport (factory)
-    }
 
-    // fails, does the same createReport() as the next two tests, which work!?
-    /*
+    @Ignore // fails, does the same createReport() as the next two tests, which work!?
     def "creates new report for each feature" () {
+        factory.createReport (!null) >> report
+
         when:
         uat.startFeature (FEATURE_NAME_A)
         uat.startFeature (FEATURE_NAME_B)
@@ -46,9 +42,10 @@ class FeatureReportSpec extends UnitSpec {
         1 * factory.createReport (FEATURE_NAME_A)
         1 * factory.createReport (FEATURE_NAME_B)
     }
-    */
 
     def "creates new test suite for each feature" () {
+        factory.createReport (!null) >> report
+
         when:
         uat.startFeature (FEATURE_NAME_A)
         uat.startFeature (FEATURE_NAME_B)
@@ -59,6 +56,7 @@ class FeatureReportSpec extends UnitSpec {
     }
 
     def "starts a test suite for each feature" () {
+        factory.createReport (!null) >> report
         def suiteA = Mock (JUnitTest)
         def suiteB = Mock (JUnitTest)
         factory.createTestSuite (!null) >>> [suiteA, suiteB]
@@ -73,6 +71,7 @@ class FeatureReportSpec extends UnitSpec {
     }
 
     def "ends the test suite for each feature" () {
+        factory.createReport (!null) >> report
         def suiteA = Mock (JUnitTest)
         def suiteB = Mock (JUnitTest)
         factory.createTestSuite (!null) >>> [suiteA, suiteB]
@@ -89,6 +88,7 @@ class FeatureReportSpec extends UnitSpec {
     }
 
     def "starts a test for each scenario" () {
+        factory.createReport (!null) >> report
         def testA = Mock (CucumberTest)
         def testB = Mock (CucumberTest)
         factory.createTest (!null) >>> [testA, testB]
@@ -104,6 +104,7 @@ class FeatureReportSpec extends UnitSpec {
     }
 
     def "ends the test for each scenario" () {
+        factory.createReport (!null) >> report
         def testA = Mock (CucumberTest)
         def testB = Mock (CucumberTest)
         factory.createTest (!null) >>> [testA, testB]
@@ -121,6 +122,7 @@ class FeatureReportSpec extends UnitSpec {
     }
 
     def "reports each failure" () {
+        factory.createReport (!null) >> report
         def failure = Mock (AssertionFailedError)
         def test = Mock (CucumberTest)
         factory.createTest (!null) >> test
@@ -135,6 +137,7 @@ class FeatureReportSpec extends UnitSpec {
     }
 
     def "reports each error" () {
+        factory.createReport (!null) >> report
         def error = Mock (Throwable)
         def test = Mock (CucumberTest)
         factory.createTest (!null) >> test
