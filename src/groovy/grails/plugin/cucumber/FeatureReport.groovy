@@ -17,7 +17,6 @@
 package grails.plugin.cucumber
 
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest
-import junit.framework.AssertionFailedError
 
 
 class FeatureReport {

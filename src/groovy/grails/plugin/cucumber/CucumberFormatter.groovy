@@ -38,6 +38,7 @@ class CucumberFormatter implements Formatter, Reporter {
 
     Feature activeFeature
     Scenario activeScenario
+    Step activeStep
     List<Step> steps = []
     
     int runCount
@@ -154,33 +155,32 @@ class CucumberFormatter implements Formatter, Reporter {
 
     void result (Result result) {
         //sysout << "CF(result)\n"
-        def currentStep = steps.head ()
-        steps = steps.tail ()
+        advanceActiveStep ()
 
         if (result.status == Result.FAILED) {
             if (result.error instanceof AssertionError) {
                 report.addFailure ((AssertionError)result.error)
-                publisher.testFailure (currentStep.getName (), result.error)
+                publisher.testFailure (getActiveStepName (), result.error)
                 
-                fail (activeScenario.getName ())
+                fail (getActiveScenarioName ())
             }
             else {
                 report.addError (result.error)
-                publisher.testFailure (currentStep.getName (), result.error, true)
+                publisher.testFailure (getActiveStepName(), result.error, true)
                 
-                error (activeScenario.getName ())
+                error (getActiveScenarioName ())
             }            
         }
         else if (result == Result.SKIPPED) {
             report.addSkipped ()
-            //publisher.testFailure (currentStep.getName (), "skipped")
-            //fail (activeScenario.getName ())
+            //publisher.testFailure (getActiveStepName (), "skipped")
+            //fail (getActiveScenarioName ())
         }
         else if (result == Result.UNDEFINED) {
             report.addUndefined ()
-            publisher.testFailure (currentStep.getName (), "undefined")
+            publisher.testFailure (getActiveStepName (), "undefined")
             
-            fail (activeScenario.getName ())
+            fail (getActiveScenarioName ())
         }
         else if (result.status == Result.PASSED) {
             report.addPassed ()
@@ -198,6 +198,31 @@ class CucumberFormatter implements Formatter, Reporter {
     private void error (String scenario) {
         if (failed.count (scenario) == 0) {
             erroneous.add (scenario)
+        }
+    }
+
+    private void advanceActiveStep () {
+        if (steps.size() > 0) {
+            activeStep = steps.head ()
+            steps = steps.tail ()
+        }
+    }
+
+    private String getActiveStepName () {
+        if (activeStep) {
+            activeStep.getName ()
+        }
+        else {
+            "no step"
+        }
+    }
+
+    private String getActiveScenarioName () {
+        if (activeScenario) {
+            activeScenario.getName ()
+        }
+        else {
+            "no scenario"
         }
     }
     
