@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2011-2012 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,9 +94,15 @@ class DebugFormatter implements Formatter, Reporter {
     }
 
     void done () {
-        sysout << "F(close)\n"
+        sysout << "F(done)\n"
 
         pretty.done ()
+    }
+
+    void close () {
+        sysout << "F(close)\n"
+        
+        pretty.close ()
     }
 
     /*
@@ -113,7 +119,16 @@ class DebugFormatter implements Formatter, Reporter {
         pretty.match (match)
     }
 
-    void embedding (String mimeType, byte[] data) {
+    void embedding (String s, InputStream inputStream) {
         sysout << "R(embedding):\n"
+        
+        pretty.embedding (s, inputStream)
     }
+
+    void write (String s) {
+        syout << "R(write)\n"
+        
+        pretty.write (s)
+    }
+
 }
