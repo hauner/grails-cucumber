@@ -27,7 +27,7 @@ grails.project.dependency.resolution = {
         //mavenCentral()
     }
 
-    def cucumberVersion = "1.0.0.RC2-SNAPSHOT"
+    def cucumberVersion = "1.0.0.RC21-SNAPSHOT"
     
     plugins {
         test (':spock:0.5-groovy-1.7') {

@@ -145,12 +145,24 @@ class CucumberFormatter implements Formatter, Reporter {
         formatter.done ()
     }
 
+    void close () {
+        formatter.close ()
+    }
+
     /*
      * Reporter
      */
 
     void match (Match match) {
         reporter.match (match)
+    }
+
+    void embedding (String s, InputStream inputStream) {
+        reporter.embedding (s, inputStream)
+    }
+
+    void write (String s) {
+        reporter.write (s)
     }
 
     void result (Result result) {
@@ -224,10 +236,6 @@ class CucumberFormatter implements Formatter, Reporter {
         else {
             "no scenario"
         }
-    }
-    
-    void embedding (String s, byte[] bytes) {
-        reporter.embedding (s, bytes)
     }
 
 }

@@ -67,3 +67,9 @@ test. You can run the cli test with
 ```
 grails test-app other:cli
 ```
+
+and the unit tests with
+
+```
+grails test-app unit:
+```

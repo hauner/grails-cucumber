@@ -60,7 +60,7 @@ class CucumberTestType extends GrailsTestTypeSupport {
 
     private void prepareCucumber () {
         def shell = new GroovyShell (getTestClassLoader (), grailsShell.context)
-        cucumber = new Cucumber (shell, featurePath ())
+        cucumber = new Cucumber (getTestClassLoader (), shell, featurePath ())
     }
 
     private void loadFeatures () {

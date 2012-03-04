@@ -34,13 +34,13 @@ class Cucumber {
     def backends
     def runtime
 
-    Cucumber (GroovyShell shell, String featureDir) {
+    Cucumber (ClassLoader classLoader, GroovyShell shell, String featureDir) {
         this.featureDir = featureDir
         paths.add (featureDir)
 
         resourceLoader = new FileResourceLoader ()
         backends = [new GroovyBackend (shell, resourceLoader)]
-        runtime = new Runtime (paths, resourceLoader, backends, false)
+        runtime = new Runtime (resourceLoader, paths, classLoader, backends, false)
     }
 
     void loadFeatures () {

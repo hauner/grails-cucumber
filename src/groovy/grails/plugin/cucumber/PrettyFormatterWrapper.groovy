@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2011-2012 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -84,10 +84,14 @@ class PrettyFormatterWrapper implements Formatter, Reporter {
     void done () {
         pretty.done ()
     }
-    
+
+    void close () {
+        pretty.close ()
+    }
+
     /*
-     * Reporter
-     */
+    * Reporter
+    */
 
     void result (Result result) {
         pretty.result (result)
@@ -97,7 +101,16 @@ class PrettyFormatterWrapper implements Formatter, Reporter {
         pretty.match (match)
     }
 
+    void embedding (String mimeType, InputStream inputStream) {
+        pretty.embedding (mimeType, inputStream)
+    }
+
     void embedding (String mimeType, byte[] data) {
         pretty.embedding (mimeType, data)
     }
+
+    void write (String text) {
+        pretty.write (text)
+    }
+
 }
