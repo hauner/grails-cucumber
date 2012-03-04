@@ -22,8 +22,8 @@ grails.project.dependency.resolution = {
         //mavenCentral()
     }
 
-    def gebVersion      = "0.6.1"
-    def seleniumVersion = "2.13.0"
+    def gebVersion      = "0.6.2"
+    def seleniumVersion = "2.20.0"
 
     dependencies {
         test ("org.seleniumhq.selenium:selenium-htmlunit-driver:$seleniumVersion") {
