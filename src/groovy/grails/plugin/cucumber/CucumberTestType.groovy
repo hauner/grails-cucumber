@@ -59,8 +59,16 @@ class CucumberTestType extends GrailsTestTypeSupport {
     }
 
     private void prepareCucumber () {
-        def shell = new GroovyShell (getTestClassLoader (), grailsShell.context)
+        def shell = new GroovyShell (getTestClassLoader (), createBinding ())
         cucumber = new Cucumber (getTestClassLoader (), shell, featurePath ())
+    }
+
+    private Binding createBinding () {
+        Map variables = grailsShell.context.variables.clone () as Map
+        variables.remove ("metaClass")
+        variables.remove ("getMetaClass")
+        variables.remove ("setMetaClass")
+        new Binding (variables)
     }
 
     private void loadFeatures () {
