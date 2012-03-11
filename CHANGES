@@ -1,7 +1,8 @@
-grails-cucumber Version 0.2.3 (unreleased)
+grails-cucumber Version 0.2.3 (11th March 2012, tags/0.2.3)
 
   * fixed formatter crash when a before hook throws.
   * updated to cucumber-jvm api (RC21)
+  * updated embedded cucumber-jvm (RC21)
 
 _____________________________________________________________________________
 grails-cucumber Version 0.2.2 (10th January 2012, tags/0.2.2)
