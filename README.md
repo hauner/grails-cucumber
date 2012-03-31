@@ -39,7 +39,7 @@ undefined steps are all reported by grails as FAILED. The normal cucumber output
 
 # Changes #
 
-see [CHANGES.md](https://github.com/hauner/grails-cucumber/blob/master/CHANGES)
+see [CHANGES.md](https://github.com/hauner/grails-cucumber/blob/master/CHANGES.md)
 
 # Development #
 
