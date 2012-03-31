@@ -22,7 +22,7 @@ grails.project.dependency.resolution = {
         //mavenCentral()
     }
 
-    def gebVersion      = "0.6.2"
+    def gebVersion      = "0.6.3"
     def seleniumVersion = "2.20.0"
 
     dependencies {
@@ -37,7 +37,7 @@ grails.project.dependency.resolution = {
 
     plugins {
         test ":geb:$gebVersion"
-        //test ":cucumber:0.2.4"
+        //test ":cucumber:0.2.3"
     }
 }
 
