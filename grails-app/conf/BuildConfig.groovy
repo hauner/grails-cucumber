@@ -23,6 +23,7 @@ grails.project.dependency.resolution = {
         grailsHome ()
         grailsCentral ()
         mavenLocal (null)
+        grailsRepo "http://grails.org/plugins"
         //mavenRepo "https://oss.sonatype.org/content/repositories/snapshots"
         //mavenCentral()
     }
@@ -30,14 +31,16 @@ grails.project.dependency.resolution = {
     def cucumberVersion = "1.0.0.RC21-SNAPSHOT"
     
     plugins {
-        test (':spock:0.5-groovy-1.7') {
+        build (":release:2.0.0.BUILD-SNAPSHOT") {
+            export = false
+        }
+
+        test (':spock:0.6') {
             export = false
         }
     }
 
     dependencies {
-        // scopes: 'build', 'compile', 'runtime', 'test' or 'provided'
-
         // cucumber
         compile ("info.cukes:cucumber-groovy:${cucumberVersion}") {
            excludes 'ant'   // avoid ant version conflict
