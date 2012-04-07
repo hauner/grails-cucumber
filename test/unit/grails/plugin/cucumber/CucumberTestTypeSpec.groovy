@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2011-2012 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,26 +20,27 @@ import grails.plugin.spock.*
 
 
 class CucumberTestTypeSpec extends UnitSpec {
+    private static final String TEST_PHASE = 'functional'
 
     def "the name is 'cucumber'" () {
         when:
-        def testType = new CucumberTestType ('base', null, null)
+        def testType = new CucumberTestType (TEST_PHASE, null, null)
 
         then:
         testType.name == "cucumber"
     }
 
-    def "the relative source path is 'cucumber'" () {
+    def "the relative source path is 'functional'" () {
         when:
-        def testType = new CucumberTestType ('base', null, null)
+        def testType = new CucumberTestType (TEST_PHASE, null, null)
 
         then:
-        testType.relativeSourcePath == 'base'
+        testType.relativeSourcePath == TEST_PHASE
     }
 
     def "the test extension is 'feature'" () {
         when:
-        def testType = new CucumberTestType ('base', null, null)
+        def testType = new CucumberTestType (TEST_PHASE, null, null)
 
         then:
         testType.testExtensions.size() == 1

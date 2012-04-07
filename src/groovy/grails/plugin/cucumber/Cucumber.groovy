@@ -16,51 +16,55 @@
 
 package grails.plugin.cucumber
 
-import gherkin.formatter.Reporter
-import gherkin.formatter.Formatter
 import cucumber.runtime.Runtime
 import cucumber.runtime.model.CucumberFeature
 import cucumber.runtime.snippets.SummaryPrinter
-import cucumber.io.FileResourceLoader
-import cucumber.runtime.groovy.GroovyBackend
+import cucumber.runtime.RuntimeOptions
+import cucumber.io.ResourceLoader
+
 
 class Cucumber {
-    String featureDir
-
-    def features
-    def filters = new ArrayList ()
-    def paths = new ArrayList<String>()
+    def summaryPrinter
     def resourceLoader
-    def backends
+    def runtimeOptions
     def runtime
 
-    Cucumber (ClassLoader classLoader, GroovyShell shell, String featureDir) {
-        this.featureDir = featureDir
-        paths.add (featureDir)
+    def features
 
-        resourceLoader = new FileResourceLoader ()
-        backends = [new GroovyBackend (shell, resourceLoader)]
-        runtime = new Runtime (resourceLoader, paths, classLoader, backends, false)
+    Cucumber (ResourceLoader resourceLoader, Runtime runtime, RuntimeOptions runtimeOptions,
+        SummaryPrinter summaryPrinter) {
+        this.summaryPrinter = summaryPrinter
+        this.resourceLoader = resourceLoader
+        this.runtimeOptions = runtimeOptions
+        this.runtime = runtime
     }
 
     void loadFeatures () {
-        features = CucumberFeature.load (resourceLoader, paths, filters)
+        features = runtimeOptions.cucumberFeatures (resourceLoader)
     }
 
     int countScenarios () {
         def scenarioCount = 0
-        features.each {
-            scenarioCount += it.getFeatureElements().size ()
+        features.each { CucumberFeature feature ->
+            scenarioCount += feature.getFeatureElements ().size ()
         }
         scenarioCount
     }
 
-    void run (Formatter formatter, Reporter reporter) {
-        runtime.run (paths, filters, formatter, reporter)
-    }
+    CucumberTestTypeResult run (CucumberFormatter formatter) {
+        //runtimeOptions.formatters << formatter
 
-    void printSummary (PrintStream stream) {
-        new SummaryPrinter (stream).print (runtime);
+        features.each { CucumberFeature feature ->
+            feature.run (formatter, formatter, runtime)
+            //private: _runtime.run (feature)
+        }
+
+        // todo merge finish into done
+        formatter.finish ()
+        formatter.done ()
+        summaryPrinter.print (runtime)
+        formatter.close ()
+        formatter.result
     }
 }
 

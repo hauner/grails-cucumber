@@ -21,17 +21,25 @@ import org.codehaus.groovy.grails.test.GrailsTestTypeResult
 import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
 import org.codehaus.groovy.grails.test.report.junit.JUnitReportsFactory
 import org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport
+import grails.util.Environment
+import cucumber.io.FileResourceLoader
+import cucumber.runtime.Runtime
+import cucumber.runtime.groovy.GroovyBackend
+import cucumber.runtime.snippets.SummaryPrinter
 
 
 class CucumberTestType extends GrailsTestTypeSupport {
+    static final ENVIRONMENT = Environment.TEST.name
+    static final CONFIG_FILE = "cucumber.config"
     static final NAME = "cucumber"
+
     GroovyShell grailsShell
     String baseDir
 
     Cucumber cucumber
 
-    CucumberTestType (String relativeSourcePath, String baseDir, GroovyShell grailsShell) {
-        super(NAME, relativeSourcePath)
+    CucumberTestType (String testPhase, String baseDir, GroovyShell grailsShell) {
+        super (NAME, testPhase)
         this.grailsShell = grailsShell
         this.baseDir = baseDir
     }
@@ -59,8 +67,23 @@ class CucumberTestType extends GrailsTestTypeSupport {
     }
 
     private void prepareCucumber () {
-        def shell = new GroovyShell (getTestClassLoader (), createBinding ())
-        cucumber = new Cucumber (getTestClassLoader (), shell, featurePath ())
+        def configReader = new ConfigReader (new File (configFile ()),new ConfigSlurper (ENVIRONMENT))
+        def configObject = configReader.parse ()
+        configObject.featurePath = featurePath ()
+        configObject.gluePath = featurePath ()
+
+        println "TEST: ${configObject.cucumber.test}"
+
+        def resourceLoader = new FileResourceLoader ()
+        def classLoader = getTestClassLoader ()
+        def groovyShell = new GroovyShell (classLoader, createBinding ())
+        def groovyBackend = new GroovyBackend (groovyShell, resourceLoader)
+
+        def summaryPrinter = new SummaryPrinter (System.out)
+        def runtimeOptions = new RuntimeOptionsBuilder (configObject).build ()
+        def runtime = new Runtime (resourceLoader, classLoader, [groovyBackend], runtimeOptions)
+
+        cucumber = new Cucumber (resourceLoader, runtime, runtimeOptions, summaryPrinter)
     }
 
     private Binding createBinding () {
@@ -80,17 +103,7 @@ class CucumberTestType extends GrailsTestTypeSupport {
     }
 
     private GrailsTestTypeResult runFeatures (def publisher) {
-        def formatter = createFormatter (publisher)
-
-        cucumber.run (formatter, formatter)
-
-        // todo merge finish into done!?
-        formatter.finish ()
-        formatter.done ()
-
-        cucumber.printSummary (System.out)
-
-        formatter.getResult ()
+        cucumber.run (createFormatter (publisher))
     }
 
     private def createFormatter (def publisher) {
@@ -110,5 +123,9 @@ class CucumberTestType extends GrailsTestTypeSupport {
 
     private String featurePath () {
         ["test", NAME].join (File.separator)
+    }
+
+    private String configFile () {
+        [featurePath (), CONFIG_FILE].join (File.separator)
     }
 }
