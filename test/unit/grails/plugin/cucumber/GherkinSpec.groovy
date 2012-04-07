@@ -32,7 +32,7 @@ import gherkin.formatter.Formatter
 import gherkin.formatter.Reporter
 
 
-class GherkinSpec extends UnitSpec {
+abstract class GherkinSpec extends UnitSpec {
     static def FEATURE_NAME = "Test Feature"
     static def FEATURE_NAME_A = "Test Feature A"
     static def FEATURE_NAME_B = "Test Feature B"
