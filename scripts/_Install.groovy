@@ -15,7 +15,4 @@
  */
 
 ant.mkdir (dir: "${basedir}/test/cucumber")
-ant.mkdir (dir: "${basedir}/test/cucumber/step_definitions")
-ant.mkdir (dir: "${basedir}/test/cucumber/support")
-
 ant.mkdir (dir: "${basedir}/test/functional")
