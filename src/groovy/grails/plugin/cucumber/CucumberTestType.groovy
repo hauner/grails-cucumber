@@ -22,15 +22,15 @@ import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
 import org.codehaus.groovy.grails.test.report.junit.JUnitReportsFactory
 import org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport
 import grails.util.Environment
-import cucumber.io.FileResourceLoader
 import cucumber.runtime.Runtime
 import cucumber.runtime.groovy.GroovyBackend
 import cucumber.runtime.snippets.SummaryPrinter
+import grails.plugin.cucumber.io.FileResourceLoader
 
 
 class CucumberTestType extends GrailsTestTypeSupport {
     static final ENVIRONMENT = Environment.TEST.name
-    static final CONFIG_FILE = "cucumber.config"
+    static final CONFIG_FILE = "CucumberConfig.groovy"
     static final NAME = "cucumber"
 
     GroovyShell grailsShell
@@ -72,9 +72,12 @@ class CucumberTestType extends GrailsTestTypeSupport {
         configObject.featurePath = featurePath ()
         configObject.gluePath = featurePath ()
 
-        println "TEST: ${configObject.cucumber.test}"
-
-        def resourceLoader = new FileResourceLoader ()
+        //def resourceLoader = new FileResourceLoader ()
+        def resourceLoader = new FileResourceLoader (new FileFilter() {
+            boolean accept (File file) {
+                file.name != CONFIG_FILE
+            }
+        })
         def classLoader = getTestClassLoader ()
         def groovyShell = new GroovyShell (classLoader, createBinding ())
         def groovyBackend = new GroovyBackend (groovyShell, resourceLoader)
