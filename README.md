@@ -29,6 +29,11 @@ grails test-app :cucumber
 on another grails plugin, like [Geb](http://gebish.org), to provide it. Geb is currently the only
 functional test plugin I have tried.
 
+**The simplest possible functional test phase implementation is an empty `test/functional` directory. ;-)**
+Grails will run the cucumber features if a `test/functional` directory exists. I'm not sure yet what
+we can do in the steps here. Probably a lot since we have a running grails application in the functional
+phase.
+
 Cucumber-JVM is still a moving target, i.e. its api is still changing and it might brake the plugin
 code when you are using the MASTER branch code.
 
@@ -45,10 +50,11 @@ see [CHANGES.md](https://github.com/hauner/grails-cucumber/blob/master/CHANGES.m
 
 ## Todo ##
 
+* run features without browser so we can test below the ui
+* support other grails functional test plugins
 * keep up with api changes in cucumber-jvm
 * the test report summary prints "Testcase: unknown took 0.065 sec", I do not yet understand why
   it prints "unknown" instead of the scenario name
-* use grails like configuration for tags
 * extend example
 
 ## Tests ##
