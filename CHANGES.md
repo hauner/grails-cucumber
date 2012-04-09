@@ -1,6 +1,6 @@
-### 0.3.0 ###
+### 0.3.0 - unreleased ###
 
-8th April 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.3.0))
+x-th April 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.3.0))
 
 * read configuration file `test/cucumber/CucumberConfg.groovy`
 
