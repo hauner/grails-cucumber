@@ -22,53 +22,62 @@ class TestAppTests extends AbstractCliTestCase {
     static final int TEST_PASSED = 1
     static final int TEST_FAILED = 3
 
-    /* cli test are very slow, so we test all conditions in a single test */
+    /* cli test are very slow, so we test the output of a single run */
     void testCucumberTestOutput () {
         runTestApp ()
-
-
         verifyHeader ()
-        verifyPhase ()
-        
+
+        verifyRunning ()
         verifyTestFeaturePassed ()
-        verifyTestFeatureIssues ()
-        verifyTestFeatureSnippets ()
-        
+        verifyTestFeatureAssertionFailure ()
+        verifyTestFeatureExceptionError ()
+        verifyTestFeatureMissingSnippets ()
         verifyTestCounts ()
     }
 
-    
+
     private void runTestApp () {
         execute (["test-app", "functional:cucumber"])
         waitForProcess ()
     }
-    
-    private void verifyPhase () {
+
+    private void verifyRunning () {
         assertTrue (
-            "phase does not match",
-            output.contains ("Starting functional test phase ...")
+            "running output not match",
+            output.contains ("Running " +TEST_COUNT+ " cucumber tests...")
         )
     }
 
     private void verifyTestFeaturePassed () {
-        assertTrue (
-            "passed feature does not match",
-            output.contains ("Running test test-app with a passing cucumber feature...PASSED")
-        )
+        // nothing reported
     }
-    
-    private void verifyTestFeatureIssues () {
+
+    private void verifyTestFeatureAssertionFailure () {
         assertTrue (
-            "failing step does not match",
-            output.contains ("it should fail...FAILED")
+            "assertion failure does not match exeption",
+            output.contains ("Caused by: java.lang.AssertionError")
         )
+
         assertTrue (
-            "erroneous step does not match",
-            output.contains ("it should error...FAILED")
+            "assertion failure does not match file & line",
+            output.contains ('RunTestApp_steps$_run_closure4.doCall(RunTestApp_steps.groovy:')
         )
     }
 
-    private void verifyTestFeatureSnippets () {
+    private void verifyTestFeatureExceptionError () {
+        assertTrue (
+            "exception error does not match exeption",
+            output.contains ("java.lang.ArithmeticException: Division by zero")
+        )
+
+        assertTrue (
+            "exception error does not match step",
+            output.contains ("at ✽.Then it should error(RunTestAppWithIssues.feature:16)")
+        )
+    }
+
+
+    private void verifyTestFeatureMissingSnippets () {
         assertTrue (
             "missing step header does not match",
             output.contains ("You can implement missing steps with the snippets below:")
@@ -79,19 +88,11 @@ class TestAppTests extends AbstractCliTestCase {
             output.contains ('When(~"^an unimplemented step is found$")')
         )
     }
-    
+
     private void verifyTestCounts () {
         assertTrue (
-            "number of tests does not match",
-            output.contains ("Running " +TEST_COUNT+ " cucumber tests...")
-        )
-        assertTrue (
-            "number of passed tests does not match",
-            output.contains ("Tests passed: " +TEST_PASSED)
-        )
-        assertTrue (
-            "number of failed tests does not match",
-            output.contains ("Tests failed: " +TEST_FAILED)
+            "test counts do not match",
+            output.contains ("Completed " +TEST_COUNT+ " cucumber tests, " +TEST_FAILED+ " failed")
         )
     }
 }
