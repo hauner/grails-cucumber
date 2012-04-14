@@ -30,7 +30,8 @@ import grails.plugin.cucumber.io.FileResourceLoader
 
 class CucumberTestType extends GrailsTestTypeSupport {
     static final ENVIRONMENT = Environment.TEST.name
-    static final CONFIG_FILE = "CucumberConfig.groovy"
+    static final CONFIG_NAME = "CucumberConfig.groovy"
+    static final CONFIG_PATH = ["grails-app", "conf", CONFIG_NAME].join (File.separator)
     static final NAME = "cucumber"
 
     GroovyShell grailsShell
@@ -67,15 +68,15 @@ class CucumberTestType extends GrailsTestTypeSupport {
     }
 
     private void prepareCucumber () {
-        def configReader = new ConfigReader (new File (configFile ()),new ConfigSlurper (ENVIRONMENT))
+        def configReader = new ConfigReader (new File (CONFIG_PATH),new ConfigSlurper (ENVIRONMENT))
         def configObject = configReader.parse ()
-        configObject.featurePath = featurePath ()
-        configObject.gluePath = featurePath ()
+        configObject.defaultFeaturePath = featurePath ()
+        configObject.defaultGluePath = featurePath ()
 
         //def resourceLoader = new FileResourceLoader ()
         def resourceLoader = new FileResourceLoader (new FileFilter() {
             boolean accept (File file) {
-                file.name != CONFIG_FILE
+                file.name != CONFIG_NAME
             }
         })
         def classLoader = getTestClassLoader ()
@@ -125,10 +126,6 @@ class CucumberTestType extends GrailsTestTypeSupport {
     }
 
     private String featurePath () {
-        ["test", NAME].join (File.separator)
-    }
-
-    private String configFile () {
-        [featurePath (), CONFIG_FILE].join (File.separator)
+        ["test", relativeSourcePath].join (File.separator)
     }
 }

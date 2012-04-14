@@ -28,15 +28,45 @@ class RuntimeOptionsBuilder {
 
     RuntimeOptions build () {
         def options = new RuntimeOptions ()
-        options.formatters.clear ()
 
-        configObject.tags.each {
-            options.tags.add(it)
-        }
-
-        options.featurePaths << configObject.featurePath
-        options.glue         << configObject.gluePath
+        setTags (options)
+        setFormatter (options)
+        setGluePaths (options)
+        setFeaturePaths (options)
 
         options
     }
+
+    private void setGluePaths (RuntimeOptions options) {
+        def glue = configObject.cucumber.glue
+
+        if (glue) {
+            options.glue = configObject.cucumber.glue
+        } else {
+            options.glue << configObject.cucumber.defaultGluePath
+        }
+    }
+
+    private void setFeaturePaths (RuntimeOptions options) {
+        def features = configObject.cucumber.features
+
+        if (features) {
+            options.featurePaths = features
+        } else {
+            options.featurePaths << configObject.cucumber.defaultFeaturePath
+        }
+    }
+
+    private void setFormatter (RuntimeOptions options) {
+        // clear the 'default' cucumber formatter
+        options.formatters.clear ()
+    }
+
+    private void setTags (RuntimeOptions options) {
+        configObject.cucumber.tags.each {
+            options.tags.add (it)
+        }
+    }
+
+
 }

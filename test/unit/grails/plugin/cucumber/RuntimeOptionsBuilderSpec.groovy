@@ -24,6 +24,7 @@ class RuntimeOptionsBuilderSpec extends UnitSpec {
     def TAGS = ["@tags1", "@tags2"]
     def FEATURE_PATH = "test/cucumber"
     def GLUE_PATH = FEATURE_PATH
+    def CUSTOM_PATHS = ["path_a", "path_b"]
     def configObject = new ConfigObject ()
 
     def setup () {
@@ -31,7 +32,7 @@ class RuntimeOptionsBuilderSpec extends UnitSpec {
 
     def "adds tags from configuration to options" () {
         given:
-        configObject.tags = TAGS
+        configObject.cucumber.tags = TAGS
 
         when:
         def options = createRuntimeOptions (configObject)
@@ -48,9 +49,20 @@ class RuntimeOptionsBuilderSpec extends UnitSpec {
         options.tags.empty
     }
 
-    def "adds 'test/cucumber' path to featurePaths" () {
+    def "overrides default feature path if features is set" () {
         given:
-        configObject.featurePath = FEATURE_PATH
+        configObject.cucumber.features = CUSTOM_PATHS
+
+        when:
+        def options = createRuntimeOptions (configObject)
+
+        then:
+        options.featurePaths == CUSTOM_PATHS
+    }
+
+    def "adds default feature path if features is not set" () {
+        given:
+        configObject.cucumber.defaultFeaturePath = FEATURE_PATH
 
         when:
         def options = createRuntimeOptions (configObject)
@@ -59,9 +71,20 @@ class RuntimeOptionsBuilderSpec extends UnitSpec {
         options.featurePaths == [FEATURE_PATH]
     }
 
-    def "adds 'test/cucumber' path to gluePaths" () {
+    def "overrides default glue path if glue is set" () {
         given:
-        configObject.gluePath = GLUE_PATH
+        configObject.cucumber.glue = CUSTOM_PATHS
+
+        when:
+        def options = createRuntimeOptions (configObject)
+
+        then:
+        options.glue == CUSTOM_PATHS
+    }
+
+    def "adds default glue path if glue is not set" () {
+        given:
+        configObject.cucumber.defaultGluePath = GLUE_PATH
 
         when:
         def options = createRuntimeOptions (configObject)
