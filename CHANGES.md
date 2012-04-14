@@ -1,16 +1,17 @@
-### 0.3.0 - unreleased ###
+### 0.4.0 ###
 
-x-th April 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.3.0))
+unreleased ([source code](https://github.com/hauner/grails-cucumber/tree/0.4.0))
 
-* read configuration file `test/cucumber/CucumberConfg.groovy`
-
-    available configuration:
-
-    `tags = ["@tag1", "@tag2"]`, were each value gets passed to cucumber as a single `--tags`
-    option (see cucumber help for tag variations)
-
+* configuration via `grails-app/conf/CucumberConfg.groovy`, see the user guide
+* changed cucumber path to functional
 * updated to cucumber-jvm 1.0.2
 * cucumber-jvm is no longer embedded, it will be picked up by the usual grails dependency resolution
+* started [user guide](https://github.com/hauner/grails-cucumber/blob/master/UserGuide.md)
+
+
+### 0.3.0 ###
+
+never released ([source code](https://github.com/hauner/grails-cucumber/tree/0.3.0))
 
 
 ### 0.2.3 ###
@@ -43,5 +44,4 @@ x-th April 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.
 * first usable version
 * use geb to implement steps
 * call domain class foo from steps
-
 
