@@ -2,11 +2,11 @@
 
 16. April 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.4.0))
 
-* configuration via `grails-app/conf/CucumberConfig.groovy`, see the user guide
+* configuration via `grails-app/conf/CucumberConfig.groovy`, see the plugin guide
 * changed cucumber default path from `test/cucumber` to `test/functional`
 * updated to cucumber-jvm 1.0.2
 * cucumber-jvm is no longer embedded, it will be picked up by the usual grails dependency resolution
-* started [user guide](https://github.com/hauner/grails-cucumber/wiki/Plugin-Guide)
+* started [plugin guide](https://github.com/hauner/grails-cucumber/wiki/Plugin-Guide)
 
 
 ### 0.3.0 ###
