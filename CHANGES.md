@@ -1,6 +1,6 @@
 ### 0.4.0 ###
 
-16. April 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.4.0))
+16th April 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.4.0))
 
 * configuration via `grails-app/conf/CucumberConfig.groovy`, see the plugin guide
 * changed cucumber default path from `test/cucumber` to `test/functional`
