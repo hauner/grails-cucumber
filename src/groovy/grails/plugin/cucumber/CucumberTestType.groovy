@@ -70,8 +70,8 @@ class CucumberTestType extends GrailsTestTypeSupport {
     private void prepareCucumber () {
         def configReader = new ConfigReader (new File (CONFIG_PATH),new ConfigSlurper (ENVIRONMENT))
         def configObject = configReader.parse ()
-        configObject.defaultFeaturePath = featurePath ()
-        configObject.defaultGluePath = featurePath ()
+        configObject.cucumber.defaultFeaturePath = featurePath ()
+        configObject.cucumber.defaultGluePath = featurePath ()
 
         //def resourceLoader = new FileResourceLoader ()
         def resourceLoader = new FileResourceLoader (new FileFilter() {
