@@ -1,13 +1,13 @@
 import books.BookController
+import books.BookService
 import data.Data
 
 this.metaClass.mixin (cucumber.runtime.groovy.EN)
 
 
-
-
 // Scenario State
 BookController bookController
+
 
 
 Given (~"^I open the book tracker\$") { ->
@@ -30,7 +30,8 @@ Then (~"^I see \"([^\"]*)\"s details\$") { String bookTitle ->
     assert actual.author == expected.author
 }
 
-Given(~"^I have already added \"([^\"]*)\"\$") { String bookTitle ->
+
+Given (~"^I have already added \"([^\"]*)\"\$") { String bookTitle ->
     def bookService = appCtx.getBean ("bookService")
     bookService.add (Data.findByTitle (bookTitle))
 }
@@ -40,7 +41,7 @@ When (~"^I view the book list\$") { ->
     bookController.all ()
 }
 
-Then(~"^my book list contains \"([^\"]*)\"\$") { String bookTitle ->
+Then (~"^my book list contains \"([^\"]*)\"\$") { String bookTitle ->
     def expected = Data.findByTitle (bookTitle)
     def all = bookController.response.json
     actual = all.getJSONObject (0)

@@ -1,0 +1,3 @@
+cucumber {
+    tags = ["~@ignore"]
+}
