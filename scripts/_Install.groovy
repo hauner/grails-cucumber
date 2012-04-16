@@ -14,5 +14,4 @@
  * limitations under the License.
  */
 
-ant.mkdir (dir: "${basedir}/test/cucumber")
 ant.mkdir (dir: "${basedir}/test/functional")
