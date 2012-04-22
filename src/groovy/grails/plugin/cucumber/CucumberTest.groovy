@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2011-2012 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ class CucumberTest implements Test, Describable {
     String description
 
     CucumberTest () {
-        System.out << "CT(CucumberTest)\n"
+        //System.out << "CT(CucumberTest)\n"
         this.description = "CT(DESCRIPTION)"
     }
 
@@ -36,11 +36,11 @@ class CucumberTest implements Test, Describable {
     }
 
     int countTestCases () {
-        System.out << "CT(countTestCases)\n"
+        //System.out << "CT(countTestCases)\n"
         return 1
     }
 
-    void run(TestResult result) {
+    void run (TestResult result) {
         throw new RuntimeException ("this test can not be run!");
     }
 
@@ -51,9 +51,14 @@ class CucumberTest implements Test, Describable {
     }
 
     Description getDescription () {
-        System.out << "CT(getDescription)\n"
+        //System.out << "CT(getDescription)\n"
         //return Description.createSuiteDescription ("CucumberTest")
         return Description.createTestDescription(getClass (), description/*"CucumberTest"*/)
+    }
+
+    /* provides "test name" for report */
+    String getName () {
+        description
     }
 }
 
