@@ -28,6 +28,7 @@ import gherkin.formatter.model.Result
 import gherkin.formatter.model.Match
 
 import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
+import cucumber.runtime.UndefinedStepException
 
 
 class CucumberFormatter implements Formatter, Reporter {
@@ -190,7 +191,7 @@ class CucumberFormatter implements Formatter, Reporter {
         }
         else if (result == Result.UNDEFINED) {
             report.addUndefined ()
-            publisher.testFailure (getActiveStepName (), "undefined")
+            publisher.testFailure (getActiveStepName (), new UndefinedStepException(activeStep))
             
             fail (getActiveScenarioName ())
         }
