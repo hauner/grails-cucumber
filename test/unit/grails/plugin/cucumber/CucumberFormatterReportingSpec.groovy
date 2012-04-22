@@ -17,6 +17,7 @@
 package grails.plugin.cucumber
 
 import gherkin.formatter.model.Result
+import cucumber.runtime.UndefinedStepException
 
 
 @SuppressWarnings("GroovyPointlessArithmetic")
@@ -53,7 +54,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         1 * report.endFeature ()
     }
 
-    def "report test start for each scenario" () {
+    def "report start scenario for each scenario" () {
         given:
         def scenarioA = scenarioStub (SCENARIO_NAME_A)
         def scenarioB = scenarioStub (SCENARIO_NAME_B)
@@ -67,21 +68,24 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         1 * report.startScenario (SCENARIO_NAME_B)
     }
 
-    def "report test end for previous scenario before each new scenario" () {
+    // new
+    def "report end scenario before a new feature" () {
         given:
-        def scenarioA = scenarioStub (SCENARIO_NAME_A)
-        def scenarioB = scenarioStub (SCENARIO_NAME_B)
+        def scenario = scenarioStub ()
+        def feature = featureStub ()
 
         when:
-        uat.scenario (scenarioA)
-        uat.scenario (scenarioB)
+        uat.scenario (scenario)
+        uat.feature (feature)
 
         then:
-        2 * report.startScenario (_)
-        1 * report.endScenario ()
+        (1) * report.endScenario ()
+
+        then:
+        (1) * report.startFeature (_)
     }
 
-    def "report test end for last scenario" () {
+    def "report scenario end for last scenario" () {
         def featureStub = featureStub (FEATURE_NAME_A)
         def scenarioStubA = scenarioStub (SCENARIO_NAME_A)
 
@@ -158,7 +162,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.result (result)
 
         then:
-        1 * report.addUndefined ()
+        1 * report.addUndefined ((UndefinedStepException)_)
     }
     
     def "does only report step when it succeeds" () {

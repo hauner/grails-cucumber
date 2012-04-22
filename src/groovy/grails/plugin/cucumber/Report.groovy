@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2011-2012 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ class Report {
         report.endTest (test)
     }
 
-    void addFailure (CucumberTest test, AssertionError failure) {
+    void addFailure (CucumberTest test, Throwable failure) {
         report.addFailure (test, new FakeAssertionFailedError (failure))
         failures++
     }

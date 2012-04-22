@@ -20,6 +20,7 @@ import grails.plugin.spock.*
 import static GherkinSpec.*
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest
 import junit.framework.AssertionFailedError
+import cucumber.runtime.UndefinedStepException
 
 
 @SuppressWarnings(["GroovyPointlessArithmetic"])
@@ -148,5 +149,18 @@ class FeatureReportSpec extends UnitSpec {
         1 * report.addError (test, error)
     }
 
+    def "reports each undefined" () {
+        def undefined = Mock (UndefinedStepException)
+        def test = Mock (CucumberTest)
+        factory.createTest (!null) >> test
+
+        when:
+        uat.startFeature (FEATURE_NAME)
+        uat.startScenario (SCENARIO_NAME)
+        uat.addUndefined (undefined)
+
+        then:
+        1 * report.addFailure (test, undefined)
+    }
 }
 

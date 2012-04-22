@@ -20,9 +20,9 @@ import junit.framework.AssertionFailedError
 
 
 class FakeAssertionFailedError extends AssertionFailedError {
-    AssertionError error
-    
-    FakeAssertionFailedError (AssertionError error) {
+    Throwable error
+
+    FakeAssertionFailedError (Throwable error) {
         this.error = error
     }
     

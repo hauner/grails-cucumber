@@ -20,6 +20,7 @@ import org.codehaus.groovy.grails.test.report.junit.JUnitReports
 import org.codehaus.groovy.grails.test.io.SystemOutAndErrSwapper
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest
 import junit.framework.AssertionFailedError
+import cucumber.runtime.UndefinedStepException
 
 
 @SuppressWarnings("GroovyPointlessArithmetic")
@@ -171,6 +172,17 @@ class ReportSpec extends GherkinSpec {
     def "reports failure" () {
         def test = Mock (CucumberTest)
         def failure = Mock (AssertionError)
+
+        when:
+        uat.addFailure (test, failure)
+
+        then:
+        1 * report.addFailure (test, (AssertionFailedError)_)
+    }
+
+    def "reports undefined as failure" () {
+        def test = Mock (CucumberTest)
+        def failure = Mock (UndefinedStepException)
 
         when:
         uat.addFailure (test, failure)

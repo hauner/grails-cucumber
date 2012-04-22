@@ -81,9 +81,16 @@ class CucumberFormatter implements Formatter, Reporter {
     }
 
     void feature (Feature feature) {
+        //sysout << "CF(feature)\n"
+
+        if (activeScenario) {
+            //sysout << "CF(feature scenario.end)\n"
+            report.endScenario ()
+            publisher.testEnd (activeScenario.getName ())
+        }
+
         if (activeFeature) {
             //sysout << "CF(feature end)\n"
-
             report.endFeature ()
             publisher.testCaseEnd (activeFeature.getName ())
         }
@@ -101,14 +108,8 @@ class CucumberFormatter implements Formatter, Reporter {
     }
 
     void scenario (Scenario scenario) {
-        if (activeScenario) {
-            //sysout << "CF(scenario end)\n"
+        //sysout << "CF(scenario)\n"
 
-            report.endScenario ()
-            publisher.testEnd (activeScenario.getName ())
-        }
-
-        //sysout << "CF(scenario start)\n"
         activeScenario = scenario
         publisher.testStart (activeScenario.getName ())
         report.startScenario (activeScenario.getName ())
@@ -167,7 +168,7 @@ class CucumberFormatter implements Formatter, Reporter {
     }
 
     void result (Result result) {
-        //sysout << "CF(result)\n"
+        sysout << "CF(result)\n"
         advanceActiveStep ()
 
         if (result.status == Result.FAILED) {
@@ -190,8 +191,9 @@ class CucumberFormatter implements Formatter, Reporter {
             //fail (getActiveScenarioName ())
         }
         else if (result == Result.UNDEFINED) {
-            report.addUndefined ()
-            publisher.testFailure (getActiveStepName (), new UndefinedStepException(activeStep))
+            def error = new UndefinedStepException(activeStep)
+            report.addUndefined (error)
+            publisher.testFailure (getActiveStepName (), error)
             
             fail (getActiveScenarioName ())
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2011-2012 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package grails.plugin.cucumber
 
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest
+import cucumber.runtime.UndefinedStepException
 
 
 class FeatureReport {
@@ -35,7 +36,6 @@ class FeatureReport {
 
     void startFeature (String feature) {
         //sysout << "\nFR(startFeature)\n"
-
         report = factory.createReport (feature)
         suite = factory.createTestSuite (feature)
         report.startTestSuite (suite)
@@ -43,32 +43,27 @@ class FeatureReport {
 
     void endFeature () {
         //sysout << "FR(endFeature)\n"
-
         report.endTestSuite (suite)
     }
 
     void startScenario (String scenario) {
         //sysout << "FR(startScenario)\n"
-
         test = factory.createTest (scenario)
         report.startTest (test)
     }
 
     void endScenario () {
         //sysout << "FR(endScenario)\n"
-
         report.endTest (test)
     }
 
     void addFailure (AssertionError failure) {
         //sysout << "FR(addFailure)\n"
-
         report.addFailure (test, failure)
     }
 
     void addError (Throwable error) {
         //sysout << "FR(addError)\n"
-
         report.addError (test, error)
     }
     
@@ -80,7 +75,7 @@ class FeatureReport {
         
     }
     
-    void addUndefined () {
-        
+    void addUndefined (UndefinedStepException undefined) {
+        report.addFailure (test, undefined)
     }
 }
