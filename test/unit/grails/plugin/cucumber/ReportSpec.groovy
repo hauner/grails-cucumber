@@ -23,7 +23,6 @@ import junit.framework.AssertionFailedError
 import cucumber.runtime.UndefinedStepException
 
 
-@SuppressWarnings("GroovyPointlessArithmetic")
 class ReportSpec extends GherkinSpec {
     static long START_TIME = 10
     static long STOP_TIME = 10
@@ -45,7 +44,7 @@ class ReportSpec extends GherkinSpec {
         uat.startTestSuite (null)
 
         then:
-        1 * timer.start ()
+        (1) * timer.start ()
     }
 
     def "stops timer when ending the test suite" () {
@@ -56,7 +55,7 @@ class ReportSpec extends GherkinSpec {
         uat.endTestSuite (suite)
 
         then:
-        1 * timer.stop ()
+        (1) * timer.stop ()
     }
 
     def "reports start of test suite" () {
@@ -66,7 +65,7 @@ class ReportSpec extends GherkinSpec {
         uat.startTestSuite (suite)
 
         then:
-        1 * report.startTestSuite (suite)
+        (1) * report.startTestSuite (suite)
     }
 
     def "reports end of test suite" () {
@@ -77,7 +76,7 @@ class ReportSpec extends GherkinSpec {
         uat.endTestSuite (suite)
 
         then:
-        1 * report.endTestSuite (suite)
+        (1) * report.endTestSuite (suite)
     }
 
     def "sets run time when ending the test suite" () {
@@ -90,7 +89,7 @@ class ReportSpec extends GherkinSpec {
         uat.endTestSuite (suite)
 
         then:
-        1 * suite.setRunTime (DURATION)
+        (1) * suite.setRunTime (DURATION)
     }
 
     def "switches output streams when starting a test suite" () {
@@ -98,7 +97,7 @@ class ReportSpec extends GherkinSpec {
         uat.startTestSuite (null)
 
         then:
-        1 * swapper.swapIn ()
+        (1) * swapper.swapIn ()
     }
 
     def "restores output streams when ending the test suite" () {
@@ -110,9 +109,9 @@ class ReportSpec extends GherkinSpec {
         uat.endTestSuite (suite)
 
         then:
-        1 * swapper.swapOut () >> [out, err]
-        1 * report.setSystemOutput (OUT_TEXT)
-        1 * report.setSystemError (ERR_TEXT)
+        (1) * swapper.swapOut () >> [out, err]
+        (1) * report.setSystemOutput (OUT_TEXT)
+        (1) * report.setSystemError (ERR_TEXT)
     }
 
     def "reports start & end of test" () {
@@ -123,8 +122,8 @@ class ReportSpec extends GherkinSpec {
         uat.endTest (test)
 
         then:
-        1 * report.startTest (test)
-        1 * report.endTest (test)
+        (1) * report.startTest (test)
+        (1) * report.endTest (test)
     }
 
     @SuppressWarnings("GroovyAssignabilityCheck")
@@ -138,7 +137,7 @@ class ReportSpec extends GherkinSpec {
         uat.endTestSuite (suite)
 
         then:
-        1 * suite.setCounts (2, _, _)
+        (1) * suite.setCounts (2, _, _)
     }
 
     @SuppressWarnings("GroovyAssignabilityCheck")
@@ -152,7 +151,7 @@ class ReportSpec extends GherkinSpec {
         uat.endTestSuite (suite)
 
         then:
-        1 * suite.setCounts (_, 2, _)
+        (1) * suite.setCounts (_, 2, _)
     }
 
     @SuppressWarnings("GroovyAssignabilityCheck")
@@ -166,7 +165,7 @@ class ReportSpec extends GherkinSpec {
         uat.endTestSuite (suite)
 
         then:
-        1 * suite.setCounts (_, _, 2)
+        (1) * suite.setCounts (_, _, 2)
     }
 
     def "reports failure" () {
@@ -177,7 +176,7 @@ class ReportSpec extends GherkinSpec {
         uat.addFailure (test, failure)
 
         then:
-        1 * report.addFailure (test, (AssertionFailedError)_)
+        (1) * report.addFailure (test, (AssertionFailedError)_)
     }
 
     def "reports undefined as failure" () {
@@ -188,7 +187,7 @@ class ReportSpec extends GherkinSpec {
         uat.addFailure (test, failure)
 
         then:
-        1 * report.addFailure (test, (AssertionFailedError)_)
+        (1) * report.addFailure (test, (AssertionFailedError)_)
     }
 
     def "reports error" () {
@@ -199,7 +198,7 @@ class ReportSpec extends GherkinSpec {
         uat.addError (test, failure)
 
         then:
-        1 * report.addError (test, failure)
+        (1) * report.addError (test, failure)
     }
 
     def "starting test prints header to out & err stream" () {
@@ -214,7 +213,7 @@ class ReportSpec extends GherkinSpec {
         uat.startTest (test)
 
         then:
-        1 * out.println (header)
-        1 * err.println (header)
+        (1) * out.println (header)
+        (1) * err.println (header)
     }
 }

@@ -23,7 +23,6 @@ import junit.framework.AssertionFailedError
 import cucumber.runtime.UndefinedStepException
 
 
-@SuppressWarnings(["GroovyPointlessArithmetic"])
 class FeatureReportSpec extends UnitSpec {
     def report
     def factory
@@ -55,8 +54,8 @@ class FeatureReportSpec extends UnitSpec {
         uat.startFeature (FEATURE_NAME_B)
 
         then:
-        1 * factory.createTestSuite (FEATURE_NAME_A)
-        1 * factory.createTestSuite (FEATURE_NAME_B)
+        (1) * factory.createTestSuite (FEATURE_NAME_A)
+        (1) * factory.createTestSuite (FEATURE_NAME_B)
     }
 
     def "starts a test suite for each feature" () {
@@ -69,8 +68,8 @@ class FeatureReportSpec extends UnitSpec {
         uat.startFeature (FEATURE_NAME_B)
 
         then:
-        1 * report.startTestSuite (suiteA)
-        1 * report.startTestSuite (suiteB)
+        (1) * report.startTestSuite (suiteA)
+        (1) * report.startTestSuite (suiteB)
     }
 
     def "ends the test suite for each feature" () {
@@ -85,8 +84,8 @@ class FeatureReportSpec extends UnitSpec {
         uat.endFeature ()
 
         then:
-        1 * report.endTestSuite (suiteA)
-        1 * report.endTestSuite (suiteB)
+        (1) * report.endTestSuite (suiteA)
+        (1) * report.endTestSuite (suiteB)
     }
 
     def "starts a test for each scenario" () {
@@ -100,8 +99,8 @@ class FeatureReportSpec extends UnitSpec {
         uat.startScenario (SCENARIO_NAME_B)
 
         then:
-        1 * report.startTest (testA)
-        1 * report.startTest (testB)
+        (1) * report.startTest (testA)
+        (1) * report.startTest (testB)
     }
 
     def "ends the test for each scenario" () {
@@ -117,8 +116,8 @@ class FeatureReportSpec extends UnitSpec {
         uat.endScenario ()
 
         then:
-        1 * report.endTest (testA)
-        1 * report.endTest (testB)
+        (1) * report.endTest (testA)
+        (1) * report.endTest (testB)
     }
 
     def "reports each failure" () {
@@ -132,7 +131,7 @@ class FeatureReportSpec extends UnitSpec {
         uat.addFailure (failure)
 
         then:
-        1 * report.addFailure (test, failure)
+        (1) * report.addFailure (test, failure)
     }
 
     def "reports each error" () {
@@ -146,7 +145,7 @@ class FeatureReportSpec extends UnitSpec {
         uat.addError (error)
 
         then:
-        1 * report.addError (test, error)
+        (1) * report.addError (test, error)
     }
 
     def "reports each undefined" () {
@@ -160,7 +159,7 @@ class FeatureReportSpec extends UnitSpec {
         uat.addUndefined (undefined)
 
         then:
-        1 * report.addFailure (test, undefined)
+        (1) * report.addFailure (test, undefined)
     }
 }
 

@@ -21,8 +21,6 @@ import gherkin.formatter.model.Result
 import cucumber.runtime.UndefinedStepException
 
 
-@SuppressWarnings("GroovyPointlessArithmetic")
-
 class CucumberFormatterSignalingSpec extends GherkinSpec {
     def publisher = Mock (GrailsTestEventPublisher)
     def formatter = formatter (publisher)
@@ -38,8 +36,8 @@ class CucumberFormatterSignalingSpec extends GherkinSpec {
         formatter.feature (featureStubB)
 
         then:
-        1 * publisher.testCaseStart (featureStubA.name)
-        1 * publisher.testCaseStart (featureStubB.name)
+        (1) * publisher.testCaseStart (featureStubA.name)
+        (1) * publisher.testCaseStart (featureStubB.name)
     }
 
     def "signals test end and test case end of previous feature before signaling a new feature" () {
@@ -54,10 +52,10 @@ class CucumberFormatterSignalingSpec extends GherkinSpec {
         formatter.feature (featureStubB)
 
         then:
-        1 * publisher.testEnd (scenarioStub.name)
+        (1) * publisher.testEnd (scenarioStub.name)
 
         then:
-        1 * publisher.testCaseEnd (featureStubA.name)
+        (1) * publisher.testCaseEnd (featureStubA.name)
     }
 
     def "signals test case end for previous feature before signaling a new feature" () {
@@ -70,8 +68,8 @@ class CucumberFormatterSignalingSpec extends GherkinSpec {
         formatter.feature (featureStubB)
 
         then:
-        1 * publisher.testCaseEnd (featureStubA.name)
-        1 * publisher.testCaseStart (featureStubB.name)
+        (1) * publisher.testCaseEnd (featureStubA.name)
+        (1) * publisher.testCaseStart (featureStubB.name)
     }
 
     def "signals test case end for last feature" () {
@@ -88,7 +86,7 @@ class CucumberFormatterSignalingSpec extends GherkinSpec {
         formatter.finish ()
 
         then:
-        1 * publisher.testCaseEnd (featureStubB.name)
+        (1) * publisher.testCaseEnd (featureStubB.name)
     }
 
     def "signals test start for each new scenario" () {
@@ -101,25 +99,9 @@ class CucumberFormatterSignalingSpec extends GherkinSpec {
         formatter.scenario (scenarioStubB)
 
         then:
-        1 * publisher.testStart (scenarioStubA.name)
-        1 * publisher.testStart (scenarioStubB.name)
+        (1) * publisher.testStart (scenarioStubA.name)
+        (1) * publisher.testStart (scenarioStubB.name)
     }
-
-    /*
-    def "signals test end for previous scenario before signaling a new scenario" () {
-        given:
-        def scenarioStubA = scenarioStubA ()
-        def scenarioStubB = scenarioStubB ()
-
-        when:
-        formatter.scenario (scenarioStubA)
-        formatter.scenario (scenarioStubB)
-
-        then:
-        1 * publisher.testEnd (scenarioStubA.name)
-        1 * publisher.testStart (scenarioStubB.name)
-    }
-    */
 
     def "signals test end for last scenario" () {
         def featureStub = featureStub ()
@@ -133,7 +115,7 @@ class CucumberFormatterSignalingSpec extends GherkinSpec {
         formatter.finish ()
 
         then:
-        1 * publisher.testEnd (scenarioStubB.name)
+        (1) * publisher.testEnd (scenarioStubB.name)
     }
 
     def "signals test failure after failing step" () {
@@ -148,7 +130,7 @@ class CucumberFormatterSignalingSpec extends GherkinSpec {
         formatter.result (resultStub)
 
         then:
-        1 * publisher.testFailure (stepStub.name, resultStub.error)
+        (1) * publisher.testFailure (stepStub.name, resultStub.error)
     }
 
     def "signals test error after erroneous step" () {
@@ -163,7 +145,7 @@ class CucumberFormatterSignalingSpec extends GherkinSpec {
         formatter.result (resultStub)
 
         then:
-        1 * publisher.testFailure (stepStub.name, resultStub.error, true)
+        (1) * publisher.testFailure (stepStub.name, resultStub.error, true)
     }
 
     def "signals test failure after undefined step" () {
@@ -179,10 +161,10 @@ class CucumberFormatterSignalingSpec extends GherkinSpec {
 
         then:
         //1 * publisher.testFailure (stepStub.name, "undefined") crashes IDEA
-        1 * publisher.testFailure (stepStub.name, (UndefinedStepException)_)
+        (1) * publisher.testFailure (stepStub.name, (UndefinedStepException)_)
     }
 
-    def "NOT signals test failure after skipped step" () {
+    def "does NOT signal test failure after skipped step" () {
         given:
         def stepStub = stepStub ()
         def resultStub = Result.SKIPPED
@@ -194,7 +176,7 @@ class CucumberFormatterSignalingSpec extends GherkinSpec {
         formatter.result (resultStub)
 
         then:
-        0 * publisher.testFailure (stepStub.name, "skipped")
+        (0) * publisher.testFailure (stepStub.name, "skipped")
     }
     
     def "signals test failure for current step" () {
@@ -211,6 +193,6 @@ class CucumberFormatterSignalingSpec extends GherkinSpec {
         formatter.result (resultStubFail ())
 
         then:
-        1 * publisher.testFailure (stepStubB.name, (Throwable)_)
+        (1) * publisher.testFailure (stepStubB.name, (Throwable)_)
     }
 }

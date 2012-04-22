@@ -20,7 +20,6 @@ import gherkin.formatter.model.Result
 import cucumber.runtime.UndefinedStepException
 
 
-@SuppressWarnings("GroovyPointlessArithmetic")
 class CucumberFormatterReportingSpec extends GherkinSpec {
     FeatureReport report = Mock (FeatureReport)
     def uat = formatter (report)
@@ -36,8 +35,8 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.feature (featureB)
 
         then:
-        1 * report.startFeature (FEATURE_NAME_A)
-        1 * report.startFeature (FEATURE_NAME_B)
+        (1) * report.startFeature (FEATURE_NAME_A)
+        (1) * report.startFeature (FEATURE_NAME_B)
     }
 
     def "finishes feature report before initializing a new feature report" () {
@@ -51,7 +50,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
 
         then:
         2 * report.startFeature (_)
-        1 * report.endFeature ()
+        (1) * report.endFeature ()
     }
 
     def "report start scenario for each scenario" () {
@@ -64,11 +63,10 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.scenario (scenarioB)
 
         then:
-        1 * report.startScenario (SCENARIO_NAME_A)
-        1 * report.startScenario (SCENARIO_NAME_B)
+        (1) * report.startScenario (SCENARIO_NAME_A)
+        (1) * report.startScenario (SCENARIO_NAME_B)
     }
 
-    // new
     def "report end scenario before a new feature" () {
         given:
         def scenario = scenarioStub ()
@@ -95,7 +93,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.finish ()
 
         then:
-        1 * report.endScenario ()
+        (1) * report.endScenario ()
     }
 
 
@@ -109,7 +107,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.finish ()
 
         then:
-        1 * report.endFeature ()
+        (1) * report.endFeature ()
     }
 
     def "reports step failures" () {
@@ -123,7 +121,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.result (result)
 
         then:
-        1 * report.addFailure ((AssertionError)result.error)
+        (1) * report.addFailure ((AssertionError)result.error)
     }
 
     def "reports step errors" () {
@@ -136,7 +134,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.result (result)
 
         then:
-        1 * report.addError (result.error)
+        (1) * report.addError (result.error)
     }
 
     def "reports skipped step" () {
@@ -149,7 +147,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.result (result)
 
         then:
-        1 * report.addSkipped ()
+        (1) * report.addSkipped ()
     }
     
     def "reports undefined step" () {
@@ -162,10 +160,10 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.result (result)
 
         then:
-        1 * report.addUndefined ((UndefinedStepException)_)
+        (1) * report.addUndefined ((UndefinedStepException)_)
     }
     
-    def "does only report step when it succeeds" () {
+    def "does not report step when it succeeds" () {
         Result result = Mock (Result)
         result.error >> null
 
@@ -174,8 +172,8 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.result (result)
 
         then:
-        0 * report.addError ((Throwable)_)
-        0 * report.addError ((Throwable)_)
+        (0) * report.addError (_)
+        (0) * report.addFailure (_)
     }
 
     def "reports hook errors when there is no scenario or step" () {
@@ -186,6 +184,6 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.result (result)
 
         then:
-        1 * report.addError (result.error)
+        (1) * report.addError (result.error)
     }
 }
