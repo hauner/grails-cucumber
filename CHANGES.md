@@ -1,3 +1,13 @@
+### 0.4.1 ###
+
+x-th April 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.4.1))
+
+* fixed progress reporting for proper xml & html reports
+* scenarios are no longer reported as "TestCase: unknown"
+* modified plugin formatter to report an `UndefinedStepException` so IntelliJs test listener does
+  not crash (it does not implement all overloads of GrailsTestEventPublisher.testFailure).
+
+
 ### 0.4.0 ###
 
 16th April 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.4.0))
