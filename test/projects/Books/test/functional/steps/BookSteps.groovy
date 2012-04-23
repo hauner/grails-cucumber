@@ -23,7 +23,6 @@ When (~"^I add \"([^\"]*)\"\$") { String bookTitle ->
 Then (~"^I see \"([^\"]*)\"s details\$") { String bookTitle ->
     def expected = Data.findByTitle (bookTitle)
     def actual = bookController.response.json
-    println actual
 
     assert actual.id
     assert actual.title  == expected.title
