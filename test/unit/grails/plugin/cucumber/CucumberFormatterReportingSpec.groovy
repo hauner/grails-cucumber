@@ -163,7 +163,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         (1) * report.addUndefined ((UndefinedStepException)_)
     }
     
-    def "does not report step when it succeeds" () {
+    def "does not report step error or failure when it succeeds" () {
         Result result = Mock (Result)
         result.error >> null
 
