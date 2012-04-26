@@ -85,7 +85,7 @@ class TestAppTests extends AbstractCliTestCase {
 
         assertTrue (
             "missing unimplemented step snippet",
-            output.contains ('When(~"^an unimplemented step is found$")')
+            output.contains ("When(~'^an unimplemented step is found\$')")
         )
     }
 
