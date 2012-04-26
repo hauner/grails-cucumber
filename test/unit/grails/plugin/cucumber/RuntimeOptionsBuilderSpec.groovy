@@ -38,7 +38,7 @@ class RuntimeOptionsBuilderSpec extends UnitSpec {
         def options = createRuntimeOptions (configObject)
 
         then:
-        options.tags == TAGS
+        options.filters == TAGS
     }
 
     def "does handle no tags configuration" () {
@@ -46,7 +46,7 @@ class RuntimeOptionsBuilderSpec extends UnitSpec {
         def options = createRuntimeOptions (configObject)
 
         then:
-        options.tags.empty
+        options.filters.empty
     }
 
     def "overrides default feature path if features is set" () {

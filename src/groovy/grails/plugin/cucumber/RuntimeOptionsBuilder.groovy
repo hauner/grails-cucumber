@@ -64,7 +64,7 @@ class RuntimeOptionsBuilder {
 
     private void setTags (RuntimeOptions options) {
         configObject.cucumber.tags.each {
-            options.tags.add (it)
+            options.filters.add (it)
         }
     }
 
