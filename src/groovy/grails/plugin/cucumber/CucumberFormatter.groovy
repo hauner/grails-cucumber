@@ -168,7 +168,7 @@ class CucumberFormatter implements Formatter, Reporter {
     }
 
     void result (Result result) {
-        sysout << "CF(result)\n"
+        //sysout << "CF(result)\n"
         advanceActiveStep ()
 
         if (result.status == Result.FAILED) {
