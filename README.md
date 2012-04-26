@@ -7,7 +7,7 @@ The plugin runs cucumber *inside* grails which allows us to call the grails api.
 to call dynamic finders in the step implementations. You can populate the database with test data or check
 domain objects written to the database.
 
-See the [wiki][github wiki]  for more information.
+See the [wiki][github wiki]  for more information, especially the [plugin guide][] or the [introductional  article][article] that walks through a simple example.
 
 [grails]: http://grails.org
 [cucumber]: http://cukes.info
@@ -29,10 +29,24 @@ the cucumber features you call grails by one of the following commands:
 	grails test-app functional:cucumber
 	grails test-app :cucumber
 
-* cucumber features and steps are expected in the `test/functional` folder.
-* the plugin integrates into grails usual test reporting. So failing steps, steps with errors or
-undefined steps are all reported by grails as FAILED. The normal cucumber output can be found in
-`target/test-reports`
+* cucumber features and steps are expected in the `test/functional` folder
+* step implementations look like this:
+ 
+	    this.metaClass.mixin (cucumber.runtime.groovy.EN)
+	
+	    Given (~'^I have specified my app by example$') { ->
+	    	// implement me using groovy and grails code
+	    }
+	    
+		When (~'^I run the specification without failures$') { ->
+	    	// implement me using groovy and grails code
+		}
+		
+		Then (~'^I am confident the app does what the customer wanted$') { ->
+	    	// implement me using groovy and grails code
+		}
+	 
+* failing steps, steps with errors or undefined steps are all reported by grails as FAILED. The normal cucumber output can be found in `target/test-reports`
 
 [grails testtype]: http://ldaley.com/post/615966534/custom-grails-test
 
@@ -45,11 +59,9 @@ see [CHANGES.md](https://github.com/hauner/grails-cucumber/blob/master/CHANGES.m
 ## Todo ##
 
 * support other grails functional test plugins
-* the test report summary prints "Testcase: unknown took 0.065 sec", I do not yet understand why
-  it prints "unknown" instead of the scenario name
 * extend examples
 
-## Tests ##
+## Plugin test code ##
 
 * the plugin has a number of unit tests and a single "cli" test. There are also a number of cucumber
 tests which are not meant to be run directly. They are only used by the "cli" test. You can run the
