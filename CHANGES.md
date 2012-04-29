@@ -1,6 +1,6 @@
 ### 0.4.1 ###
 
-x-th April 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.4.1))
+29th April 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.4.1))
 
 * cucumber features & scenarios are correctly displayed in xml & html reports
 * scenarios are properly reported by name and not as "TestCase: unknown"
