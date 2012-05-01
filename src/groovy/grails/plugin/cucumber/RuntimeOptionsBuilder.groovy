@@ -38,8 +38,10 @@ class RuntimeOptionsBuilder {
     }
 
     private void setGluePaths (RuntimeOptions options) {
-        def glue = configObject.cucumber.glue
+        def fixedGlue = configObject.cucumber.fixedGluePath
+        options.glue << fixedGlue
 
+        def glue = configObject.cucumber.glue
         if (glue) {
             options.glue = configObject.cucumber.glue
         } else {

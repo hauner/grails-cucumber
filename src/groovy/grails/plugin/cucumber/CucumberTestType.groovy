@@ -26,6 +26,7 @@ import cucumber.runtime.Runtime
 import cucumber.runtime.groovy.GroovyBackend
 import cucumber.runtime.snippets.SummaryPrinter
 import grails.plugin.cucumber.io.FileResourceLoader
+import grails.plugin.cucumber.hooks.defaults.Transaction
 
 
 class CucumberTestType extends GrailsTestTypeSupport {
@@ -72,6 +73,7 @@ class CucumberTestType extends GrailsTestTypeSupport {
         def configObject = configReader.parse ()
         configObject.cucumber.defaultFeaturePath = featurePath ()
         configObject.cucumber.defaultGluePath = featurePath ()
+        configObject.cucumber.fixedGluePath = Transaction.class.package.name
 
         //def resourceLoader = new FileResourceLoader ()
         def resourceLoader = new FileResourceLoader (new FileFilter() {
