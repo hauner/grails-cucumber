@@ -1,3 +1,11 @@
+### 0.5.0 ###
+
+x-th May 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.5.0))
+
+* automatically rollback transaction, it is no longer necessary to create an after hook to clean up
+  the database,
+
+
 ### 0.4.1 ###
 
 29th April 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.4.1))
