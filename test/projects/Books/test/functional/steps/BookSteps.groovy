@@ -1,13 +1,7 @@
 import books.BookController
-import books.BookService
 import data.Data
 
 this.metaClass.mixin (cucumber.runtime.groovy.EN)
-
-
-// Scenario State
-BookController bookController
-
 
 
 Given (~"^I open the book tracker\$") { ->
