@@ -3,7 +3,7 @@
 3rd May 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.5.0))
 
 * automatically rollback transaction, it is no longer necessary to create an before or after hook to
-  clean up the database, It can be disabled with a `@notxn`.
+  clean up the database. It can be disabled by adding the cucumber tag `@notxn` to features or scenarios.
 
 
 ### 0.4.1 ###
