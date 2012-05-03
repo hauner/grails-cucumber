@@ -20,9 +20,9 @@ this.metaClass.mixin (cucumber.runtime.groovy.EN)
 
 
 Before () {
-    println "Before Hook"
+    //println "Before Hook"
 }
 
 After () {
-    println "After Hook"
+    //println "After Hook"
 }
