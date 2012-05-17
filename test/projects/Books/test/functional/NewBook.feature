@@ -1,3 +1,4 @@
+@i9n
 Feature: new book entry
     As a book owner
     I want to add books I own to the book tracker

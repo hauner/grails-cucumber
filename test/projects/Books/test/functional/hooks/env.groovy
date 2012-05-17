@@ -1,17 +1,6 @@
-import org.codehaus.groovy.grails.test.support.GrailsTestRequestEnvironmentInterceptor
-
 this.metaClass.mixin (cucumber.runtime.groovy.Hooks)
+this.metaClass.mixin (grails.plugin.cucumber.Hooks)
 
-
-GrailsTestRequestEnvironmentInterceptor scenarioInterceptor
-
-Before () {
-    scenarioInterceptor = new GrailsTestRequestEnvironmentInterceptor (appCtx)
-    scenarioInterceptor.init ()
+hooks {
+    integration ("@i9n")
 }
-
-After () {
-    scenarioInterceptor.destroy ()
-}
-
-
