@@ -26,8 +26,6 @@ import cucumber.runtime.Runtime
 import cucumber.runtime.groovy.GroovyBackend
 import cucumber.runtime.snippets.SummaryPrinter
 import grails.plugin.cucumber.io.FileResourceLoader
-import grails.plugin.cucumber.hooks.defaults.Transaction
-
 
 class CucumberTestType extends GrailsTestTypeSupport {
     static final ENVIRONMENT = Environment.TEST.name
