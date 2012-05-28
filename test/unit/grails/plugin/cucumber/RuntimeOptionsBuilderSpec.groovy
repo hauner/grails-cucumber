@@ -24,7 +24,6 @@ class RuntimeOptionsBuilderSpec extends UnitSpec {
     def TAGS = ["@tags1", "@tags2"]
     def FEATURE_PATH = "test/cucumber"
     def GLUE_PATH = FEATURE_PATH
-    def FIXED_GLUE_PATH = "cucumber/hooks/defaults"
     def CUSTOM_PATHS = ["path_a", "path_b"]
     def configObject = new ConfigObject ()
 
@@ -92,17 +91,6 @@ class RuntimeOptionsBuilderSpec extends UnitSpec {
 
         then:
         options.glue.contains (GLUE_PATH)
-    }
-
-    def "adds default hooks glue path" () {
-        given:
-        configObject.cucumber.fixedGluePath = FIXED_GLUE_PATH
-
-        when:
-        def options = createRuntimeOptions (configObject)
-
-        then:
-        options.glue.contains (FIXED_GLUE_PATH)
     }
 
     def "disables dry run in options" () {
