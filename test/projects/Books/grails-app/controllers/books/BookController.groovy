@@ -6,9 +6,6 @@ class BookController {
     def bookService
 
     def add () {
-        //def book = bookService.add (params)
-        //render book as JSON
-
         render bookService.add (params) as JSON
     }
 
