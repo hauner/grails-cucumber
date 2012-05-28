@@ -27,7 +27,7 @@ class RuntimeOptionsBuilder {
     }
 
     RuntimeOptions build () {
-        def options = new RuntimeOptions ()
+        def options = new RuntimeOptions (new Properties ())
 
         setTags (options)
         setFormatter (options)

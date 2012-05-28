@@ -109,7 +109,6 @@ class CucumberFormatterDelegatingSpec extends GherkinSpec {
         1 * formatter.eof ()
     }
 
-    @SuppressWarnings("GroovyAssignabilityCheck")
     def "delegates syntaxError() to formatter" () {
         when:
         uat.syntaxError ("", "", null, "", 0)

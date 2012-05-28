@@ -89,7 +89,7 @@ class DebugFormatter implements Formatter, Reporter {
         sysout << "F(eof)\n"
     }
 
-    void syntaxError (String state, String event, List<String> legalEvents, String uri, int line) {
+    void syntaxError (String state, String event, List<String> legalEvents, String uri, Integer line) {
         sysout << "F(syntaxError)\n"
     }
 

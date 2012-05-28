@@ -139,7 +139,7 @@ class CucumberFormatter implements Formatter, Reporter {
         formatter.eof ()
     }
 
-    void syntaxError (String state, String event, List<String> legalEvents, String uri, int line) {
+    void syntaxError (String state, String event, List<String> legalEvents, String uri, Integer line) {
         formatter.syntaxError (state, event, legalEvents, uri, line)
     }
 

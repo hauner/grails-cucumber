@@ -77,7 +77,7 @@ class PrettyFormatterWrapper implements Formatter, Reporter {
         pretty.eof ()
     }
 
-    void syntaxError (String state, String event, List<String> legalEvents, String uri, int line) {
+    void syntaxError (String state, String event, List<String> legalEvents, String uri, Integer line) {
         pretty.syntaxError (state, event, legalEvents, uri, line)
     }
 
