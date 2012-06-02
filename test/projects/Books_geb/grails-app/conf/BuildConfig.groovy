@@ -34,8 +34,8 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://repository.jboss.com/maven2/"
     }
 
-    def gebVersion      = "0.6.3"
-    def seleniumVersion = "2.20.0"
+    def gebVersion      = "0.7.0"
+    def seleniumVersion = "2.22.0"
 
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
@@ -62,6 +62,6 @@ grails.project.dependency.resolution = {
         build ":tomcat:$grailsVersion"
 
         test ":geb:$gebVersion"
-        //test ":cucumber:0.2.4"
+        //test ":cucumber:0.5.0"
     }
 }
