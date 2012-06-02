@@ -16,10 +16,10 @@
 
 package grails.plugin.cucumber
 
-import grails.plugin.spock.*
+import spock.lang.Specification
 
 
-class CucumberTestTypeSpec extends UnitSpec {
+class CucumberTestTypeSpec extends Specification {
     private static final String TEST_PHASE = 'functional'
 
     def "the name is 'cucumber'" () {

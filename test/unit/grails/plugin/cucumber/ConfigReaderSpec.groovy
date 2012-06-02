@@ -16,11 +16,11 @@
 
 package grails.plugin.cucumber
 
-import grails.plugin.spock.UnitSpec
 import org.apache.log4j.*
+import spock.lang.Specification
 
 
-class ConfigReaderSpec extends UnitSpec {
+class ConfigReaderSpec extends Specification {
     def configFile
     def configSlurper
     def configObject

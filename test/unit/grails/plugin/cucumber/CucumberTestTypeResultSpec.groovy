@@ -16,10 +16,10 @@
 
 package grails.plugin.cucumber
 
-import grails.plugin.spock.*
+import spock.lang.Specification
 
 
-class CucumberTestTypeResultSpec extends UnitSpec {
+class CucumberTestTypeResultSpec extends Specification {
 
     def "number of passed tests without failures" () {
         when:

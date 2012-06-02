@@ -16,14 +16,14 @@
 
 package grails.plugin.cucumber
 
-import grails.plugin.spock.*
 import static GherkinSpec.*
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest
 import junit.framework.AssertionFailedError
 import cucumber.runtime.UndefinedStepException
+import spock.lang.Specification
 
 
-class FeatureReportSpec extends UnitSpec {
+class FeatureReportSpec extends Specification {
     def report
     def factory
     def uat

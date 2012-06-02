@@ -16,11 +16,11 @@
 
 package grails.plugin.cucumber
 
-import grails.plugin.spock.UnitSpec
 import cucumber.runtime.RuntimeOptions
+import spock.lang.Specification
 
 
-class RuntimeOptionsBuilderSpec extends UnitSpec {
+class RuntimeOptionsBuilderSpec extends Specification {
     def TAGS = ["@tags1", "@tags2"]
     def FEATURE_PATH = "test/cucumber"
     def GLUE_PATH = FEATURE_PATH

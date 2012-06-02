@@ -16,16 +16,16 @@
 
 package grails.plugin.cucumber
 
-import grails.plugin.spock.UnitSpec
 import cucumber.io.ResourceLoader
 import cucumber.runtime.Runtime
 import cucumber.runtime.RuntimeOptions
 import cucumber.runtime.model.CucumberFeature
 import cucumber.runtime.model.CucumberTagStatement
 import cucumber.runtime.snippets.SummaryPrinter
+import spock.lang.Specification
 
 
-class CucumberSpec extends UnitSpec {
+class CucumberSpec extends Specification {
     private static final int SCENARIO_COUNT_A = 2
     private static final int SCENARIO_COUNT_B = 3
     def summaryPrinter = Mock (SummaryPrinter)
@@ -33,11 +33,12 @@ class CucumberSpec extends UnitSpec {
     def options = Mock (RuntimeOptions)
     def runtime = Mock (Runtime)
 
+    /*
     class OptionsStub extends RuntimeOptions {
         def features
 
         OptionsStub (features) {
-            super ([])
+            super (new Properties ())
             formatters.clear ()
             this.features = features
         }
@@ -50,7 +51,7 @@ class CucumberSpec extends UnitSpec {
 
     def setup () {
 
-    }
+    }*/
 
     def "should load features" () {
         given:
