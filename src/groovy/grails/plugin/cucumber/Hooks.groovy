@@ -81,28 +81,28 @@ class Hooks {
          * grails transaction handling for integration tests
          */
         def beforeTransaction = {
-            println "before transaction"
+            //println "before transaction"
             transactionInterceptor = new GrailsTestTransactionInterceptor (appCtx)
             transactionInterceptor.init ()
         }
 
         def afterTransaction = {
             transactionInterceptor.destroy ()
-            println "after transaction"
+            //println "after transaction"
         }
 
         /**
          * grails request handling for integration tests
          */
         def beforeRequest = {
-            println "before request"
+            //println "before request"
             requestInterceptor = new GrailsTestRequestEnvironmentInterceptor (appCtx)
             requestInterceptor.init ()
         }
 
         def afterRequest = {
             requestInterceptor.destroy ()
-            println "after request"
+            //println "after request"
         }
     }
 }
