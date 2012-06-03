@@ -22,7 +22,7 @@ import cucumber.runtime.UndefinedStepException
 
 
 class CucumberFormatterSignalingSpec extends GherkinSpec {
-    def publisher = Mock (GrailsTestEventPublisher)
+    GrailsTestEventPublisher publisher = Mock (GrailsTestEventPublisher)
     def formatter = formatter (publisher)
     
 
@@ -118,81 +118,64 @@ class CucumberFormatterSignalingSpec extends GherkinSpec {
         (1) * publisher.testEnd (scenarioStubB.name)
     }
 
-    def "signals test failure after failing step" () {
+    def "signals scenario failure after failing step" () {
         given:
-        def stepStub = stepStub ()
-        def resultStub = resultStubFail ()
-        formatter.feature (featureStub ())
-        formatter.scenario (scenarioStub ())        
-        formatter.step (stepStub)
+            def resultStub = resultStubFail ()
+            def scenarioStub = scenarioStub ()
+            formatter.feature (featureStub ())
+            formatter.scenario (scenarioStub)
+            formatter.step (stepStub ())
 
         when:
-        formatter.result (resultStub)
+            formatter.result (resultStub)
 
         then:
-        (1) * publisher.testFailure (stepStub.name, resultStub.error)
+            (1) * publisher.testFailure (scenarioStub.name, resultStub.error)
     }
 
-    def "signals test error after erroneous step" () {
+    def "signals scenario error after erroneous step" () {
         given:
-        def stepStub = stepStub ()
-        def resultStub = resultStubError ()
-        formatter.feature (featureStub ())
-        formatter.scenario (scenarioStub ())        
-        formatter.step (stepStub)
+            def resultStub = resultStubError ()
+            def scenarioStub = scenarioStub ()
+            formatter.feature (featureStub ())
+            formatter.scenario (scenarioStub)
+            formatter.step (stepStub ())
 
         when:
-        formatter.result (resultStub)
+            formatter.result (resultStub)
 
         then:
-        (1) * publisher.testFailure (stepStub.name, resultStub.error, true)
+            (1) * publisher.testFailure (scenarioStub.name, resultStub.error, true)
     }
 
-    def "signals test failure after undefined step" () {
+    def "signals scenario failure after undefined step" () {
         given:
-        def stepStub = stepStub ()
-        def resultStub = Result.UNDEFINED
-        formatter.feature (featureStub ())
-        formatter.scenario (scenarioStub ())        
-        formatter.step (stepStub)
+            def resultStub = Result.UNDEFINED
+            def scenarioStub = scenarioStub ()
+            formatter.feature (featureStub ())
+            formatter.scenario (scenarioStub)
+            formatter.step (stepStub ())
 
         when:
-        formatter.result (resultStub)
+            formatter.result (resultStub)
 
         then:
-        //1 * publisher.testFailure (stepStub.name, "undefined") crashes IDEA
-        (1) * publisher.testFailure (stepStub.name, (UndefinedStepException)_)
+            //1 * publisher.testFailure (stepStub.name, "undefined") crashes IDEA
+            (1) * publisher.testFailure (scenarioStub.name, (UndefinedStepException)_)
     }
 
-    def "does NOT signal test failure after skipped step" () {
+    def "does NOT signal scenario failure after skipped step" () {
         given:
-        def stepStub = stepStub ()
-        def resultStub = Result.SKIPPED
-        formatter.feature (featureStub ())
-        formatter.scenario (scenarioStub ())        
-        formatter.step (stepStub)
+            def resultStub = Result.SKIPPED
+            def scenarioStub = scenarioStub ()
+            formatter.feature (featureStub ())
+            formatter.scenario (scenarioStub)
+            formatter.step (stepStub ())
 
         when:
-        formatter.result (resultStub)
+            formatter.result (resultStub)
 
         then:
-        (0) * publisher.testFailure (stepStub.name, "skipped")
-    }
-    
-    def "signals test failure for current step" () {
-        given:
-        def stepStubA = stepStub (STEP_NAME_A)
-        def stepStubB = stepStub (STEP_NAME_B)
-        formatter.feature (featureStub ())
-        formatter.scenario (scenarioStub ())
-        formatter.step (stepStubA)
-        formatter.step (stepStubB)
-
-        when:
-        formatter.result (resultStubPass ())        
-        formatter.result (resultStubFail ())
-
-        then:
-        (1) * publisher.testFailure (stepStubB.name, (Throwable)_)
+            (0) * publisher.testFailure ((String)_, (String)_)
     }
 }

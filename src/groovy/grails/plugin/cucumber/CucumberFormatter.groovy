@@ -174,13 +174,13 @@ class CucumberFormatter implements Formatter, Reporter {
         if (result.status == Result.FAILED) {
             if (result.error instanceof AssertionError) {
                 report.addFailure ((AssertionError)result.error)
-                publisher.testFailure (getActiveStepName (), result.error)
+                publisher.testFailure (getActiveScenarioName (), result.error)
                 
                 fail (getActiveScenarioName ())
             }
             else {
                 report.addError (result.error)
-                publisher.testFailure (getActiveStepName(), result.error, true)
+                publisher.testFailure (getActiveScenarioName (), result.error, true)
                 
                 error (getActiveScenarioName ())
             }            
@@ -193,7 +193,7 @@ class CucumberFormatter implements Formatter, Reporter {
         else if (result == Result.UNDEFINED) {
             def error = new UndefinedStepException(activeStep)
             report.addUndefined (error)
-            publisher.testFailure (getActiveStepName (), error)
+            publisher.testFailure (getActiveScenarioName (), error)
             
             fail (getActiveScenarioName ())
         }
@@ -224,21 +224,17 @@ class CucumberFormatter implements Formatter, Reporter {
     }
 
     private String getActiveStepName () {
-        if (activeStep) {
-            activeStep.getName ()
+        if (! activeStep) {
+            return "no step"
         }
-        else {
-            "no step"
-        }
+        activeStep.getName ()
     }
 
     private String getActiveScenarioName () {
-        if (activeScenario) {
-            activeScenario.getName ()
+        if (! activeScenario) {
+            return "no scenario"
         }
-        else {
-            "no scenario"
-        }
+        activeScenario.getName ()
     }
 
 }
