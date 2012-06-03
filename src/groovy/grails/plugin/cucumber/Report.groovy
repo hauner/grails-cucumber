@@ -59,7 +59,8 @@ class Report {
 
 
     void startTest (CucumberTest test) {
-        streams*.println (header (test))
+        streams*.write (header (test).bytes)
+        //streams*.println (header (test)) broken!?
         report.startTest (test)
         runs++
     }
