@@ -202,18 +202,19 @@ class ReportSpec extends GherkinSpec {
     }
 
     def "starting test prints header to out & err stream" () {
-        swapper.swapIn () >> [out, err]
-        def suite = Mock (JUnitTest)
-        def test = Mock (CucumberTest)
-        test.toString () >> "TESTNAME"
-        def header = uat.header (test)
+        given:
+            swapper.swapIn () >> [out, err]
+            def suite = Mock (JUnitTest)
+            def test = Mock (CucumberTest)
+            test.toString () >> "TESTNAME"
+            def header = uat.header (test)
 
         when:
-        uat.startTestSuite (suite)
-        uat.startTest (test)
+            uat.startTestSuite (suite)
+            uat.startTest (test)
 
         then:
-        (1) * out.println (header)
-        (1) * err.println (header)
+            (1) * out.write (header.bytes)
+            (1) * err.write (header.bytes)
     }
 }
