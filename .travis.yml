@@ -1,3 +1,5 @@
 language: groovy
 jdk:
   - openjdk6
+
+script: "gradle grails-test-app --project-prop arg0=unit:spock"
