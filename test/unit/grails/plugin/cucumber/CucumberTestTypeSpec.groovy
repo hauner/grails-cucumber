@@ -24,7 +24,7 @@ class CucumberTestTypeSpec extends Specification {
 
     def "the name is 'cucumber'" () {
         when:
-        def testType = new CucumberTestType (TEST_PHASE, null, null)
+        def testType = new CucumberTestType (TEST_PHASE)
 
         then:
         testType.name == "cucumber"
@@ -32,7 +32,7 @@ class CucumberTestTypeSpec extends Specification {
 
     def "the relative source path is 'functional'" () {
         when:
-        def testType = new CucumberTestType (TEST_PHASE, null, null)
+        def testType = new CucumberTestType (TEST_PHASE)
 
         then:
         testType.relativeSourcePath == TEST_PHASE
@@ -40,7 +40,7 @@ class CucumberTestTypeSpec extends Specification {
 
     def "the test extension is 'feature'" () {
         when:
-        def testType = new CucumberTestType (TEST_PHASE, null, null)
+        def testType = new CucumberTestType (TEST_PHASE)
 
         then:
         testType.testExtensions.size() == 1
