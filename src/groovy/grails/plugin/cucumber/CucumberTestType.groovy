@@ -34,13 +34,11 @@ class CucumberTestType extends GrailsTestTypeSupport {
     static final CONFIG_PATH = ["grails-app", "conf", CONFIG_NAME].join (File.separator)
     static final NAME = "cucumber"
 
-    String baseDir
-
     Cucumber cucumber
 
-    CucumberTestType (String testPhase, String baseDir) {
+
+    CucumberTestType (String testPhase) {
         super (NAME, testPhase)
-        this.baseDir = baseDir
     }
 
     @Override

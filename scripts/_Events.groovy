@@ -43,7 +43,7 @@ eventTestPhasesStart = { phases ->
 
     [functional: functionalTests].each { name, types ->
         if (!types.any {it.class == testType}) {
-            types << testType.newInstance (name, grailsSettings.baseDir.path)
+            types << testType.newInstance (name)
         }
     }
 }
