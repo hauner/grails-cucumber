@@ -34,14 +34,12 @@ class CucumberTestType extends GrailsTestTypeSupport {
     static final CONFIG_PATH = ["grails-app", "conf", CONFIG_NAME].join (File.separator)
     static final NAME = "cucumber"
 
-    GroovyShell grailsShell
     String baseDir
 
     Cucumber cucumber
 
-    CucumberTestType (String testPhase, String baseDir, GroovyShell grailsShell) {
+    CucumberTestType (String testPhase, String baseDir) {
         super (NAME, testPhase)
-        this.grailsShell = grailsShell
         this.baseDir = baseDir
     }
 
@@ -86,7 +84,7 @@ class CucumberTestType extends GrailsTestTypeSupport {
     }
 
     private Binding createBinding () {
-        Map variables = grailsShell.context.variables.clone () as Map
+        Map variables = buildBinding.variables.clone () as Map
         variables.remove ("metaClass")
         variables.remove ("getMetaClass")
         variables.remove ("setMetaClass")
