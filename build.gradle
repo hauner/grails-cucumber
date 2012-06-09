@@ -1,0 +1,14 @@
+buildscript {
+    repositories {
+        mavenCentral ()
+    }
+    dependencies {
+        classpath 'com.connorgarvey.gradle:gradle-grails-wrapper:0.4.1'
+    }
+}
+
+apply plugin: 'grails'
+
+grails {
+  version '2.0.4'
+}
