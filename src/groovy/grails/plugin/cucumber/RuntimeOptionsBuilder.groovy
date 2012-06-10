@@ -17,6 +17,7 @@
 package grails.plugin.cucumber
 
 import cucumber.runtime.RuntimeOptions
+import cucumber.runtime.PathWithLines
 
 
 class RuntimeOptionsBuilder {
@@ -34,7 +35,34 @@ class RuntimeOptionsBuilder {
         setGluePaths (options)
         setFeaturePaths (options)
 
+        addCliFilter (options)
+
         options
+    }
+
+    def addCliFilter (RuntimeOptions options) {
+        def args = configObject.cucumber.cliOptions
+        if (!args)
+            return
+
+        options.filters.clear ()
+
+        while (!args.empty) {
+            String arg = args.remove (0)
+
+            switch (arg) {
+                case ['++tags', '+t']:
+                    options.filters << args.remove (0)
+                    break
+                case ['++name', '+n']:
+                    options.filters << ~args.remove (0)
+                    break
+                default:
+                    PathWithLines pathWithLines = new PathWithLines (arg.replace ('|', ':'))
+                    options.featurePaths << pathWithLines.path
+                    options.filters << pathWithLines.lines
+            }
+        }
     }
 
     private void setGluePaths (RuntimeOptions options) {
@@ -66,6 +94,5 @@ class RuntimeOptionsBuilder {
             options.filters.add (it)
         }
     }
-
 
 }

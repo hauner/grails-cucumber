@@ -18,6 +18,7 @@ package grails.plugin.cucumber
 
 import cucumber.runtime.RuntimeOptions
 import spock.lang.Specification
+import java.util.regex.Pattern
 
 
 class RuntimeOptionsBuilderSpec extends Specification {
@@ -27,7 +28,9 @@ class RuntimeOptionsBuilderSpec extends Specification {
     def CUSTOM_PATHS = ["path_a", "path_b"]
     def configObject = new ConfigObject ()
 
-    def setup () {
+
+    RuntimeOptions createRuntimeOptions (ConfigObject configObject) {
+        new RuntimeOptionsBuilder (configObject).build ()
     }
 
     def "adds tags from configuration to options" () {
@@ -109,7 +112,78 @@ class RuntimeOptionsBuilderSpec extends Specification {
         options.formatters.empty
     }
 
-    RuntimeOptions createRuntimeOptions (ConfigObject configObject) {
-        new RuntimeOptionsBuilder (configObject).build ()
+    def "adds '++tags|+t tag' filter from cli" () {
+        given:
+            configObject.cucumber.cliOptions = [
+                '+t',     '@short',
+                '++tags', '@full',
+            ]
+
+        when:
+            def options = createRuntimeOptions (configObject)
+
+        then:
+            options.filters.size () == 2
+            options.filters.find { it == "@short" }
+            options.filters.find { it == "@full" }
     }
+
+    def "adds '++name|+n scenario regex' filter from cli" () {
+        given:
+            configObject.cucumber.cliOptions = [
+                '+n',     '@short',
+                '++name', '@full',
+            ]
+
+        when:
+            def options = createRuntimeOptions (configObject)
+
+        then:
+            options.filters.size () == 2
+            options.filters.find { Pattern p -> p.pattern () == "@short" }
+            options.filters.find { Pattern p -> p.pattern () == "@full" }
+    }
+
+    def "adds '[[FILE|DIR|URL][|LINE[|LINE]*]]+' filter from cli" () {
+        given:
+            configObject.cucumber.cliOptions = [
+                'my/feature/a|1',
+                'my/feature/b|1|2'
+            ]
+
+        when:
+            def options = createRuntimeOptions (configObject)
+
+        then:
+            options.featurePaths.contains('my/feature/a')
+            options.featurePaths.contains('my/feature/b')
+            options.filters.size () == 2
+            options.filters.contains([1L])
+            options.filters.contains([1L, 2L])
+    }
+
+    def "cli filter override config filter" () {
+        given:
+            configObject.cucumber.tags = TAGS
+            configObject.cucumber.cliOptions = ['anything']
+
+        when:
+            def options = createRuntimeOptions (configObject)
+
+        then:
+            options.filters.indexOf (TAGS[0]) < 0
+            options.filters.indexOf (TAGS[1]) < 0
+    }
+
+    /*
+    def "gives warning when multiple filter types are given on cli" () {
+        given:
+            configObject.cucumber.cliOptions = [
+                '+n',     '@short',
+                '++name', '@full',
+                'my/feature/a:1'
+            ]
+
+    }
+    */
 }
