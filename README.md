@@ -56,11 +56,6 @@ see [CHANGES.md](https://github.com/hauner/grails-cucumber/blob/master/CHANGES.m
 
 # Development #
 
-## Todo ##
-
-* support other grails functional test plugins
-* extend examples
-
 ## Plugin test code ##
 
 * the plugin has a number of unit tests and a single "cli" test. There are also a number of cucumber
