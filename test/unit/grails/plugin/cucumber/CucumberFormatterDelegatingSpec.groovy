@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Martin Hauner
+ * Copyright 2011-2012 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -117,6 +117,18 @@ class CucumberFormatterDelegatingSpec extends GherkinSpec {
         1 * formatter.syntaxError (_, _, _, _, 0)
     }
 
+    def "delegates before() to reporter" () {
+        given:
+            def match = matchStub ()
+            def result = resultStubPass ()
+
+        when:
+            uat.before (match, result)
+
+        then:
+            1 * reporter.before (match, result)
+    }
+
     def "delegates result() to reporter" () {
         given:
         def step = stepStub ()
@@ -128,6 +140,18 @@ class CucumberFormatterDelegatingSpec extends GherkinSpec {
 
         then:
         1 * reporter.result (result)
+    }
+
+    def "delegates after() to reporter" () {
+        given:
+            def match = matchStub ()
+            def result = resultStubPass ()
+
+        when:
+            uat.after (match, result)
+
+        then:
+            1 * reporter.after (match, result)
     }
 
     def "delegates match() to reporter" () {

@@ -93,8 +93,16 @@ class PrettyFormatterWrapper implements Formatter, Reporter {
     * Reporter
     */
 
+    void before (Match match, Result result) {
+        pretty.before (match, result)
+    }
+
     void result (Result result) {
         pretty.result (result)
+    }
+
+    void after (Match match, Result result) {
+        pretty.after (match, result)
     }
 
     void match (Match match) {

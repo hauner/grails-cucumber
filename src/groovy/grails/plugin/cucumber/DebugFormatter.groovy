@@ -109,8 +109,16 @@ class DebugFormatter implements Formatter, Reporter {
      * Reporter
      */
 
+    void before (Match match, Result result) {
+        sysout << "R(before)"
+    }
+
     void result (Result result) {
         sysout << "R(result):\n"
+    }
+
+    void after (Match match, Result result) {
+        sysout << "R(after)"
     }
 
     void match (Match match) {

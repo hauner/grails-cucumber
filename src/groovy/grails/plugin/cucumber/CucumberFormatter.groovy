@@ -167,6 +167,10 @@ class CucumberFormatter implements Formatter, Reporter {
         reporter.write (s)
     }
 
+    void before (Match match, Result result) {
+        reporter.before (match, result)
+    }
+
     void result (Result result) {
         //sysout << "CF(result)\n"
         advanceActiveStep ()
@@ -202,6 +206,10 @@ class CucumberFormatter implements Formatter, Reporter {
         }
         
         reporter.result (result)
+    }
+
+    void after (Match match, Result result) {
+        reporter.after (match, result)
     }
 
     private void fail (String scenario) {
