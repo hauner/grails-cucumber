@@ -27,7 +27,7 @@ class RuntimeOptionsBuilder {
         this.configObject = configObject
     }
 
-    RuntimeOptions build () {
+    RuntimeOptions build (List<String> args) {
         def options = new RuntimeOptions (new Properties ())
 
         setTags (options)
@@ -35,11 +35,31 @@ class RuntimeOptionsBuilder {
         setGluePaths (options)
         setFeaturePaths (options)
 
-        addCliFilter (options)
+        addCliFilter (options, args)
+        //addCliFilter (options) //-Dcucumber.options='--tags @ignore --name .*bla.* file/feature:8:9'
 
         options
     }
 
+    def addCliFilter (RuntimeOptions options, List<String> args) {
+        if (args.size() < 2 || ! args.first().contains(":cucumber")) {
+            return
+        }
+
+        options.filters.clear ()
+
+        args.each { arg ->
+            switch (arg) {
+                case ~/\w*:cucumber/:
+                    break;
+                case ~/~?@.+(:\d)?/:
+                    options.filters << arg
+                    break;
+            }
+        }
+    }
+
+    // obsolete
     def addCliFilter (RuntimeOptions options) {
         def args = configObject.cucumber.cliOptions
         if (!args)

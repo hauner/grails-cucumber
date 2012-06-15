@@ -30,7 +30,11 @@ class RuntimeOptionsBuilderSpec extends Specification {
 
 
     RuntimeOptions createRuntimeOptions (ConfigObject configObject) {
-        new RuntimeOptionsBuilder (configObject).build ()
+        new RuntimeOptionsBuilder (configObject).build ([])
+    }
+
+    RuntimeOptions createRuntimeOptions (ConfigObject configObject, List<String> args) {
+        new RuntimeOptionsBuilder (configObject).build (args)
     }
 
     def "adds tags from configuration to options" () {
@@ -112,22 +116,7 @@ class RuntimeOptionsBuilderSpec extends Specification {
         options.formatters.empty
     }
 
-    def "adds '++tags|+t tag' filter from cli" () {
-        given:
-            configObject.cucumber.cliOptions = [
-                '+t',     '@short',
-                '++tags', '@full',
-            ]
-
-        when:
-            def options = createRuntimeOptions (configObject)
-
-        then:
-            options.filters.size () == 2
-            options.filters.find { it == "@short" }
-            options.filters.find { it == "@full" }
-    }
-
+    /*
     def "adds '++name|+n scenario regex' filter from cli" () {
         given:
             configObject.cucumber.cliOptions = [
@@ -142,8 +131,9 @@ class RuntimeOptionsBuilderSpec extends Specification {
             options.filters.size () == 2
             options.filters.find { Pattern p -> p.pattern () == "@short" }
             options.filters.find { Pattern p -> p.pattern () == "@full" }
-    }
+    }*/
 
+    /*
     def "adds '[[FILE|DIR|URL][|LINE[|LINE]*]]+' filter from cli" () {
         given:
             configObject.cucumber.cliOptions = [
@@ -160,19 +150,57 @@ class RuntimeOptionsBuilderSpec extends Specification {
             options.filters.size () == 2
             options.filters.contains([1L])
             options.filters.contains([1L, 2L])
+    }*/
+
+    def "evaluate cli if first arg contains ':cucumber'" () {
+        given:
+            def args = [':cucumber', '@tag']
+
+        when:
+            def options = createRuntimeOptions (configObject, args)
+
+        then:
+            ! options.filters.contains (args[0])
+            options.filters.contains (args[1])
+    }
+
+    def "ignore cli if first arg is not ':cucumber'" () {
+        given:
+            def args = ['functional:', '@tag']
+
+        when:
+            def options = createRuntimeOptions (configObject, args)
+
+        then:
+            ! options.filters.contains (args[0])
+            ! options.filters.contains (args[1])
     }
 
     def "cli filter override config filter" () {
         given:
             configObject.cucumber.tags = TAGS
-            configObject.cucumber.cliOptions = ['anything']
+            def args = [':cucumber', 'anything']
 
         when:
-            def options = createRuntimeOptions (configObject)
+            def options = createRuntimeOptions (configObject, args)
 
         then:
             options.filters.indexOf (TAGS[0]) < 0
             options.filters.indexOf (TAGS[1]) < 0
+    }
+
+    def "adds auto detected tag filter from cli" () {
+        given:
+            def args = [':cucumber', '@tag1', '~@tag2', '@tagA,@tagB', '@tag:9']
+
+        when:
+            def options = createRuntimeOptions (configObject, args)
+
+        then:
+            options.filters.contains (args[1])
+            options.filters.contains (args[2])
+            options.filters.contains (args[3])
+            options.filters.contains (args[4])
     }
 
     /*

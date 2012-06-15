@@ -68,7 +68,8 @@ class CucumberTestType extends GrailsTestTypeSupport {
         def configObject = configReader.parse ()
         configObject.cucumber.defaultFeaturePath = featurePath ()
         configObject.cucumber.defaultGluePath = featurePath ()
-        configObject.cucumber.cliOptions = testTargetPatterns.collect {it -> it.rawPattern}
+        def args = buildBinding.argsMap.params
+        //def properties = System.getProperties().getProperty("cucumber.options")
 
         def resourceLoader = new FileResourceLoader ()
         def classLoader = getTestClassLoader ()
@@ -76,7 +77,7 @@ class CucumberTestType extends GrailsTestTypeSupport {
         def groovyBackend = new GroovyBackend (groovyShell, resourceLoader)
 
         def summaryPrinter = new SummaryPrinter (System.out)
-        def runtimeOptions = new RuntimeOptionsBuilder (configObject).build ()
+        def runtimeOptions = new RuntimeOptionsBuilder (configObject).build (args)
         def runtime = new Runtime (resourceLoader, classLoader, [groovyBackend], runtimeOptions)
 
         cucumber = new Cucumber (resourceLoader, runtime, runtimeOptions, summaryPrinter)
