@@ -1,6 +1,7 @@
 ### 0.6.0 ###
 
-23th June 2012 ([source code](https://github.com/hauner/grails-cucumber))
+23th June 2012 3rd May 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.6.0))
+
 
 * removed automatic transaction rollback, see [this blog](transaction) for more. The short version
   is that it works only in limited situations (like integration test mode). We have to handle this
