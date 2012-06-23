@@ -1,6 +1,12 @@
+### master ###
+
+unreleased ([source code](https://github.com/hauner/grails-cucumber))
+
+* ...
+
 ### 0.6.0 ###
 
-23th June 2012 3rd May 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.6.0))
+23th June 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.6.0))
 
 
 * removed automatic transaction rollback, see [this blog](transaction) for more. The short version
