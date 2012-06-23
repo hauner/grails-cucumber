@@ -1,3 +1,37 @@
+### 0.6.0 ###
+
+23th June 2012 ([source code](https://github.com/hauner/grails-cucumber))
+
+* removed automatic transaction rollback, see [this blog](transaction) for more. The short version
+  is that it works only in limited situations (like integration test mode). We have to handle this
+  ourself via `Before/After` hooks (or the `hooks` configuration).
+
+* enable grails integration test mode with some simple configuration instead of hand rolling a
+  `Before/After` hook pair. Put the following code into a cucumber groovy script (like env.groovy)
+  to enable the grails [integration test](integration) features.
+
+        hooks {
+            // examples:
+            transaction ()             // for all cucumber features/scenarios
+            transaction ("@i9n")       // only for features/scenarios tagged with "@i9n"
+        }
+        
+    The `transaction` parameters will be passed as tags to a pair of cucumber `Before` & `After` hooks.
+    That means you can use the same tag syntax you would use for the cucumber hooks.
+
+* set tags on the command line. If the command line contains `:cucumber`, `@tag` parameters are
+  evaluated to filter execution of features or scenarios. Standard cucumber syntax applies without the
+   `--tags` option keyword. Setting tags on the comand line will overwrite `CucumberConfig.groovy`.
+
+    Example:
+
+        grails test-app :cucumber @foo,~@bar @zap
+
+* improved reporting, the plugin  
+
+[transactions]: http://softnoise.wordpress.com/2012/05/28/cucumber-grails-transaction-rollback
+[integration]: http://grails.org/doc/latest/guide/testing.html#integrationTesting
+
 ### 0.5.0 ###
 
 3rd May 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.5.0))
