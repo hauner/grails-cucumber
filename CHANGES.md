@@ -27,7 +27,8 @@
 
         grails test-app :cucumber @foo,~@bar @zap
 
-* improved reporting, the plugin  
+* improved reporting, the plugin no longer report a failing *step* as a failing *test*. It created
+  quite confusing test reports.
 
 [transactions]: http://softnoise.wordpress.com/2012/05/28/cucumber-grails-transaction-rollback
 [integration]: http://grails.org/doc/latest/guide/testing.html#integrationTesting
