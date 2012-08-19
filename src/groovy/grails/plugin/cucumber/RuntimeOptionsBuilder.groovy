@@ -86,19 +86,18 @@ class RuntimeOptionsBuilder {
     }
 
     private void setGluePaths (RuntimeOptions options) {
-        def glue = configObject.cucumber.glue
-        if (glue) {
-            options.glue = configObject.cucumber.glue
+        if (configObject.cucumber.glue) {
+            options.glue.clear ()
+            options.glue.addAll (configObject.cucumber.glue)
         } else {
             options.glue << configObject.cucumber.defaultGluePath
         }
     }
 
     private void setFeaturePaths (RuntimeOptions options) {
-        def features = configObject.cucumber.features
-
-        if (features) {
-            options.featurePaths = features
+        if (configObject.cucumber.features) {
+            options.featurePaths.clear ()
+            options.featurePaths.addAll (configObject.cucumber.features)
         } else {
             options.featurePaths << configObject.cucumber.defaultFeaturePath
         }
