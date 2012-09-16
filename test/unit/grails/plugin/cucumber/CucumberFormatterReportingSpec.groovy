@@ -67,6 +67,21 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         (1) * report.startScenario (SCENARIO_NAME_B)
     }
 
+    def "report end scenario before new scenario" () {
+        given:
+            def scenarioA = scenarioStub (SCENARIO_NAME_A)
+            def scenarioB = scenarioStub (SCENARIO_NAME_B)
+            def ignore    = scenarioStub ("ignore")
+
+        when:
+            uat.scenario (scenarioA)
+            uat.scenario (scenarioB)
+            uat.scenario (ignore)
+
+        then:
+            2 * report.endScenario ()
+    }
+
     def "report end scenario before a new feature" () {
         given:
         def scenario = scenarioStub ()

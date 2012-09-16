@@ -110,6 +110,12 @@ class CucumberFormatter implements Formatter, Reporter {
     void scenario (Scenario scenario) {
         //sysout << "CF(scenario)\n"
 
+        if (activeScenario) {
+            //sysout << "CF(feature scenario.end)\n"
+            report.endScenario ()
+            publisher.testEnd (activeScenario.getName ())
+        }
+
         activeScenario = scenario
         publisher.testStart (activeScenario.getName ())
         report.startScenario (activeScenario.getName ())
