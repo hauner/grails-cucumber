@@ -109,8 +109,8 @@ class PrettyFormatterWrapper implements Formatter, Reporter {
         pretty.match (match)
     }
 
-    void embedding (String mimeType, InputStream inputStream) {
-        pretty.embedding (mimeType, inputStream)
+    void embedding (String mimeType, byte[] data) {
+        pretty.embedding (mimeType, data)
     }
 
     void write (String text) {

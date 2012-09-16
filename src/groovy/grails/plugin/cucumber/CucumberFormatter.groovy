@@ -159,8 +159,8 @@ class CucumberFormatter implements Formatter, Reporter {
         reporter.match (match)
     }
 
-    void embedding (String s, InputStream inputStream) {
-        reporter.embedding (s, inputStream)
+    void embedding (String mimeType, byte[] data) {
+        reporter.embedding (mimeType, data)
     }
 
     void write (String s) {

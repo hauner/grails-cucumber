@@ -127,10 +127,10 @@ class DebugFormatter implements Formatter, Reporter {
         pretty.match (match)
     }
 
-    void embedding (String s, InputStream inputStream) {
+    void embedding (String mimeType, byte[] data) {
         sysout << "R(embedding):\n"
-        
-        pretty.embedding (s, inputStream)
+
+        pretty.embedding (mimeType, data)
     }
 
     void write (String s) {
