@@ -2,6 +2,12 @@
 
 unreleased ([source code](https://github.com/hauner/grails-cucumber))
 
+...
+
+### 0.6.1 ###
+
+16th September 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.6.1))
+
 * fixed another reporting bug (missing end scenario notifcation)
 * updated to cucumber-jvm 1.0.14
 
@@ -40,6 +46,7 @@ unreleased ([source code](https://github.com/hauner/grails-cucumber))
 
 [transactions]: http://softnoise.wordpress.com/2012/05/28/cucumber-grails-transaction-rollback
 [integration]: http://grails.org/doc/latest/guide/testing.html#integrationTesting
+
 
 ### 0.5.0 ###
 
