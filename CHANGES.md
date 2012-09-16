@@ -2,12 +2,13 @@
 
 unreleased ([source code](https://github.com/hauner/grails-cucumber))
 
-* ...
+* fixed another reporting bug (missing end scenario notifcation)
+* updated to cucumber-jvm 1.0.14
+
 
 ### 0.6.0 ###
 
 23th June 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.6.0))
-
 
 * removed automatic transaction rollback, see [this blog](transaction) for more. The short version
   is that it works only in limited situations (like integration test mode). We have to handle this
