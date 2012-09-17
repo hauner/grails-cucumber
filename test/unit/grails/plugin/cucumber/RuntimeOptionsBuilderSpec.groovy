@@ -18,7 +18,6 @@ package grails.plugin.cucumber
 
 import cucumber.runtime.RuntimeOptions
 import spock.lang.Specification
-import java.util.regex.Pattern
 
 
 class RuntimeOptionsBuilderSpec extends Specification {
@@ -67,6 +66,19 @@ class RuntimeOptionsBuilderSpec extends Specification {
         options.featurePaths == CUSTOM_PATHS
     }
 
+    def "feature paths contains only 'String's" () {
+        given:
+            def g = "G"
+            configObject.cucumber.features = ["String", "${g}String"]
+
+        when:
+            def featurePaths = createRuntimeOptions (configObject).featurePaths
+
+
+        then:
+            featurePaths*.class == [String.class] * featurePaths.size()
+    }
+
     def "adds default feature path if features is not set" () {
         given:
         configObject.cucumber.defaultFeaturePath = FEATURE_PATH
@@ -87,6 +99,19 @@ class RuntimeOptionsBuilderSpec extends Specification {
 
         then:
         options.glue == CUSTOM_PATHS
+    }
+
+    def "glue paths contains only 'String's" () {
+        given:
+            def g = "G"
+            configObject.cucumber.glue = ["String", "${g}String"]
+
+        when:
+            def glue = createRuntimeOptions (configObject).glue
+
+
+        then:
+            glue*.class == [String.class] * glue.size()
     }
 
     def "adds default glue path if glue is not set" () {

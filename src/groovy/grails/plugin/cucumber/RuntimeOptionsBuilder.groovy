@@ -88,7 +88,9 @@ class RuntimeOptionsBuilder {
     private void setGluePaths (RuntimeOptions options) {
         if (configObject.cucumber.glue) {
             options.glue.clear ()
-            options.glue.addAll (configObject.cucumber.glue)
+            configObject.cucumber.glue.each { path ->
+                options.glue << path.toString ()  // *NO* GString
+            }
         } else {
             options.glue << configObject.cucumber.defaultGluePath
         }
@@ -97,7 +99,9 @@ class RuntimeOptionsBuilder {
     private void setFeaturePaths (RuntimeOptions options) {
         if (configObject.cucumber.features) {
             options.featurePaths.clear ()
-            options.featurePaths.addAll (configObject.cucumber.features)
+            configObject.cucumber.features.each { path ->
+                options.featurePaths << path.toString ()  // *NO* GString
+            }
         } else {
             options.featurePaths << configObject.cucumber.defaultFeaturePath
         }
