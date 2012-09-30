@@ -29,9 +29,9 @@ class Report {
     long startTime
     def streams
 
-    long failures
-    long errors
-    long runs
+    Set<CucumberTest> failures = [] as Set<CucumberTest>
+    Set<CucumberTest> errors = [] as Set<CucumberTest>
+    Set<CucumberTest> runs = [] as Set<CucumberTest>
 
     Report (JUnitReports report, SystemOutAndErrSwapper swapper, Timer timer) {
         this.report = report
@@ -49,7 +49,7 @@ class Report {
     void endTestSuite (JUnitTest suite) {
         timer.stop ()
         suite.runTime = timer.runtime ()
-        suite.setCounts (runs, failures, errors)
+        suite.setCounts (runs.size (), failures.size (), errors.size ())
 
         def (out, err) = swapper.swapOut()*.toString ()
         report.systemOutput = out
@@ -62,7 +62,7 @@ class Report {
         streams*.write (header (test).bytes)
         //streams*.println (header (test)) broken!?
         report.startTest (test)
-        runs++
+        runs.add (test)
     }
 
     void endTest (CucumberTest test) {
@@ -71,12 +71,12 @@ class Report {
 
     void addFailure (CucumberTest test, Throwable failure) {
         report.addFailure (test, new FakeAssertionFailedError (failure))
-        failures++
+        failures.add (test)
     }
 
     void addError (CucumberTest test, Throwable error) {
         report.addError (test, error)
-        errors++
+        errors.add (test)
     }
 
     String header (CucumberTest test) {

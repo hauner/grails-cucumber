@@ -126,46 +126,91 @@ class ReportSpec extends GherkinSpec {
         (1) * report.endTest (test)
     }
 
-    @SuppressWarnings("GroovyAssignabilityCheck")
     def "counts tests" () {
-        swapper.swapOut() >> [out, err]
-        def suite = Mock (JUnitTest)
+        given:
+            swapper.swapOut() >> [out, err]
+            def suite = Mock (JUnitTest)
 
         when:
-        uat.startTest (null)
-        uat.startTest (null)
-        uat.endTestSuite (suite)
+            uat.startTest (new CucumberTest ())
+            uat.startTest (new CucumberTest ())
+            uat.endTestSuite (suite)
 
         then:
-        (1) * suite.setCounts (2, _, _)
+            1 * suite.setCounts (2, (Long)_, (Long)_)
     }
 
-    @SuppressWarnings("GroovyAssignabilityCheck")
     def "counts failures" () {
-        swapper.swapOut() >> [out, err]
-        def suite = Mock (JUnitTest)
+        given:
+            swapper.swapOut() >> [out, err]
+            def suite = Mock (JUnitTest)
 
         when:
-        uat.addFailure (null, null)
-        uat.addFailure (null, null)
-        uat.endTestSuite (suite)
+            uat.addFailure (new CucumberTest (), null)
+            uat.addFailure (new CucumberTest (), null)
+            uat.endTestSuite (suite)
 
         then:
-        (1) * suite.setCounts (_, 2, _)
+            1 * suite.setCounts ((Long)_, 2, (Long)_)
     }
 
-    @SuppressWarnings("GroovyAssignabilityCheck")
     def "counts errors" () {
-        swapper.swapOut() >> [out, err]
-        def suite = Mock (JUnitTest)
+        given:
+            swapper.swapOut() >> [out, err]
+            def suite = Mock (JUnitTest)
 
         when:
-        uat.addError (null, null)
-        uat.addError (null, null)
-        uat.endTestSuite (suite)
+            uat.addError (new CucumberTest (), null)
+            uat.addError (new CucumberTest (), null)
+            uat.endTestSuite (suite)
 
         then:
-        (1) * suite.setCounts (_, _, 2)
+            1 * suite.setCounts ((Long)_, (Long)_, 2)
+    }
+
+    def "counts each test only once" () {
+        given:
+            swapper.swapOut() >> [out, err]
+            def suite = Mock (JUnitTest)
+            def test = new CucumberTest ()
+
+        when:
+            uat.startTest (test)
+            uat.startTest (test)
+            uat.endTestSuite (suite)
+
+        then:
+            1 * suite.setCounts (1, (Long)_, (Long)_)
+    }
+
+    def "counts each failure only once" () {
+        given:
+            swapper.swapOut() >> [out, err]
+            def suite = Mock (JUnitTest)
+            def test = new CucumberTest ()
+
+        when:
+            uat.addFailure (test, null)
+            uat.addFailure (test, null)
+            uat.endTestSuite (suite)
+
+        then:
+            1 * suite.setCounts ((Long)_, 1, (Long)_)
+    }
+
+    def "counts each error only once" () {
+        given:
+            swapper.swapOut() >> [out, err]
+            def suite = Mock (JUnitTest)
+            def test = new CucumberTest ()
+
+        when:
+            uat.addError (test, null)
+            uat.addError (test, null)
+            uat.endTestSuite (suite)
+
+        then:
+            1 * suite.setCounts ((Long)_, (Long)_, 1)
     }
 
     def "reports failure" () {
