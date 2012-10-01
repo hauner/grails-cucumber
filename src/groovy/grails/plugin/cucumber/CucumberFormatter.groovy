@@ -64,11 +64,8 @@ class CucumberFormatter implements Formatter, Reporter {
     void finish () {
         log.trace ("finish ()\n")
 
-        report.endScenario ()
-        publisher.testEnd (activeScenario.getName ())
-
-        report.endFeature ()
-        publisher.testCaseEnd (activeFeature.getName ())
+        endScenario ()
+        endFeature ()
     }
 
     CucumberTestTypeResult getResult () {
@@ -83,27 +80,10 @@ class CucumberFormatter implements Formatter, Reporter {
     }
 
     void feature (Feature feature) {
-        if (activeScenario) {
-            log.trace ("    end scenario (...) (feature)\n")
+        endScenario ()
+        endFeature ()
 
-            report.endScenario ()
-            publisher.testEnd (activeScenario.getName ())
-
-            activeScenario = null
-        }
-
-        if (activeFeature) {
-            log.trace ("  end feature (...) (feature)\n")
-
-            report.endFeature ()
-            publisher.testCaseEnd (activeFeature.getName ())
-        }
-
-        log.trace ("feature (...)\n")
-
-        activeFeature = feature
-        publisher.testCaseStart (activeFeature.getName ())
-        report.startFeature (activeFeature.getName ())
+        startFeature (feature)
 
         formatter.feature (feature)
     }
@@ -113,21 +93,11 @@ class CucumberFormatter implements Formatter, Reporter {
     }
 
     void scenario (Scenario scenario) {
-       if (activeScenario) {
-            log.trace ("  end scenario (...) (scenario)\n")
+        endScenario ()
 
-            report.endScenario ()
-            publisher.testEnd (activeScenario.getName ())
-        }
-
-        log.trace ("  scenario (...)\n")
-
-        activeScenario = scenario
-        publisher.testStart (activeScenario.getName ())
-        report.startScenario (activeScenario.getName ())
+        startScenario (scenario)
 
         formatter.scenario (scenario)
-
         runCount++
     }
 
@@ -158,6 +128,41 @@ class CucumberFormatter implements Formatter, Reporter {
 
     void close () {
         formatter.close ()
+    }
+
+    private void startFeature (Feature feature) {
+        log.trace ("feature (${feature.name})\n")
+
+        activeFeature = feature
+        publisher.testCaseStart (activeFeature.name)
+        report.startFeature (activeFeature.name)
+    }
+
+    private void startScenario (Scenario scenario) {
+        log.trace ("  scenario (${scenario.name})\n")
+
+        activeScenario = scenario
+        publisher.testStart (activeScenario.name)
+        report.startScenario (activeScenario.name)
+    }
+
+    private void endScenario () {
+        if (activeScenario) {
+            log.trace ("  end scenario ()\n")
+
+            report.endScenario ()
+            publisher.testEnd (activeScenario.name)
+            activeScenario = null
+        }
+    }
+
+    private void endFeature () {
+        if (activeFeature) {
+            log.trace ("end feature ()\n")
+
+            report.endFeature ()
+            publisher.testCaseEnd (activeFeature.name)
+        }
     }
 
     /*
@@ -268,5 +273,4 @@ class CucumberFormatter implements Formatter, Reporter {
         }
         activeScenario.getName ()
     }
-
 }
