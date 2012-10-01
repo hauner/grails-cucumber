@@ -264,13 +264,13 @@ class CucumberFormatter implements Formatter, Reporter {
         if (! activeStep) {
             return "no step"
         }
-        activeStep.getName ()
+        activeStep.name
     }
 
     private String getActiveScenarioName () {
         if (! activeScenario) {
             return "no scenario"
         }
-        activeScenario.getName ()
+        activeScenario.name
     }
 }
