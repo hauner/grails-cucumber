@@ -161,10 +161,10 @@ class CucumberFormatterSignalingSpec extends GherkinSpec {
 
         then:
             //1 * publisher.testFailure (stepStub.name, "undefined") crashes IDEA
-            (1) * publisher.testFailure (scenarioStub.name, (UndefinedStepException)_)
+            (1) * publisher.testFailure (scenarioStub.name, (Throwable)_)
     }
 
-    def "does NOT signal scenario failure after skipped step" () {
+    def "do no signal scenario failure after skipped step without before hook failure" () {
         given:
             def resultStub = Result.SKIPPED
             def scenarioStub = scenarioStub ()
@@ -176,6 +176,23 @@ class CucumberFormatterSignalingSpec extends GherkinSpec {
             formatter.result (resultStub)
 
         then:
-            (0) * publisher.testFailure ((String)_, (String)_)
+            0 * publisher.testFailure (scenarioStub.name, (String)_)
+    }
+
+    def "signals scenario failure after skipped step *with* before hook failure" () {
+        given:
+            def resultStub = Result.SKIPPED
+            def scenarioStub = scenarioStub ()
+            formatter.feature (featureStub ())
+            def beforeStub = resultStubFail ()
+            formatter.before (null, beforeStub)
+            formatter.scenario (scenarioStub)
+            formatter.step (stepStub ())
+
+        when:
+            formatter.result (resultStub)
+
+        then:
+            1 * publisher.testFailure (scenarioStub.name, beforeStub.error)
     }
 }

@@ -18,6 +18,7 @@ package grails.plugin.cucumber
 
 import gherkin.formatter.model.Result
 import cucumber.runtime.UndefinedStepException
+import gherkin.formatter.model.Match
 
 
 class CucumberFormatterReportingSpec extends GherkinSpec {
@@ -152,19 +153,36 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         (1) * report.addError (result.error)
     }
 
-    def "reports skipped step" () {
-        def result = Result.SKIPPED
+    def "does not report skipped step without before hook result" () {
+        given:
+            def result = Result.SKIPPED
         
         when:
-        uat.feature (featureStub ())
-        uat.scenario (scenarioStub ())
-        uat.step (stepStub ())
-        uat.result (result)
+            uat.feature (featureStub ())
+            uat.scenario (scenarioStub ())
+            uat.step (stepStub ())
+            uat.result (result)
 
         then:
-        (1) * report.addSkipped ()
+            0 * report.addSkipped (_)
     }
-    
+
+    def "does report skipped step wit before hook result" () {
+        given:
+            def beforeResult = resultStubFail ()
+            def result = Result.SKIPPED
+
+        when:
+            uat.feature (featureStub ())
+            uat.before (Mock (Match), beforeResult)
+            uat.scenario (scenarioStub ())
+            uat.step (stepStub ())
+            uat.result (result)
+
+        then:
+            1 * report.addSkipped (beforeResult.error)
+    }
+
     def "reports undefined step" () {
         def result = Result.UNDEFINED
         
@@ -200,5 +218,21 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
 
         then:
         (1) * report.addError (result.error)
+    }
+
+    def "clears before hook result after skipped step" () {
+        given:
+            def featureA = featureStub (FEATURE_NAME_A)
+
+        when:
+            uat.feature (featureA)
+            uat.before (Mock (Match), resultStubFail ())
+            uat.scenario (scenarioStub ())
+            uat.step (stepStub ())
+            uat.result (Result.SKIPPED)
+
+        then:
+            ! uat.beforeMatch
+            ! uat.beforeResult
     }
 }

@@ -48,7 +48,9 @@ class CucumberFormatter implements Formatter, Reporter {
 
     def sysout
 
-    
+    Match beforeMatch
+    Result beforeResult
+
     CucumberFormatter (GrailsTestEventPublisher publisher, FeatureReport report,
         Formatter formatter, Reporter reporter) {
         this.publisher = publisher
@@ -60,7 +62,7 @@ class CucumberFormatter implements Formatter, Reporter {
     }
 
     void finish () {
-        //sysout << "CF(finish)\n"
+        log.trace ("finish ()\n")
 
         report.endScenario ()
         publisher.testEnd (activeScenario.getName ())
@@ -81,21 +83,24 @@ class CucumberFormatter implements Formatter, Reporter {
     }
 
     void feature (Feature feature) {
-        //sysout << "CF(feature)\n"
-
         if (activeScenario) {
-            //sysout << "CF(feature scenario.end)\n"
+            log.trace ("    end scenario (...) (feature)\n")
+
             report.endScenario ()
             publisher.testEnd (activeScenario.getName ())
+
+            activeScenario = null
         }
 
         if (activeFeature) {
-            //sysout << "CF(feature end)\n"
+            log.trace ("  end feature (...) (feature)\n")
+
             report.endFeature ()
             publisher.testCaseEnd (activeFeature.getName ())
         }
 
-        //sysout << "CF(feature start)\n"
+        log.trace ("feature (...)\n")
+
         activeFeature = feature
         publisher.testCaseStart (activeFeature.getName ())
         report.startFeature (activeFeature.getName ())
@@ -108,13 +113,14 @@ class CucumberFormatter implements Formatter, Reporter {
     }
 
     void scenario (Scenario scenario) {
-        //sysout << "CF(scenario)\n"
+       if (activeScenario) {
+            log.trace ("  end scenario (...) (scenario)\n")
 
-        if (activeScenario) {
-            //sysout << "CF(feature scenario.end)\n"
             report.endScenario ()
             publisher.testEnd (activeScenario.getName ())
         }
+
+        log.trace ("  scenario (...)\n")
 
         activeScenario = scenario
         publisher.testStart (activeScenario.getName ())
@@ -134,10 +140,7 @@ class CucumberFormatter implements Formatter, Reporter {
     }
 
     void step (Step step) {
-        //sysout << "CF(step)\n"
-
         steps.add (step)
-
         formatter.step (step)
     }
 
@@ -174,11 +177,16 @@ class CucumberFormatter implements Formatter, Reporter {
     }
 
     void before (Match match, Result result) {
+        log.trace ("  before (...)\n")
+
+        beforeMatch = match
+        beforeResult = result
         reporter.before (match, result)
     }
 
     void result (Result result) {
-        //sysout << "CF(result)\n"
+        log.trace ("      result (...)\n")
+
         advanceActiveStep ()
 
         if (result.status == Result.FAILED) {
@@ -196,14 +204,24 @@ class CucumberFormatter implements Formatter, Reporter {
             }            
         }
         else if (result == Result.SKIPPED) {
-            report.addSkipped ()
-            //publisher.testFailure (getActiveStepName (), "skipped")
-            //fail (getActiveScenarioName ())
+            if (beforeResult) {
+                report.addSkipped (beforeResult.error)
+                publisher.testFailure (activeScenarioName, beforeResult.error)
+                fail (getActiveScenarioName ())
+
+                beforeResult = null
+                beforeMatch = null
+            }
+//            else {
+//                //report.addSkipped (null)
+//                //publisher.testFailure (activeScenarioName, "skipped")
+//                //fail (getActiveScenarioName ())
+//            }
         }
         else if (result == Result.UNDEFINED) {
-            def error = new UndefinedStepException(activeStep)
+            def error = new UndefinedStepException (activeStep)
             report.addUndefined (error)
-            publisher.testFailure (getActiveScenarioName (), error)
+            publisher.testFailure (activeScenarioName, error)
             
             fail (getActiveScenarioName ())
         }

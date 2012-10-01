@@ -79,7 +79,7 @@ class CucumberFormatterCountingSpec extends GherkinSpec {
         uat.getResult ().getPassCount () == 0
         uat.getResult ().getFailCount () == 1
     }
-    
+
     def "do not count scenario with skipped step as failure" () {
         when:
         uat.feature (featureStub ())

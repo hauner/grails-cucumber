@@ -17,7 +17,6 @@
 package grails.plugin.cucumber
 
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest
-import cucumber.runtime.UndefinedStepException
 
 
 class FeatureReport {
@@ -35,47 +34,57 @@ class FeatureReport {
     }
 
     void startFeature (String feature) {
-        //sysout << "\nFR(startFeature)\n"
+        log.trace ("startFeature ('$feature')\n")
+
         report = factory.createReport (feature)
         suite = factory.createTestSuite (feature)
         report.startTestSuite (suite)
     }
 
     void endFeature () {
-        //sysout << "FR(endFeature)\n"
+        log.trace ("endFeature ()\n")
+
         report.endTestSuite (suite)
     }
 
     void startScenario (String scenario) {
-        //sysout << "FR(startScenario)\n"
+        log.trace ("  startScenario ('$scenario')\n")
+
         test = factory.createTest (scenario)
         report.startTest (test)
     }
 
     void endScenario () {
-        //sysout << "FR(endScenario)\n"
+        log.trace ("  endScenario ()\n")
+
         report.endTest (test)
     }
 
     void addFailure (AssertionError failure) {
-        //sysout << "FR(addFailure)\n"
+        log.trace ("    addFailure (...)")
+
         report.addFailure (test, failure)
     }
 
     void addError (Throwable error) {
-        //sysout << "FR(addError)\n"
+        log.trace ("    addError (...)\n")
+
         report.addError (test, error)
     }
     
     void addPassed () {
-        
+        log.trace ("    addPassed ()\n")
     }
     
-    void addSkipped () {
-        
+    void addSkipped (Throwable error) {
+        log.trace ("    addSkipped (...)\n")
+
+        report.addFailure (test, error)
     }
-    
-    void addUndefined (UndefinedStepException undefined) {
+
+    void addUndefined (Throwable undefined) {
+        log.trace ("    addUndefined (...)\n")
+
         report.addFailure (test, undefined)
     }
 }
