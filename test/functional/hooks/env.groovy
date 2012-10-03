@@ -1,4 +1,5 @@
 package hooks
+
 /*
  * Copyright 2012 Martin Hauner
  *
@@ -15,14 +16,17 @@ package hooks
  * limitations under the License.
  */
 
-this.metaClass.mixin (cucumber.runtime.groovy.Hooks)
+import static cucumber.runtime.groovy.Hooks.Before
+import static cucumber.runtime.groovy.Hooks.After
 this.metaClass.mixin (cucumber.runtime.groovy.EN)
 
 
+Before ("@fail") {
+    throw new Throwable ("before hook")
+}
+
 Before () {
-    //println "Before Hook"
 }
 
 After () {
-    //println "After Hook"
 }

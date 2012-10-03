@@ -36,12 +36,16 @@ Then (~'^it should fail$') { ->
     assertTrue (false)
 }
 
-Then (~'^report the failing step$') { ->
+Then(~'^it should fail because of the before hook$') { ->
     // nop
 }
 
 Then (~'^it should error$') { ->
-    error ()
+    divisionByZero ()
+}
+
+Then (~'^report the failing step$') { ->
+    // nop
 }
 
 Then (~'^report the erroneous step$') { ->
@@ -53,7 +57,7 @@ Then (~'^it should print step snippets$') { ->
 }
 
 
-def error () {
+def divisionByZero () {
     int nonZero = 1
     int zero = 0
     nonZero / zero
