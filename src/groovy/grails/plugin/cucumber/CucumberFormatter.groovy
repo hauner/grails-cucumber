@@ -195,43 +195,18 @@ class CucumberFormatter implements Formatter, Reporter {
         advanceActiveStep ()
 
         if (result.status == Result.FAILED) {
-            if (result.error instanceof AssertionError) {
-                report.addFailure ((AssertionError)result.error)
-                publisher.testFailure (getActiveScenarioName (), result.error)
-                
-                fail (getActiveScenarioName ())
-            }
-            else {
-                report.addError (result.error)
-                publisher.testFailure (getActiveScenarioName (), result.error, true)
-                
-                error (getActiveScenarioName ())
-            }            
+            resultFailed (result.error)
         }
         else if (result == Result.SKIPPED) {
-            if (beforeResult) {
-                report.addSkipped (beforeResult.error)
-                publisher.testFailure (activeScenarioName, beforeResult.error)
-                fail (getActiveScenarioName ())
-
-                beforeResult = null
-                beforeMatch = null
-            }
-//            else {
-//                //report.addSkipped (null)
-//                //publisher.testFailure (activeScenarioName, "skipped")
-//                //fail (getActiveScenarioName ())
-//            }
+            resultSkipped (beforeResult?.error)
+            beforeResult = null
+            beforeMatch = null
         }
         else if (result == Result.UNDEFINED) {
-            def error = new UndefinedStepException (activeStep)
-            report.addUndefined (error)
-            publisher.testFailure (activeScenarioName, error)
-            
-            fail (getActiveScenarioName ())
+            resultUndefined ()
         }
         else if (result.status == Result.PASSED) {
-            report.addPassed ()
+            resultPassed ()
         }
         
         reporter.result (result)
@@ -241,15 +216,62 @@ class CucumberFormatter implements Formatter, Reporter {
         reporter.after (match, result)
     }
 
-    private void fail (String scenario) {
-        if (erroneous.count (scenario) == 0) {
-            failed.add (scenario)
+    private void resultFailed (Throwable error) {
+        if (error instanceof AssertionError) {
+            failScenario (error)
+        }
+        else {
+            errorScenario (error)
         }
     }
-    
-    private void error (String scenario) {
-        if (failed.count (scenario) == 0) {
-            erroneous.add (scenario)
+
+    private void resultSkipped (Throwable error) {
+        if (error) {
+            skipScenario (error)
+        }
+    }
+
+    private void resultUndefined () {
+        undefScenario (new UndefinedStepException (activeStep))
+    }
+
+    private void resultPassed () {
+        report.addPassed ()
+    }
+
+    private void failScenario (AssertionError error) {
+        report.addFailure (error)
+        publisher.testFailure (activeScenarioName, (Throwable)error)
+        countFailure ()
+    }
+
+    private void errorScenario (Throwable error) {
+        report.addError (error)
+        publisher.testFailure (activeScenarioName, error, true)
+        countError ()
+    }
+
+    private void skipScenario (Throwable error) {
+        report.addSkipped (error)
+        publisher.testFailure (activeScenarioName, error)
+        countFailure ()
+    }
+
+    private void undefScenario (Throwable error) {
+        report.addUndefined (error)
+        publisher.testFailure (activeScenarioName, error)
+        countFailure ()
+    }
+
+    private void countFailure () {
+        if (erroneous.count (activeScenarioName) == 0) {
+            failed.add (activeScenarioName)
+        }
+    }
+
+    private void countError () {
+        if (failed.count (activeScenarioName) == 0) {
+            erroneous.add (activeScenarioName)
         }
     }
 
@@ -260,17 +282,11 @@ class CucumberFormatter implements Formatter, Reporter {
         }
     }
 
-    private String getActiveStepName () {
-        if (! activeStep) {
-            return "no step"
-        }
-        activeStep.name
-    }
+//    private String getActiveStepName () {
+//        activeStep ? activeStep.name : "no step"
+//    }
 
     private String getActiveScenarioName () {
-        if (! activeScenario) {
-            return "no scenario"
-        }
-        activeScenario.name
+        activeScenario ? activeScenario.name : "no scenario"
     }
 }
