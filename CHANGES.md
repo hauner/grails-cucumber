@@ -1,15 +1,18 @@
-### master ###
+### 0.6.2 ###
 
-unreleased ([source code](https://github.com/hauner/grails-cucumber))
+3rd October 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.6.2))
 
-...
+* a scenario does fail now if a before hook failed (it was counted as passed).
+* improved result counting (passed, failed, error),i.e. count scenarios only once.
+* another reporting fix (end scenario notification could come twice).
+
 
 ### 0.6.1 ###
 
 16th September 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.6.1))
 
-* fixed another reporting bug (missing end scenario notifcation)
-* updated to cucumber-jvm 1.0.14
+* fixed another reporting bug (missing end scenario notifcation).
+* updated to cucumber-jvm 1.0.14.
 
 
 ### 0.6.0 ###
