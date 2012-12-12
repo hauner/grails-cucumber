@@ -18,30 +18,31 @@ import grails.test.AbstractCliTestCase
 
 
 class TestAppTests extends AbstractCliTestCase {
-    static final int TEST_COUNT = 4
-    static final int TEST_PASSED = 1
-    static final int TEST_FAILED = 3
+    static final int TEST_COUNT = 6
+    static final int TEST_PASSED = 2
+    static final int TEST_FAILED = 4
 
     /* cli test are very slow, so we test the output of a single run */
     void testCucumberTestOutput () {
         runTestApp ()
         verifyHeader ()
 
-        verifyRunning ()
+        verifyRunningCount ()
         verifyTestFeaturePassed ()
         verifyTestFeatureAssertionFailure ()
         verifyTestFeatureExceptionError ()
         verifyTestFeatureMissingSnippets ()
+        verifyTestFeatureFailingBeforeHook ()
         verifyTestCounts ()
     }
 
 
     private void runTestApp () {
-        execute (["test-app", "functional:cucumber"])
+        execute (["test-app", "functional:cucumber", "--stacktrace"])
         waitForProcess ()
     }
 
-    private void verifyRunning () {
+    private void verifyRunningCount () {
         assertTrue (
             "running output not match",
             output.contains ("Running " +TEST_COUNT+ " cucumber tests...")
@@ -52,15 +53,22 @@ class TestAppTests extends AbstractCliTestCase {
         // nothing reported
     }
 
+    private void verifyTestFeatureFailingBeforeHook () {
+        assertTrue (
+            "before hook failure does not match exception",
+            output.contains ("java.lang.Throwable: before hook")
+        )
+    }
+
     private void verifyTestFeatureAssertionFailure () {
         assertTrue (
             "assertion failure does not match exeption",
-            output.contains ("Caused by: java.lang.AssertionError")
+            output.contains ("java.lang.AssertionError")
         )
 
         assertTrue (
-            "assertion failure does not match file & line",
-            output.contains ('RunTestApp_steps$_run_closure4.doCall(RunTestApp_steps.groovy:')
+            "assertion failure does not match step",
+            output.contains ('at ✽.Then it should fail(RunTestAppWithIssues.feature:10)')
         )
     }
 

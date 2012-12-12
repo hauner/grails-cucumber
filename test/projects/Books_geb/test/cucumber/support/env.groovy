@@ -2,7 +2,7 @@ import geb.binding.BindingUpdater
 import geb.Browser
 import data.Data
 
-import static cucumber.runtime.groovy.Hooks.*
+import static cucumber.api.groovy.Hooks.*
 
 
 Before () {

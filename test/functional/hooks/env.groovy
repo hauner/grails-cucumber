@@ -16,9 +16,7 @@ package hooks
  * limitations under the License.
  */
 
-import static cucumber.runtime.groovy.Hooks.Before
-import static cucumber.runtime.groovy.Hooks.After
-this.metaClass.mixin (cucumber.runtime.groovy.EN)
+import static cucumber.api.groovy.Hooks.*
 
 
 Before ("@fail") {

@@ -16,7 +16,6 @@
 
 package grails.plugin.cucumber
 
-
 import org.codehaus.groovy.grails.test.GrailsTestTypeResult
 import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
 import org.codehaus.groovy.grails.test.report.junit.JUnitReportsFactory
@@ -24,8 +23,8 @@ import org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport
 import grails.util.Environment
 import cucumber.runtime.Runtime
 import cucumber.runtime.groovy.GroovyBackend
+import cucumber.runtime.io.FileResourceLoader
 import cucumber.runtime.snippets.SummaryPrinter
-import cucumber.io.FileResourceLoader
 
 
 class CucumberTestType extends GrailsTestTypeSupport {

@@ -1,4 +1,5 @@
 package steps
+
 /*
  * Copyright 2012 Martin Hauner
  *
@@ -16,11 +17,10 @@ package steps
  */
 
 import static org.junit.Assert.assertTrue
-this.metaClass.mixin (cucumber.runtime.groovy.Hooks)
-this.metaClass.mixin (cucumber.runtime.groovy.EN)
+import static cucumber.api.groovy.EN.*
 
 
-Given(~'^I run test-app functional:cucumber$') { ->
+Given (~'^I run test-app functional:cucumber$') { ->
     // nop
 }
 
@@ -36,7 +36,7 @@ Then (~'^it should fail$') { ->
     assertTrue (false)
 }
 
-Then(~'^it should fail because of the before hook$') { ->
+Then (~'^it should fail because of the before hook$') { ->
     // nop
 }
 

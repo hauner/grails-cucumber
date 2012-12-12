@@ -16,8 +16,8 @@
 
 package grails.plugin.cucumber
 
-import static cucumber.runtime.groovy.Hooks.Before
-import static cucumber.runtime.groovy.Hooks.After
+import static cucumber.api.groovy.Hooks.After
+import static cucumber.api.groovy.Hooks.Before
 
 import org.codehaus.groovy.grails.test.support.GrailsTestTransactionInterceptor
 import org.codehaus.groovy.grails.test.support.GrailsTestRequestEnvironmentInterceptor
@@ -66,7 +66,7 @@ class Hooks {
         }
 
         def addBeforeHook (def tags, Closure code) {
-            def varargs = tags.toList()
+            def varargs = tags.toList ()
             varargs << code
             Before (varargs.toArray ())
         }

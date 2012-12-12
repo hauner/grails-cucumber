@@ -3,7 +3,7 @@ import pages.book.NewPage
 import pages.book.ShowPage
 import data.Data
 
-import static cucumber.runtime.groovy.EN.*
+import static cucumber.api.groovy.EN.*
 
 
 Given (~'^I open the book tracker$') { ->

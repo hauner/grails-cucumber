@@ -1,4 +1,4 @@
-this.metaClass.mixin (cucumber.runtime.groovy.DE)
+import static cucumber.api.groovy.DE.*
 
 import pages.book.ListPage
 import data.Data
@@ -15,5 +15,6 @@ Wenn (~"^ich \"([^\"]*)\" bereits hinzugefügt habe\$") { String bookTitle ->
 
 Dann (~"^beinhaltet die Bücherliste das Buch \"([^\"]*)\"\$") { String bookTitle ->
     assert at (ListPage)
+
     page.checkBookAtRow (bookTitle, 0)
 }

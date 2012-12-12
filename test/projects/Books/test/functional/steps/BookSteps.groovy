@@ -1,8 +1,7 @@
 import books.BookController
 import data.Data
 
-import static cucumber.runtime.groovy.EN.*
-//this.metaClass.mixin (cucumber.runtime.groovy.EN)
+import static cucumber.api.groovy.EN.*
 
 
 Given (~'^I open the book tracker$') { ->

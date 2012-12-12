@@ -17,10 +17,10 @@
 package grails.plugin.cucumber
 
 import cucumber.runtime.Runtime
+import cucumber.runtime.RuntimeOptions
+import cucumber.runtime.io.ResourceLoader
 import cucumber.runtime.model.CucumberFeature
 import cucumber.runtime.snippets.SummaryPrinter
-import cucumber.runtime.RuntimeOptions
-import cucumber.io.ResourceLoader
 
 
 class Cucumber {
