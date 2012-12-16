@@ -20,7 +20,6 @@ import org.codehaus.groovy.grails.test.report.junit.JUnitReports
 import org.codehaus.groovy.grails.test.io.SystemOutAndErrSwapper
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest
 import junit.framework.AssertionFailedError
-import cucumber.runtime.UndefinedStepException
 
 
 class ReportSpec extends GherkinSpec {
@@ -213,7 +212,7 @@ class ReportSpec extends GherkinSpec {
             1 * suite.setCounts ((Long)_, (Long)_, 1)
     }
 
-    def "reports failure" () {
+    def "report assertion error as failure" () {
         def test = Mock (CucumberTest)
         def failure = Mock (AssertionError)
 
@@ -221,18 +220,18 @@ class ReportSpec extends GherkinSpec {
         uat.addFailure (test, failure)
 
         then:
-        (1) * report.addFailure (test, (AssertionFailedError)_)
+        1 * report.addFailure (test, _ as AssertionFailedError)
     }
 
-    def "reports undefined as failure" () {
+    def "report throwable as failure" () {
         def test = Mock (CucumberTest)
-        def failure = Mock (UndefinedStepException)
+        def failure = Mock (Throwable)
 
         when:
         uat.addFailure (test, failure)
 
         then:
-        (1) * report.addFailure (test, (AssertionFailedError)_)
+        1 * report.addFailure (test, _)
     }
 
     def "reports error" () {

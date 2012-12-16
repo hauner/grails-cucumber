@@ -19,7 +19,6 @@ package grails.plugin.cucumber
 import static GherkinSpec.*
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest
 import junit.framework.AssertionFailedError
-import cucumber.runtime.UndefinedStepException
 import spock.lang.Specification
 
 
@@ -120,7 +119,7 @@ class FeatureReportSpec extends Specification {
         (1) * report.endTest (testB)
     }
 
-    def "reports each failure" () {
+    def "reports failure as failure" () {
         def failure = Mock (AssertionFailedError)
         def test = Mock (CucumberTest)
         factory.createTest (!null) >> test
@@ -131,10 +130,10 @@ class FeatureReportSpec extends Specification {
         uat.addFailure (failure)
 
         then:
-        (1) * report.addFailure (test, failure)
+        1 * report.addFailure (test, failure)
     }
 
-    def "reports each error" () {
+    def "reports error as error" () {
         def error = Mock (Throwable)
         def test = Mock (CucumberTest)
         factory.createTest (!null) >> test
@@ -145,11 +144,11 @@ class FeatureReportSpec extends Specification {
         uat.addError (error)
 
         then:
-        (1) * report.addError (test, error)
+        1 * report.addError (test, error)
     }
 
-    def "reports each undefined" () {
-        def undefined = Mock (UndefinedStepException)
+    def "reports undefined as failure" () {
+        def undefined = Mock (Throwable)
         def test = Mock (CucumberTest)
         factory.createTest (!null) >> test
 
@@ -159,7 +158,7 @@ class FeatureReportSpec extends Specification {
         uat.addUndefined (undefined)
 
         then:
-        (1) * report.addFailure (test, undefined)
+        1 * report.addFailure (test, undefined)
     }
 }
 
