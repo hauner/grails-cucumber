@@ -17,7 +17,6 @@
 package grails.plugin.cucumber
 
 import gherkin.formatter.model.Result
-import cucumber.runtime.UndefinedStepException
 import gherkin.formatter.model.Match
 
 
@@ -36,8 +35,8 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.feature (featureB)
 
         then:
-        (1) * report.startFeature (FEATURE_NAME_A)
-        (1) * report.startFeature (FEATURE_NAME_B)
+        1 * report.startFeature (FEATURE_NAME_A)
+        1 * report.startFeature (FEATURE_NAME_B)
     }
 
     def "finishes feature report before initializing a new feature report" () {
@@ -51,7 +50,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
 
         then:
         2 * report.startFeature (_)
-        (1) * report.endFeature ()
+        1 * report.endFeature ()
     }
 
     def "report start scenario for each scenario" () {
@@ -64,23 +63,23 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.scenario (scenarioB)
 
         then:
-        (1) * report.startScenario (SCENARIO_NAME_A)
-        (1) * report.startScenario (SCENARIO_NAME_B)
+        1 * report.startScenario (SCENARIO_NAME_A)
+        1 * report.startScenario (SCENARIO_NAME_B)
     }
 
     def "report end scenario before new scenario" () {
         given:
-            def scenarioA = scenarioStub (SCENARIO_NAME_A)
-            def scenarioB = scenarioStub (SCENARIO_NAME_B)
-            def ignore    = scenarioStub ("ignore")
+        def scenarioA = scenarioStub (SCENARIO_NAME_A)
+        def scenarioB = scenarioStub (SCENARIO_NAME_B)
+        def ignore    = scenarioStub ("ignore")
 
         when:
-            uat.scenario (scenarioA)
-            uat.scenario (scenarioB)
-            uat.scenario (ignore)
+        uat.scenario (scenarioA)
+        uat.scenario (scenarioB)
+        uat.scenario (ignore)
 
         then:
-            2 * report.endScenario ()
+        2 * report.endScenario ()
     }
 
     def "report end scenario before a new feature" () {
@@ -93,10 +92,10 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.feature (feature)
 
         then:
-        (1) * report.endScenario ()
+        1 * report.endScenario ()
 
         then:
-        (1) * report.startFeature (_)
+        1 * report.startFeature (_)
     }
 
     def "report scenario end for last scenario" () {
@@ -109,7 +108,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.finish ()
 
         then:
-        (1) * report.endScenario ()
+        1 * report.endScenario ()
     }
 
 
@@ -123,7 +122,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.finish ()
 
         then:
-        (1) * report.endFeature ()
+        1 * report.endFeature ()
     }
 
     def "reports step failures" () {
@@ -137,7 +136,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.result (result)
 
         then:
-        (1) * report.addFailure ((AssertionError)result.error)
+        1 * report.addFailure (result.error as AssertionError)
     }
 
     def "reports step errors" () {
@@ -150,37 +149,37 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.result (result)
 
         then:
-        (1) * report.addError (result.error)
+        1 * report.addError (result.error)
     }
 
     def "does not report skipped step without before hook result" () {
         given:
-            def result = Result.SKIPPED
+        def result = Result.SKIPPED
         
         when:
-            uat.feature (featureStub ())
-            uat.scenario (scenarioStub ())
-            uat.step (stepStub ())
-            uat.result (result)
+        uat.feature (featureStub ())
+        uat.scenario (scenarioStub ())
+        uat.step (stepStub ())
+        uat.result (result)
 
         then:
-            0 * report.addSkipped (_)
+        0 * report.addSkipped (_)
     }
 
     def "does report skipped step wit before hook result" () {
         given:
-            def beforeResult = resultStubFail ()
-            def result = Result.SKIPPED
+        def beforeResult = resultStubFail ()
+        def result = Result.SKIPPED
 
         when:
-            uat.feature (featureStub ())
-            uat.before (Mock (Match), beforeResult)
-            uat.scenario (scenarioStub ())
-            uat.step (stepStub ())
-            uat.result (result)
+        uat.feature (featureStub ())
+        uat.before (Mock (Match), beforeResult)
+        uat.scenario (scenarioStub ())
+        uat.step (stepStub ())
+        uat.result (result)
 
         then:
-            1 * report.addSkipped (beforeResult.error)
+        1 * report.addSkipped (beforeResult.error)
     }
 
     def "reports undefined step" () {
@@ -193,7 +192,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.result (result)
 
         then:
-        (1) * report.addUndefined ((UndefinedStepException)_)
+        1 * report.addUndefined (_)
     }
     
     def "does not report step error or failure when it succeeds" () {
@@ -205,8 +204,8 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.result (result)
 
         then:
-        (0) * report.addError (_)
-        (0) * report.addFailure (_)
+        0 * report.addError (_)
+        0 * report.addFailure (_ as AssertionError)
     }
 
     def "reports hook errors when there is no scenario or step" () {
@@ -217,22 +216,22 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         uat.result (result)
 
         then:
-        (1) * report.addError (result.error)
+        1 * report.addError (result.error)
     }
 
     def "clears before hook result after skipped step" () {
         given:
-            def featureA = featureStub (FEATURE_NAME_A)
+        def featureA = featureStub (FEATURE_NAME_A)
 
         when:
-            uat.feature (featureA)
-            uat.before (Mock (Match), resultStubFail ())
-            uat.scenario (scenarioStub ())
-            uat.step (stepStub ())
-            uat.result (Result.SKIPPED)
+        uat.feature (featureA)
+        uat.before (Mock (Match), resultStubFail ())
+        uat.scenario (scenarioStub ())
+        uat.step (stepStub ())
+        uat.result (Result.SKIPPED)
 
         then:
-            ! uat.beforeMatch
-            ! uat.beforeResult
+        ! uat.beforeMatch
+        ! uat.beforeResult
     }
 }
