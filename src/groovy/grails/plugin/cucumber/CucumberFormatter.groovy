@@ -32,6 +32,7 @@ import cucumber.runtime.UndefinedStepException
 
 
 class CucumberFormatter implements Formatter, Reporter {
+    public static final String RESULT_PENDING = "pending"
     GrailsTestEventPublisher publisher
     FeatureReport report
     Formatter formatter
@@ -208,7 +209,13 @@ class CucumberFormatter implements Formatter, Reporter {
         else if (result.status == Result.PASSED) {
             resultPassed ()
         }
-        
+        else if (result.status == RESULT_PENDING) {
+            resultFailed (result.error)
+        }
+        else {
+            log.trace ("      result (${result.status}) is not handled!\n")
+        }
+
         reporter.result (result)
     }
 
@@ -241,7 +248,7 @@ class CucumberFormatter implements Formatter, Reporter {
 
     private void failScenario (AssertionError error) {
         report.addFailure (error)
-        publisher.testFailure (activeScenarioName, (Throwable)error)
+        publisher.testFailure (activeScenarioName, error)
         countFailure ()
     }
 

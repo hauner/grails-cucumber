@@ -16,6 +16,7 @@
 
 package grails.plugin.cucumber
 
+import cucumber.runtime.PendingException
 import gherkin.formatter.model.Result
 import gherkin.formatter.model.Match
 
@@ -206,6 +207,19 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         then:
         0 * report.addError (_)
         0 * report.addFailure (_ as AssertionError)
+    }
+
+    def "report pending step as error" () {
+        Result result = Mock (Result)
+        result.status >> uat.RESULT_PENDING
+        result.error >> new PendingException ()
+
+        when:
+        uat.step (stepStub ())
+        uat.result (result)
+
+        then:
+        1 * report.addError (result.error)
     }
 
     def "reports hook errors when there is no scenario or step" () {
