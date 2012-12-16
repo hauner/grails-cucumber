@@ -1,3 +1,24 @@
+### 0.7.0 ###
+
+unreleased ([source code](https://github.com/hauner/grails-cucumber))
+
+* in order to catch pending steps in the test results they are reported as errors.
+* updated to cucumber-jvm 1.1.1.
+    > ### Warning ###
+> This release will break your build because of backwards-incompatible changes in cucumber-jvm. To
+> fix your build adjust the cucumber `import` statements from:
+> 
+>       import static cucumber.runtime.groovy.EN.*
+>       import static cucumber.runtime.groovy.Hooks.*
+>
+> to:
+>
+>       import static cucumber.api.groovy.EN.*
+>       import static cucumber.api.groovy.Hooks.*
+>
+> See [cucumber-jvm history](https://github.com/hauner/cucumber-jvm/blob/master/History.md) for more.
+
+
 ### 0.6.2 ###
 
 3rd October 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.6.2))
@@ -11,7 +32,7 @@
 
 16th September 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.6.1))
 
-* fixed another reporting bug (missing end scenario notifcation).
+* fixed another reporting bug (missing end scenario notification).
 * updated to cucumber-jvm 1.0.14.
 
 
