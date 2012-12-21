@@ -4,6 +4,7 @@
 
 * in order to catch pending steps in the test results they are reported as errors.
 * updated to cucumber-jvm 1.1.1.
+
     > ### Warning ###
 > This release will break your build because of backwards-incompatible changes in cucumber-jvm. To
 > fix your build adjust the cucumber `import` statements from:
