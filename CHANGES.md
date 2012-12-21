@@ -1,6 +1,6 @@
 ### 0.7.0 ###
 
-unreleased ([source code](https://github.com/hauner/grails-cucumber))
+21st December 2012 ([source code](https://github.com/hauner/tree/0.7.0))
 
 * in order to catch pending steps in the test results they are reported as errors.
 * updated to cucumber-jvm 1.1.1.
