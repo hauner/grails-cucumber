@@ -50,6 +50,22 @@ the cucumber features you call grails by one of the following commands:
 
 [grails testtype]: http://ldaley.com/post/615966534/custom-grails-test
 
+# Command-Line Options #
+It is possible to only run specifically tagged scenarios from the command line. For example, if you wanted to run anything tagged with **someTag** then you would use the following command:
+
+    grails test-app :cucumber @someTag
+
+It is also possible to only run a specific feature file from the command line. If you wanted to run the **search** feature file you would use the following command:
+
+    grails test-app :cucumber features/search.feature
+
+The feature file will automatically have the default path (i.e. test/functional) pre-pended to it.
+
+It also possible to specify which line numbers to run within that feature file. If you wanted to run the scenarios on lines 10 and 20 from the **search** feature file then you would
+use the following command:
+
+    grails test-app :cucumber features/search.feature:10:20
+
 # Changes #
 
 see [CHANGES.md](https://github.com/hauner/grails-cucumber/blob/master/CHANGES.md)

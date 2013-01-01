@@ -46,16 +46,30 @@ class RuntimeOptionsBuilder {
             return
         }
 
-        options.filters.clear ()
-
+        def filters = []
+        def featurePaths = []
         args.each { arg ->
             switch (arg) {
                 case ~/\w*:cucumber/:
                     break;
                 case ~/~?@.+(:\d)?/:
-                    options.filters << arg
+                    filters << arg
                     break;
+                case ~/.+\.feature(:\d+)*/:
+                    PathWithLines pathWithLines = new PathWithLines(arg)
+                    featurePaths << "$configObject.cucumber.defaultFeaturePath/$pathWithLines.path".toString()
+                    filters += pathWithLines.lines
+                    break
             }
+        }
+
+        if (filters) {
+            options.filters.clear()
+            options.filters.addAll(filters)
+        }
+        if (featurePaths) {
+            options.featurePaths.clear()
+            options.featurePaths.addAll(featurePaths)
         }
     }
 

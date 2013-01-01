@@ -204,7 +204,7 @@ class RuntimeOptionsBuilderSpec extends Specification {
     def "cli filter override config filter" () {
         given:
             configObject.cucumber.tags = TAGS
-            def args = [':cucumber', 'anything']
+            def args = [':cucumber', '@anyTag']
 
         when:
             def options = createRuntimeOptions (configObject, args)
@@ -226,6 +226,81 @@ class RuntimeOptionsBuilderSpec extends Specification {
             options.filters.contains (args[2])
             options.filters.contains (args[3])
             options.filters.contains (args[4])
+    }
+
+    def "adds auto detected feature path from cli" () {
+        given:
+            def path = 'feature/search.feature'
+            def args = [':cucumber', path]
+            configObject.cucumber.defaultFeaturePath = "test/functional"
+
+        when:
+            def options = createRuntimeOptions (configObject, args)
+
+        then:
+            options.filters.size() == 0
+            options.featurePaths.size() == 1
+            options.featurePaths[0] == "$configObject.cucumber.defaultFeaturePath/$path"
+    }
+
+    def "adds auto detected feature path in root directory from cli" () {
+        given:
+            def path = 'search.feature'
+            def args = [':cucumber', path]
+            configObject.cucumber.defaultFeaturePath = "test/functional"
+
+        when:
+            def options = createRuntimeOptions (configObject, args)
+
+        then:
+            options.filters.size() == 0
+            options.featurePaths.size() == 1
+            options.featurePaths[0] == "$configObject.cucumber.defaultFeaturePath/$path"
+    }
+
+    def "adds auto detected feature path two levels down from cli" () {
+        given:
+            def path = 'feature/user/search.feature'
+            def args = [':cucumber', path]
+            configObject.cucumber.defaultFeaturePath = "test/functional"
+
+        when:
+            def options = createRuntimeOptions (configObject, args)
+
+        then:
+            options.filters.size() == 0
+            options.featurePaths.size() == 1
+            options.featurePaths[0] == "$configObject.cucumber.defaultFeaturePath/$path"
+    }
+
+    def "adds auto detected feature path with line number from cli" () {
+        given:
+            def path = 'feature/search.feature:10'
+            def args = [':cucumber', path]
+            configObject.cucumber.defaultFeaturePath = "test/functional"
+
+        when:
+            def options = createRuntimeOptions (configObject, args)
+
+        then:
+            options.filters.size() == 1
+            options.filters[0] == 10
+    }
+
+    def "adds auto detected feature path with multiple line numbers from cli" () {
+        given:
+            def path = 'feature/search.feature:10:20:30'
+            def args = [':cucumber', path]
+            configObject.cucumber.defaultFeaturePath = "test/functional"
+
+        when:
+            def options = createRuntimeOptions (configObject, args)
+
+        then:
+            options.filters.size() == 3
+            options.filters[0] == 10
+            options.filters[1] == 20
+            options.filters[2] == 30
     }
 
     /*
