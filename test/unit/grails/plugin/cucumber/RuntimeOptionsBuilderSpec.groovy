@@ -140,42 +140,6 @@ class RuntimeOptionsBuilderSpec extends Specification {
         options.formatters.empty
     }
 
-    /*
-    def "adds '++name|+n scenario regex' filter from cli" () {
-        given:
-            configObject.cucumber.cliOptions = [
-                '+n',     '@short',
-                '++name', '@full',
-            ]
-
-        when:
-            def options = createRuntimeOptions (configObject)
-
-        then:
-            options.filters.size () == 2
-            options.filters.find { Pattern p -> p.pattern () == "@short" }
-            options.filters.find { Pattern p -> p.pattern () == "@full" }
-    }*/
-
-    /*
-    def "adds '[[FILE|DIR|URL][|LINE[|LINE]*]]+' filter from cli" () {
-        given:
-            configObject.cucumber.cliOptions = [
-                'my/feature/a|1',
-                'my/feature/b|1|2'
-            ]
-
-        when:
-            def options = createRuntimeOptions (configObject)
-
-        then:
-            options.featurePaths.contains('my/feature/a')
-            options.featurePaths.contains('my/feature/b')
-            options.filters.size () == 2
-            options.filters.contains([1L])
-            options.filters.contains([1L, 2L])
-    }*/
-
     def "evaluate cli if first arg contains ':cucumber'" () {
         given:
         def args = [':cucumber', '@tag']
@@ -228,6 +192,40 @@ class RuntimeOptionsBuilderSpec extends Specification {
     }
 
     /*
+    def "adds '[[FILE|DIR|URL][|LINE[|LINE]*]]+' filter from cli" () {
+        given:
+            configObject.cucumber.cliOptions = [
+                'my/feature/a|1',
+                'my/feature/b|1|2'
+            ]
+
+        when:
+            def options = createRuntimeOptions (configObject)
+
+        then:
+            options.featurePaths.contains('my/feature/a')
+            options.featurePaths.contains('my/feature/b')
+            options.filters.size () == 2
+            options.filters.contains([1L])
+            options.filters.contains([1L, 2L])
+    }*/
+    /*
+    def "adds '++name|+n scenario regex' filter from cli" () {
+        given:
+            configObject.cucumber.cliOptions = [
+                '+n',     '@short',
+                '++name', '@full',
+            ]
+
+        when:
+            def options = createRuntimeOptions (configObject)
+
+        then:
+            options.filters.size () == 2
+            options.filters.find { Pattern p -> p.pattern () == "@short" }
+            options.filters.find { Pattern p -> p.pattern () == "@full" }
+    }*/
+    /*
     def "gives warning when multiple filter types are given on cli" () {
         given:
             configObject.cucumber.cliOptions = [
@@ -238,4 +236,5 @@ class RuntimeOptionsBuilderSpec extends Specification {
 
     }
     */
+
 }
