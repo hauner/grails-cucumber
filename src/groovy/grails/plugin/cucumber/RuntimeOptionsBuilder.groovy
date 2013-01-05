@@ -30,11 +30,10 @@ class RuntimeOptionsBuilder {
     RuntimeOptions build (List<String> args) {
         def options = new RuntimeOptions (new Properties ())
 
-        setTags (options)
-        setFormatter (options)
-        setGluePaths (options)
-        setFeaturePaths (options)
-
+        addTags (options)
+        addFormatter (options)
+        addGluePaths (options)
+        addFeaturePaths (options)
         addCliFilter (options, args)
 
         options
@@ -93,7 +92,7 @@ class RuntimeOptionsBuilder {
         }
     }
 
-    private void setGluePaths (RuntimeOptions options) {
+    private void addGluePaths (RuntimeOptions options) {
         if (configObject.cucumber.glue) {
             options.glue.clear ()
             configObject.cucumber.glue.each { path ->
@@ -104,7 +103,7 @@ class RuntimeOptionsBuilder {
         }
     }
 
-    private void setFeaturePaths (RuntimeOptions options) {
+    private void addFeaturePaths (RuntimeOptions options) {
         if (configObject.cucumber.features) {
             options.featurePaths.clear ()
             configObject.cucumber.features.each { path ->
@@ -115,12 +114,12 @@ class RuntimeOptionsBuilder {
         }
     }
 
-    private static void setFormatter (RuntimeOptions options) {
+    private static void addFormatter (RuntimeOptions options) {
         // clear the 'default' cucumber formatter
         options.formatters.clear ()
     }
 
-    private void setTags (RuntimeOptions options) {
+    private void addTags (RuntimeOptions options) {
         configObject.cucumber.tags.each {
             options.filters.add (it)
         }
