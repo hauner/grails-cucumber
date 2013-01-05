@@ -59,7 +59,7 @@
 
 * set tags on the command line. If the command line contains `:cucumber`, `@tag` parameters are
   evaluated to filter execution of features or scenarios. Standard cucumber syntax applies without the
-   `--tags` option keyword. Setting tags on the comand line will overwrite `CucumberConfig.groovy`.
+   `--tags` option keyword. Setting tags on the command line will overwrite `CucumberConfig.groovy`.
 
     Example:
 
