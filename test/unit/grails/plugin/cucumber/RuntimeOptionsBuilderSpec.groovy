@@ -16,13 +16,13 @@
 
 package grails.plugin.cucumber
 
-import cucumber.runtime.RuntimeOptions
 import spock.lang.Specification
+import cucumber.runtime.RuntimeOptions
 
 
 class RuntimeOptionsBuilderSpec extends Specification {
     def TAGS = ["@tags1", "@tags2"]
-    def FEATURE_PATH = "test/cucumber"
+    def FEATURE_PATH = ["test", "cucumber"].join (File.separator)
     def GLUE_PATH = FEATURE_PATH
     def CUSTOM_PATHS = ["path_a", "path_b"]
     def configObject = new ConfigObject ()
@@ -140,7 +140,7 @@ class RuntimeOptionsBuilderSpec extends Specification {
         options.formatters.empty
     }
 
-    def "evaluate cli if first arg contains ':cucumber'" () {
+    def "evaluate args if first arg contains ':cucumber'" () {
         given:
         def args = [':cucumber', '@tag']
 
@@ -152,7 +152,7 @@ class RuntimeOptionsBuilderSpec extends Specification {
         options.filters.contains (args[1])
     }
 
-    def "ignore cli if first arg is not ':cucumber'" () {
+    def "ignore args if first arg is not ':cucumber'" () {
         given:
         def args = ['functional:', '@tag']
 
@@ -164,10 +164,23 @@ class RuntimeOptionsBuilderSpec extends Specification {
         ! options.filters.contains (args[1])
     }
 
-    def "cli filter override config filter" () {
+    def "tag filter override config filter" () {
         given:
         configObject.cucumber.tags = TAGS
-        def args = [':cucumber', 'anything']
+        def args = [':cucumber', '@tag']
+
+        when:
+        def options = createRuntimeOptions (configObject, args)
+
+        then:
+        options.filters.indexOf (TAGS[0]) < 0
+        options.filters.indexOf (TAGS[1]) < 0
+    }
+
+    def "line filter override config filter" () {
+        given:
+        configObject.cucumber.tags = TAGS
+        def args = [':cucumber', 'some.feature:10']
 
         when:
         def options = createRuntimeOptions (configObject, args)
@@ -191,24 +204,57 @@ class RuntimeOptionsBuilderSpec extends Specification {
         options.filters.contains (args[4])
     }
 
-    /*
-    def "adds '[[FILE|DIR|URL][|LINE[|LINE]*]]+' filter from cli" () {
+    def "non tag dir/file args overwrite the feature path" () {
         given:
-            configObject.cucumber.cliOptions = [
-                'my/feature/a|1',
-                'my/feature/b|1|2'
-            ]
+        configObject.cucumber.defaultFeaturePath = ""
+        def args = [':cucumber', 'some dir', 'some.feature']
 
         when:
-            def options = createRuntimeOptions (configObject)
+        def options = createRuntimeOptions (configObject, args)
 
         then:
-            options.featurePaths.contains('my/feature/a')
-            options.featurePaths.contains('my/feature/b')
-            options.filters.size () == 2
-            options.filters.contains([1L])
-            options.filters.contains([1L, 2L])
-    }*/
+        options.featurePaths == ['some dir', 'some.feature']
+        options.filters == []
+    }
+
+    def "dir/file line filters are added as filter" () {
+        given:
+        configObject.cucumber.defaultFeaturePath = ""
+        def args = [':cucumber', 'some.feature:10:20:30']
+
+        when:
+        def options = createRuntimeOptions (configObject, args)
+
+        then:
+        options.featurePaths == ['some.feature']
+        options.filters == [10, 20, 30]
+    }
+
+    def "add feature path to any dir/file that does not start with the feature path" () {
+        given:
+        configObject.cucumber.defaultFeaturePath = FEATURE_PATH
+        def args = [':cucumber', 'some.feature', [FEATURE_PATH, 'other.feature'].join (File.separator)]
+
+        when:
+        def options = createRuntimeOptions (configObject, args)
+
+        then:
+        options.featurePaths[0] == [FEATURE_PATH, 'some.feature'].join (File.separator)
+        options.featurePaths[1] == [FEATURE_PATH, 'other.feature'].join (File.separator)
+    }
+
+    def "do not add feature path to any dir/file if we have multiple feature paths" () {
+        given:
+        configObject.cucumber.features = CUSTOM_PATHS
+        def args = [':cucumber', 'some.feature']
+
+        when:
+        def options = createRuntimeOptions (configObject, args)
+
+        then:
+        options.featurePaths[0] == 'some.feature'
+    }
+
     /*
     def "adds '++name|+n scenario regex' filter from cli" () {
         given:
@@ -225,16 +271,4 @@ class RuntimeOptionsBuilderSpec extends Specification {
             options.filters.find { Pattern p -> p.pattern () == "@short" }
             options.filters.find { Pattern p -> p.pattern () == "@full" }
     }*/
-    /*
-    def "gives warning when multiple filter types are given on cli" () {
-        given:
-            configObject.cucumber.cliOptions = [
-                '+n',     '@short',
-                '++name', '@full',
-                'my/feature/a:1'
-            ]
-
-    }
-    */
-
 }

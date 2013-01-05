@@ -36,52 +36,60 @@ class RuntimeOptionsBuilder {
         setFeaturePaths (options)
 
         addCliFilter (options, args)
-        //addCliFilter (options) //-Dcucumber.options='--tags @ignore --name .*bla.* file/feature:8:9'
 
         options
     }
 
-    def addCliFilter (RuntimeOptions options, List<String> args) {
+    static def addCliFilter (RuntimeOptions options, List<String> args) {
         if (args.size() < 2 || ! args.first().contains(":cucumber")) {
             return
         }
 
-        options.filters.clear ()
+        def filters = []
+        def featurePaths = []
 
         args.each { arg ->
             switch (arg) {
                 case ~/\w*:cucumber/:
-                    break;
+                    break
                 case ~/~?@.+(:\d)?/:
-                    options.filters << arg
-                    break;
+                    filters << arg
+                    break
+                default:
+                    PathWithLines pathWithLines = new PathWithLines (arg)
+                    featurePaths << pathWithLines.path
+                    filters.addAll (pathWithLines.lines)
             }
+        }
+
+        if (! filters.empty) {
+            updateFilters (options.filters, filters)
+        }
+
+        if (! featurePaths.empty) {
+            updateFeaturePaths (options.featurePaths, featurePaths)
         }
     }
 
-    // obsolete
-    def addCliFilter (RuntimeOptions options) {
-        def args = configObject.cucumber.cliOptions
-        if (!args)
-            return
+    private static void updateFilters (List<Object> filters,List<Object> newFilters) {
+        filters.clear ()
+        filters.addAll (newFilters)
+    }
 
-        options.filters.clear ()
+    private static void updateFeaturePaths (List<String> featurePaths, List<String> newFeaturePaths) {
+        String singleFeaturePath = featurePaths.first ()
+        long numberOfFeaturePath = featurePaths.size ()
 
-        while (!args.empty) {
-            String arg = args.remove (0)
+        featurePaths.clear ()
 
-            switch (arg) {
-                case ['++tags', '+t']:
-                    options.filters << args.remove (0)
-                    break
-                case ['++name', '+n']:
-                    options.filters << ~args.remove (0)
-                    break
-                default:
-                    PathWithLines pathWithLines = new PathWithLines (arg.replace ('|', ':'))
-                    options.featurePaths << pathWithLines.path
-                    options.filters << pathWithLines.lines
+        newFeaturePaths.each {
+            String path = it
+
+            if (numberOfFeaturePath == 1 && ! path.startsWith (singleFeaturePath)) {
+                path = [singleFeaturePath, path].join (File.separator)
             }
+
+            featurePaths << path
         }
     }
 
@@ -89,7 +97,7 @@ class RuntimeOptionsBuilder {
         if (configObject.cucumber.glue) {
             options.glue.clear ()
             configObject.cucumber.glue.each { path ->
-                options.glue << path.toString ()  // *NO* GString
+                options.glue << path.toString () // *NO* GString
             }
         } else {
             options.glue << configObject.cucumber.defaultGluePath
@@ -100,14 +108,14 @@ class RuntimeOptionsBuilder {
         if (configObject.cucumber.features) {
             options.featurePaths.clear ()
             configObject.cucumber.features.each { path ->
-                options.featurePaths << path.toString ()  // *NO* GString
+                options.featurePaths << path.toString () // *NO* GString
             }
         } else {
             options.featurePaths << configObject.cucumber.defaultFeaturePath
         }
     }
 
-    private void setFormatter (RuntimeOptions options) {
+    private static void setFormatter (RuntimeOptions options) {
         // clear the 'default' cucumber formatter
         options.formatters.clear ()
     }
