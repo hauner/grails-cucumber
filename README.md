@@ -7,7 +7,8 @@ The plugin runs cucumber *inside* grails which allows us to call the grails api.
 to call dynamic finders in the step implementations. You can populate the database with test data or check
 domain objects written to the database.
 
-See the [wiki][github wiki]  for more information, especially the [plugin guide][] or the [introductional  article][article] that walks through a simple example.
+See the [wiki][github wiki]  for more information, especially the [plugin guide][] or the
+[introductional  article][article] that walks through a simple example.
 
 [grails]: http://grails.org
 [cucumber]: http://cukes.info
@@ -32,7 +33,7 @@ the cucumber features you call grails by one of the following commands:
 * cucumber features and steps are expected in the `test/functional` folder
 * step implementations look like this:
  
-	    this.metaClass.mixin (cucumber.runtime.groovy.EN)
+	    import static cucumber.api.groovy.EN.*
 	
 	    Given (~'^I have specified my app by example$') { ->
 	    	// implement me using groovy and grails code
@@ -46,9 +47,15 @@ the cucumber features you call grails by one of the following commands:
 	    	// implement me using groovy and grails code
 		}
 	 
-* failing steps, steps with errors or undefined steps are all reported by grails as FAILED. The normal cucumber output can be found in `target/test-reports`
+* failing steps, steps with errors or undefined steps are all reported by grails as FAILED. The normal cucumber
+output can be found in `target/test-reports`
 
 [grails testtype]: http://ldaley.com/post/615966534/custom-grails-test
+
+* You can provide feature and scenario filters on the command line. The plugin does currently support cucumbers
+**@tag** and  **dir/file:line** filters. See [cli options][plugin guide cli].
+
+[plugin guide cli]: https://github.com/hauner/grails-cucumber/wiki/Plugin-Guide#runnigCli
 
 # Changes #
 
