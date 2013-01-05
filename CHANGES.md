@@ -1,3 +1,29 @@
+### 0.8.0 ###
+
+unreleased ([source code](https://github.com/hauner/grails-cucumber))
+
+* set dir/file:line filter on the command line. If the command line contains `:cucumber` and some
+other arguments (i.e no `@tag`s) they are evaluated as file/dir and line filter for features and
+scenarios. The filter info is just passed through to cucumber and can be whatever cucumber does
+except. Here are a few examples:
+
+        // features
+        grails test-app :cucumber foo.feature bar.feature
+
+        // feature with line numbers
+        grails test-app :cucumber foo.feature:10:17
+
+        // feature with "full" path
+        grails test-app :cucumber test/functional/foo/bar.feature
+
+        // feature directories
+        grails test-app :cucumber foodir bardir
+
+    See also [cli options][plugin guide cli].
+
+[plugin guide cli]: https://github.com/hauner/grails-cucumber/wiki/Plugin-Guide#runnigCli
+
+
 ### 0.7.0 ###
 
 21st December 2012 ([source code](https://github.com/hauner/grails-cucumber/tree/0.7.0))
