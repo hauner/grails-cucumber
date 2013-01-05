@@ -55,7 +55,7 @@ output can be found in `target/test-reports`
 * You can provide feature and scenario filters on the command line. The plugin does currently support cucumbers
 **@tag** and  **dir/file:line** filters. See [cli options][plugin guide cli].
 
-[plugin guide cli]: https://github.com/hauner/grails-cucumber/wiki/Plugin-Guide#runnigCli
+[plugin guide cli]: https://github.com/hauner/grails-cucumber/wiki/Plugin-Guide#runningCli
 
 # Changes #
 

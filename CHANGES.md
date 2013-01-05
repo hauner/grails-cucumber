@@ -21,7 +21,7 @@ except. Here are a few examples:
 
     See also [cli options][plugin guide cli].
 
-[plugin guide cli]: https://github.com/hauner/grails-cucumber/wiki/Plugin-Guide#runnigCli
+[plugin guide cli]: https://github.com/hauner/grails-cucumber/wiki/Plugin-Guide#runningCli
 
 
 ### 0.7.0 ###
