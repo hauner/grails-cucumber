@@ -28,10 +28,8 @@ grails.project.dependency.resolution = {
         //mavenCentral()
     }
 
-    def cucumberVersion = "1.1.1"
-    
     plugins {
-        build (":release:2.0.4") {
+        build (":release:2.2.0") {
             excludes 'groovy'
             export = false
         }
