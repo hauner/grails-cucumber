@@ -1,6 +1,6 @@
 ### 0.8.0 ###
 
-unreleased ([source code](https://github.com/hauner/grails-cucumber))
+9th January 2013 ([source code](https://github.com/hauner/grails-cucumber/tree/0.8.0))
 
 * set dir/file:line filter on the command line. If the command line contains `:cucumber` and some
 other arguments (i.e no `@tag`s) they are evaluated as file/dir and line filter for features and
