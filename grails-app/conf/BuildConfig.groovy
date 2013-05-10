@@ -31,8 +31,7 @@ grails.project.dependency.resolution = {
     def cucumberVersion = "1.1.1"
     
     plugins {
-        build (":release:2.0.4") {
-            excludes 'groovy'
+        build (":release:2.2.1", ':rest-client-builder:1.0.3') {
             export = false
         }
 
