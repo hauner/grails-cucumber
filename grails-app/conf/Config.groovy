@@ -7,6 +7,11 @@ log4j = {
     //appenders {
     //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
     //}
+    appenders {
+        console name: 'cucumberReporting', layout: pattern (conversionPattern: '%c{1} - %m')
+        console name: 'FeatureReport',     layout: pattern (conversionPattern: 'FeRe - %m')
+        console name: 'CucumberFormatter', layout: pattern (conversionPattern: 'CuFo - %m')
+    }
 
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
            'org.codehaus.groovy.grails.web.pages', //  GSP
@@ -21,6 +26,10 @@ log4j = {
            'net.sf.ehcache.hibernate'
 
     warn   'org.mortbay.log'
+
+//    trace cucumberReporting: 'grails.plugin.cucumber', additivity: false
+//    trace FeatureReport: 'grails.plugin.cucumber.FeatureReport', additivity: false
+//    trace CucumberFormatter: 'grails.plugin.cucumber.CucumberFormatter', additivity: false
 }
 
 grails.views.default.codec="none" // none, html, base64

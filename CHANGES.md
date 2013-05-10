@@ -1,6 +1,6 @@
 ### 0.8.0 ###
 
-unreleased ([source code](https://github.com/hauner/grails-cucumber))
+9th January 2013 ([source code](https://github.com/hauner/grails-cucumber/tree/0.8.0))
 
 * set dir/file:line filter on the command line. If the command line contains `:cucumber` and some
 other arguments (i.e no `@tag`s) they are evaluated as file/dir and line filter for features and
@@ -30,19 +30,20 @@ except. Here are a few examples:
 
 * in order to catch pending steps in the test results they are reported as errors.
 * updated to cucumber-jvm 1.1.1.
-    > ### Warning ###
-> This release will break your build because of backwards-incompatible changes in cucumber-jvm. To
-> fix your build adjust the cucumber `import` statements from:
-> 
->       import static cucumber.runtime.groovy.EN.*
->       import static cucumber.runtime.groovy.Hooks.*
->
-> to:
->
->       import static cucumber.api.groovy.EN.*
->       import static cucumber.api.groovy.Hooks.*
->
-> See [cucumber-jvm history](https://github.com/hauner/cucumber-jvm/blob/master/History.md) for more.
+
+    ### Warning ###
+    This release will break your build because of backwards-incompatible changes in cucumber-jvm. To
+    fix your build adjust the cucumber `import` statements from:
+
+        import static cucumber.runtime.groovy.EN.*
+        import static cucumber.runtime.groovy.Hooks.*
+
+    to:
+
+        import static cucumber.api.groovy.EN.*
+        import static cucumber.api.groovy.Hooks.*
+
+    See [cucumber-jvm history](https://github.com/hauner/cucumber-jvm/blob/master/History.md) for more.
 
 
 ### 0.6.2 ###
