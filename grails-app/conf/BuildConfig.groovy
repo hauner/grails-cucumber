@@ -28,8 +28,6 @@ grails.project.dependency.resolution = {
         //mavenCentral()
     }
 
-    def cucumberVersion = "1.1.1"
-    
     plugins {
         build (":release:2.2.1", ':rest-client-builder:1.0.3') {
             export = false
@@ -42,7 +40,7 @@ grails.project.dependency.resolution = {
 
     dependencies {
         // cucumber
-        compile ("info.cukes:cucumber-groovy:${cucumberVersion}") {
+        compile ("info.cukes:cucumber-groovy:1.1.2") {
            excludes 'ant'   // avoid ant version conflict
         }
 
