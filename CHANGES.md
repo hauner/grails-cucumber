@@ -1,3 +1,42 @@
+### 0.9.0 ###
+
+unreleased ([source code](https://github.com/hauner/grails-cucumber))
+
+* updated to cucumber-jvm 1.1.2.
+* compile step files. It is now possible to compile the step files before running the features. There are two things to configure in `CucumberConfig.groovy`: first, the location of the source files using the  new `sources` configuration an second, the classpath of the step using the `glue` configuration:
+
+		cucumber {
+			// steps, hooks etc that will be compiled
+		    sources = ["test/cucumber"]
+		
+		    // .. and where cucumber will find the compiled steps & hooks
+			glue = ["classpath:<the steps and hooks package>"]
+		}
+
+	A layout that seperates the feature files from the step code may look like this:
+
+		cucumber {
+		    // here we save the feature files...
+		    features = ["test/cucumber"]
+
+			// steps, hooks etc that will be compiled
+			// if the steps are in "test/functional" we do not need to configure it
+		    // sources = ["test/functional"]
+	
+		    // .. and where cucumber will find the compiled steps & hooks
+			glue = ["classpath:<the steps and hooks package>"]
+		}
+
+
+	#### Note ####
+	The steps should be in their own package and there should be no other (normal) classes in this package.  Cucumber will load **all** classes in the given package(s). To avoid complications it is recommended to keep the steps in isolation. It is ok to put (normal) classes into the `sources` directories to compile them but they should be in a different package that is not listed in the `glue` configuration.
+
+    See also [compiling steps in the guide][plugin guide compile] and the [compiled step article][compiled steps].
+
+[plugin guide compile]: https://github.com/hauner/grails-cucumber/wiki/Plugin-Guide#runningCli
+[compiled steps]: http://softnoise.wordpress.com/2013/05/20/grails-grails-cucumber-and-compiled-steps/
+
+
 ### 0.8.0 ###
 
 9th January 2013 ([source code](https://github.com/hauner/grails-cucumber/tree/0.8.0))
