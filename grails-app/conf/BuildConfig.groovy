@@ -34,6 +34,7 @@ grails.project.dependency.resolution = {
         }
 
         test (':spock:0.7') {
+            exclude "spock-grails-support"
             export = false
         }
     }
@@ -45,6 +46,7 @@ grails.project.dependency.resolution = {
         }
 
         // spock
+        test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
         test ('org.objenesis:objenesis:1.2') {
             export = false
         }
