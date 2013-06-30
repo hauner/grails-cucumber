@@ -1,3 +1,5 @@
+package hooks
+
 import static grails.plugin.cucumber.Hooks.hooks
 
 
