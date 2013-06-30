@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Martin Hauner
+ * Copyright 2011-2013 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,10 @@ import org.codehaus.groovy.grails.test.report.junit.JUnitReportsFactory
 import org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport
 import grails.util.Environment
 import cucumber.runtime.Runtime
+import cucumber.runtime.RuntimeOptions
 import cucumber.runtime.groovy.GroovyBackend
-import cucumber.runtime.io.FileResourceLoader
 import cucumber.runtime.snippets.SummaryPrinter
+import cucumber.runtime.io.MultiLoader
 
 
 class CucumberTestType extends GrailsTestTypeSupport {
@@ -63,23 +64,41 @@ class CucumberTestType extends GrailsTestTypeSupport {
     }
 
     private void prepareCucumber () {
-        def configReader = new ConfigReader (new File (CONFIG_PATH),new ConfigSlurper (ENVIRONMENT))
-        def configObject = configReader.parse ()
-        configObject.cucumber.defaultFeaturePath = featurePath ()
-        configObject.cucumber.defaultGluePath = featurePath ()
-        def args = buildBinding.argsMap.params
-        //def properties = System.getProperties().getProperty("cucumber.options")
-
-        def resourceLoader = new FileResourceLoader ()
         def classLoader = getTestClassLoader ()
+
+        def multiLoader = new MultiLoader (classLoader)
         def groovyShell = new GroovyShell (classLoader, createBinding ())
-        def groovyBackend = new GroovyBackend (groovyShell, resourceLoader)
+        def groovyBackend = new GroovyBackend (groovyShell, multiLoader)
 
         def summaryPrinter = new SummaryPrinter (System.out)
-        def runtimeOptions = new RuntimeOptionsBuilder (configObject).build (args)
-        def runtime = new Runtime (resourceLoader, classLoader, [groovyBackend], runtimeOptions)
+        def runtimeOptions = buildOptions (buildBinding.argsMap.params)
+        def runtime = new Runtime (multiLoader, classLoader, [groovyBackend], runtimeOptions)
 
-        cucumber = new Cucumber (resourceLoader, runtime, runtimeOptions, summaryPrinter)
+        cucumber = new Cucumber (multiLoader, runtime, runtimeOptions, summaryPrinter)
+    }
+
+    private RuntimeOptions buildOptions (def args) {
+        def configSlurper = new ConfigSlurper (ENVIRONMENT)
+        configSlurper.setBinding ([
+            basedir: buildBinding.basedir,
+            testDirPath: buildBinding.testDirPath
+        ])
+        def configReader = new ConfigReader (new File (CONFIG_PATH), configSlurper)
+        def configObject = configReader.parse ()
+
+        configObject.cucumber.defaultFeaturePath = featurePath ()
+        configObject.cucumber.defaultGluePath = featurePath ()
+
+        new RuntimeOptionsBuilder (configObject).build (args)
+    }
+
+    // called from _Events.groovy to get the source dirs we should compile
+    static List getGlueSources () {
+        def configSlurper = new ConfigSlurper (ENVIRONMENT)
+        def configReader = new ConfigReader (new File (CONFIG_PATH), configSlurper)
+        def configObject = configReader.parse ()
+
+        (configObject.cucumber.sources) ?: []
     }
 
     private Binding createBinding () {
