@@ -33,7 +33,7 @@ unreleased ([source code](https://github.com/hauner/grails-cucumber))
 
     See also [compiling steps in the guide][plugin guide compile] and the [compiled step article][compiled steps].
 
-[plugin guide compile]: https://github.com/hauner/grails-cucumber/wiki/Plugin-Guide#runningCli
+[plugin guide compile]: https://github.com/hauner/grails-cucumber/wiki/Plugin-Guide#compiledSteps
 [compiled steps]: http://softnoise.wordpress.com/2013/05/20/grails-grails-cucumber-and-compiled-steps/
 
 
