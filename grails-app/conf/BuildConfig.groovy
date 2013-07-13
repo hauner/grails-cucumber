@@ -22,10 +22,12 @@ grails.project.dependency.resolution = {
         grailsPlugins ()
         grailsHome ()
         grailsCentral ()
+
         mavenLocal (null)
+        mavenCentral ()
+
         grailsRepo "http://grails.org/plugins"
         //mavenRepo "https://oss.sonatype.org/content/repositories/snapshots"
-        //mavenCentral()
     }
 
     plugins {
