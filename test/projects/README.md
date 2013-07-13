@@ -9,6 +9,14 @@ Implements two features using the cucumber plugin and _plain_ grails. The step i
 	grails test-app functional:cucumber
 
 
+## Books_compile ##
+Same as Books but configured to compile the steps.
+
+### Running
+
+see Books example.
+
+
 ## Books_geb ##
 Implements two features using the cucumber plugin and geb. The step implementations use geb to remote control a web browser.
 
