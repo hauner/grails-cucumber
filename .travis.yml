@@ -1,6 +1,11 @@
 language: groovy
 
-script: "gradle -q grails-test-app --project-prop arg0=unit:spock"
+
+script: ./grailsw refresh-dependencies
+     && ./grailsw test-app "unit:spock"
+
 
 jdk:
   - openjdk6
+
+
