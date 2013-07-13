@@ -18,7 +18,7 @@ includeTargets << grailsScript ("_GrailsCompile")
 
 
 // compile step code given by CucumberConfig:cucumber.sources = [] after anything else was compiled.
-eventCompileEnd = {
+eventTestCompileEnd = {
     def testType = loadTestType()
 
     def sourceDirs = testType.getGlueSources ()
