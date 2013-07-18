@@ -1,6 +1,6 @@
 ### 0.9.0 ###
 
-unreleased ([source code](https://github.com/hauner/grails-cucumber))
+18th July 2013 ([source code](https://github.com/hauner/grails-cucumber/tree/0.9.0))
 
 * updated to cucumber-jvm 1.1.2.
 * compile step files. It is now possible to compile the step files before running the features. There are two things to configure in `CucumberConfig.groovy`: first, the location of the source files using the  new `sources` configuration an second, the classpath of the step using the `glue` configuration:
