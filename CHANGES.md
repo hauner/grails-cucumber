@@ -13,7 +13,7 @@
 			glue = ["classpath:<the steps and hooks package>"]
 		}
 
-	A layout that seperates the feature files from the step code may look like this:
+	A layout that separates the feature files from the step code may look like this:
 
 		cucumber {
 		    // here we save the feature files...
