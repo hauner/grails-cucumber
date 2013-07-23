@@ -132,7 +132,7 @@ class CucumberTestType extends GrailsTestTypeSupport {
         def report = new FeatureReport(new FeatureReportHelper(factory, swapper))
 
         DelegatingFormatter formatter = new DelegatingFormatter()
-        formatter.add(new PrettyFormatterWrapper(new PrettyFormatterFactory()))
+        formatter.addFormatter(new PrettyFormatterWrapper(new PrettyFormatterFactory()))
 
         if (format) {
             def formatterFactory = new FormatterFactory()
