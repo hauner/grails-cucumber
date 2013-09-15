@@ -106,6 +106,12 @@ class CucumberTestType extends GrailsTestTypeSupport {
         variables.remove ("metaClass")
         variables.remove ("getMetaClass")
         variables.remove ("setMetaClass")
+
+        // grails 2.3 does not provide this anymore!?
+        if(!variables.containsKey('appCtx')) {
+            variables.put('appCtx', getApplicationContext())
+        }
+
         new Binding (variables)
     }
 
