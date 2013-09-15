@@ -8,6 +8,10 @@ grails.project.source.level = 1.6
 grails.project.plugins.dir = 'plugins'
 grails.plugin.location.cucumber = "../../.."
 
+grails.project.fork = [
+   test: false
+]
+
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global") {
@@ -39,10 +43,12 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        runtime ":hibernate:$grailsVersion"
+        // plugins for the build system only
+        build ":tomcat:7.0.42"
+
+        // plugins needed at runtime but not for compilation
+        runtime ":hibernate:3.6.10.1" // or ":hibernate4:4.1.11.1"
         runtime ":jquery:1.7.1"
         runtime ":resources:1.1.6"
-
-        build ":tomcat:$grailsVersion"
     }
 }

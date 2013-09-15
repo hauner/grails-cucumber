@@ -35,22 +35,14 @@ grails.project.dependency.resolution = {
             export = false
         }
 
-        test (':spock:0.7') {
-            exclude "spock-grails-support"
-            export = false
-        }
+        // plugins needed at runtime but not for compilation
+        runtime ":hibernate:3.6.10.1" // or ":hibernate4:4.1.11.1"
     }
 
     dependencies {
         // cucumber
         compile ("info.cukes:cucumber-groovy:1.1.2") {
            excludes 'ant'   // avoid ant version conflict
-        }
-
-        // spock
-        test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
-        test ('org.objenesis:objenesis:1.2') {
-            export = false
         }
     }
 }
