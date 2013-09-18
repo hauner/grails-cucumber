@@ -4,4 +4,6 @@ plugins/
 plugin.xml
 stacktrace.log
 grails-cucumber-*.zip
-
+*.iml
+grails-cucumber-*.sha1
+.idea
