@@ -5,4 +5,5 @@ cucumber {
 
     features = ["test/functional"]
     glue = features
+    formatter = "json:target/cucumber.json"
 }

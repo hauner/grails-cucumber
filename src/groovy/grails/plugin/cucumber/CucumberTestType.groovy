@@ -16,6 +16,7 @@
 
 package grails.plugin.cucumber
 
+import cucumber.runtime.formatter.FormatterFactory
 import org.codehaus.groovy.grails.test.GrailsTestTypeResult
 import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
 import org.codehaus.groovy.grails.test.report.junit.JUnitReportsFactory
@@ -31,112 +32,123 @@ import cucumber.runtime.io.MultiLoader
 class CucumberTestType extends GrailsTestTypeSupport {
     static final ENVIRONMENT = Environment.TEST.name
     static final CONFIG_NAME = "CucumberConfig.groovy"
-    static final CONFIG_PATH = ["grails-app", "conf", CONFIG_NAME].join (File.separator)
+    static final CONFIG_PATH = ["grails-app", "conf", CONFIG_NAME].join(File.separator)
     static final NAME = "cucumber"
 
     Cucumber cucumber
 
+    def format
 
-    CucumberTestType (String testPhase) {
-        super (NAME, testPhase)
+    CucumberTestType(String testPhase) {
+        super(NAME, testPhase)
     }
 
     @Override
-    List<String> getTestExtensions () {
+    List<String> getTestExtensions() {
         ["feature"]
     }
 
     @Override
-    int doPrepare () {
-        prepareCucumber ()
-        loadFeatures ()
-        countScenarios ()
+    int doPrepare() {
+        prepareCucumber()
+        loadFeatures()
+        countScenarios()
     }
 
     @Override
-    GrailsTestTypeResult doRun (GrailsTestEventPublisher eventPublisher) {
-        runFeatures (eventPublisher)
+    GrailsTestTypeResult doRun(GrailsTestEventPublisher eventPublisher) {
+        runFeatures(eventPublisher)
     }
 
     @Override
-    String toString () {
+    String toString() {
         NAME
     }
 
-    private void prepareCucumber () {
-        def classLoader = getTestClassLoader ()
+    private void prepareCucumber() {
+        def classLoader = getTestClassLoader()
 
-        def multiLoader = new MultiLoader (classLoader)
-        def groovyShell = new GroovyShell (classLoader, createBinding ())
-        def groovyBackend = new GroovyBackend (groovyShell, multiLoader)
+        def multiLoader = new MultiLoader(classLoader)
+        def groovyShell = new GroovyShell(classLoader, createBinding())
+        def groovyBackend = new GroovyBackend(groovyShell, multiLoader)
 
-        def summaryPrinter = new SummaryPrinter (System.out)
-        def runtimeOptions = buildOptions (buildBinding.argsMap.params)
-        def runtime = new Runtime (multiLoader, classLoader, [groovyBackend], runtimeOptions)
+        def summaryPrinter = new SummaryPrinter(System.out)
+        def runtimeOptions = buildOptions(buildBinding.argsMap.params)
+        def runtime = new Runtime(multiLoader, classLoader, [groovyBackend], runtimeOptions)
 
-        cucumber = new Cucumber (multiLoader, runtime, runtimeOptions, summaryPrinter)
+        cucumber = new Cucumber(multiLoader, runtime, runtimeOptions, summaryPrinter)
     }
 
-    private RuntimeOptions buildOptions (def args) {
-        def configSlurper = new ConfigSlurper (ENVIRONMENT)
-        configSlurper.setBinding ([
-            basedir: buildBinding.basedir,
-            testDirPath: buildBinding.testDirPath
+    private RuntimeOptions buildOptions(def args) {
+        def configSlurper = new ConfigSlurper(ENVIRONMENT)
+        configSlurper.setBinding([
+                basedir: buildBinding.basedir,
+                testDirPath: buildBinding.testDirPath
         ])
-        def configReader = new ConfigReader (new File (CONFIG_PATH), configSlurper)
-        def configObject = configReader.parse ()
+        def configReader = new ConfigReader(new File(CONFIG_PATH), configSlurper)
+        def configObject = configReader.parse()
 
-        configObject.cucumber.defaultFeaturePath = featurePath ()
-        configObject.cucumber.defaultGluePath = featurePath ()
+        configObject.cucumber.defaultFeaturePath = featurePath()
+        configObject.cucumber.defaultGluePath = featurePath()
 
-        new RuntimeOptionsBuilder (configObject).build (args)
+        format = configObject.cucumber.format
+
+        new RuntimeOptionsBuilder(configObject).build(args)
     }
 
     // called from _Events.groovy to get the source dirs we should compile
-    static List getGlueSources () {
-        def configSlurper = new ConfigSlurper (ENVIRONMENT)
-        def configReader = new ConfigReader (new File (CONFIG_PATH), configSlurper)
-        def configObject = configReader.parse ()
+    static List getGlueSources() {
+        def configSlurper = new ConfigSlurper(ENVIRONMENT)
+        def configReader = new ConfigReader(new File(CONFIG_PATH), configSlurper)
+        def configObject = configReader.parse()
 
         (configObject.cucumber.sources) ?: []
     }
 
-    private Binding createBinding () {
-        Map variables = buildBinding.variables.clone () as Map
-        variables.remove ("metaClass")
-        variables.remove ("getMetaClass")
-        variables.remove ("setMetaClass")
-        new Binding (variables)
+    private Binding createBinding() {
+        Map variables = buildBinding.variables.clone() as Map
+        variables.remove("metaClass")
+        variables.remove("getMetaClass")
+        variables.remove("setMetaClass")
+        new Binding(variables)
     }
 
-    private void loadFeatures () {
-        cucumber.loadFeatures ()
+    private void loadFeatures() {
+        cucumber.loadFeatures()
     }
 
-    private int countScenarios () {
-        cucumber.countScenarios ()
+    private int countScenarios() {
+        cucumber.countScenarios()
     }
 
-    private GrailsTestTypeResult runFeatures (def publisher) {
-        cucumber.run (createFormatter (publisher))
+    private GrailsTestTypeResult runFeatures(def publisher) {
+        cucumber.run(createFormatter(publisher))
     }
 
-    private def createFormatter (def publisher) {
-        def swapper = createSystemOutAndErrSwapper ()
-        def factory = createJUnitReportsFactory ()
+    private def createFormatter(def publisher) {
+        def swapper = createSystemOutAndErrSwapper()
+        def factory = createJUnitReportsFactory()
 
-        def report = new FeatureReport (new FeatureReportHelper (factory, swapper))
-        def pretty = new PrettyFormatterWrapper (new PrettyFormatterFactory ())
+        def report = new FeatureReport(new FeatureReportHelper(factory, swapper))
 
-        new CucumberFormatter (publisher, report, pretty, pretty)
-        //new DebugFormatter (System.out, pretty)
+        DelegatingFormatter formatter = new DelegatingFormatter()
+        formatter.addFormatter(new PrettyFormatterWrapper(new PrettyFormatterFactory()))
+
+        if (format) {
+            def formatterFactory = new FormatterFactory()
+            format.each { String formatString ->
+                formatter.addFormatter(formatterFactory.create(formatString))
+            }
+        }
+
+        new CucumberFormatter(publisher, report, formatter, formatter)
     }
 
-    private JUnitReportsFactory createJUnitReportsFactory () {
-        JUnitReportsFactory.createFromBuildBinding (buildBinding)
+    private JUnitReportsFactory createJUnitReportsFactory() {
+        JUnitReportsFactory.createFromBuildBinding(buildBinding)
     }
 
-    private String featurePath () {
-        ["test", relativeSourcePath].join (File.separator)
+    private String featurePath() {
+        ["test", relativeSourcePath].join(File.separator)
     }
 }
