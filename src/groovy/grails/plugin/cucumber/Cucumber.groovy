@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Martin Hauner
+ * Copyright 2011-2013 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,11 +59,10 @@ class Cucumber {
             //private: _runtime.run (feature)
         }
 
-        // todo merge finish into done
-        formatter.finish ()
         formatter.done ()
-        summaryPrinter.print (runtime)
         formatter.close ()
+        summaryPrinter.print (runtime)
+
         formatter.result
     }
 }

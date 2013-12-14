@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Martin Hauner
+ * Copyright 2012-2013 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,13 +98,10 @@ class CucumberSpec extends Specification {
         (1) * featureB.run (formatter, formatter, runtime)
 
         then:
-        (1) * formatter.finish ()
-
-        then:
         (1) * formatter.done ()
     }
 
-    def "should report summary after finish ()/done () and before close ()" () {
+    def "should report summary after done ()/close ()" () {
         given:
         def formatter = Mock (CucumberFormatter)
         options.cucumberFeatures (_) >> []
@@ -116,16 +113,13 @@ class CucumberSpec extends Specification {
         cucumber.run (formatter)
 
         then:
-        (1) * formatter.finish ()
-
-        then:
         (1) * formatter.done ()
 
         then:
-        (1) * summaryPrinter.print (runtime)
+        (1) * formatter.close ()
 
         then:
-        (1) * formatter.close ()
+        (1) * summaryPrinter.print (runtime)
     }
 
     def "should return formatter result after running features" () {

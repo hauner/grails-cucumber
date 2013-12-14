@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Martin Hauner
+ * Copyright 2011-2013 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,13 +62,6 @@ class CucumberFormatter implements Formatter, Reporter {
         sysout = System.out
     }
 
-    void finish () {
-        log.trace ("finish ()\n")
-
-        endScenario ()
-        endFeature ()
-    }
-
     CucumberTestTypeResult getResult () {
         new CucumberTestTypeResult (runCount, failed.size (), erroneous.size ())
     }
@@ -124,6 +117,11 @@ class CucumberFormatter implements Formatter, Reporter {
     }
 
     void done () {
+        log.trace ("done ()\n")
+
+        endScenario ()
+        endFeature ()
+
         formatter.done ()
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Martin Hauner
+ * Copyright 2011-2013 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -83,7 +83,7 @@ class CucumberFormatterSignalingSpec extends GherkinSpec {
         formatter.scenario (scenarioStub)
         formatter.feature (featureStubB)
         formatter.scenario (scenarioStub)
-        formatter.finish ()
+        formatter.done ()
 
         then:
         (1) * publisher.testCaseEnd (featureStubB.name)
@@ -112,7 +112,7 @@ class CucumberFormatterSignalingSpec extends GherkinSpec {
         formatter.feature (featureStub)
         formatter.scenario (scenarioStubA)
         formatter.scenario (scenarioStubB)
-        formatter.finish ()
+        formatter.done ()
 
         then:
         (1) * publisher.testEnd (scenarioStubB.name)

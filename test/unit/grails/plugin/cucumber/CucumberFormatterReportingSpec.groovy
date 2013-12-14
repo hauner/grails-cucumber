@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Martin Hauner
+ * Copyright 2011-2013 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -106,7 +106,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         when:
         uat.feature (featureStub)
         uat.scenario (scenarioStubA)
-        uat.finish ()
+        uat.done ()
 
         then:
         1 * report.endScenario ()
@@ -120,7 +120,7 @@ class CucumberFormatterReportingSpec extends GherkinSpec {
         when:
         uat.feature (featureStub)
         uat.scenario (scenarioStubA)
-        uat.finish ()
+        uat.done ()
 
         then:
         1 * report.endFeature ()
