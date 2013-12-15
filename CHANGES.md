@@ -1,3 +1,21 @@
+### 0.10.0 ###
+
+unreleased ([source code](https://github.com/hauner/grails-cucumber/master))
+
+    ### Note ###
+    grails-cucumber will NOT (yet) work with grails 2.3.x.
+
+* configure additional formatters. It is now possible to configure additional formatters in `CucumberConfig.groovy`:
+
+        cucumber {
+            // each line corresponds to a single cucumber `--format` option
+            formats = [
+                "json:target/test-reports/cucumber.json",
+                "html:target/test-reports/cucumber"
+            ]
+        }
+
+
 ### 0.9.0 ###
 
 18th July 2013 ([source code](https://github.com/hauner/grails-cucumber/tree/0.9.0))
@@ -5,31 +23,31 @@
 * updated to cucumber-jvm 1.1.2.
 * compile step files. It is now possible to compile the step files before running the features. There are two things to configure in `CucumberConfig.groovy`: first, the location of the source files using the  new `sources` configuration and second, the classpath of the steps using the `glue` configuration:
 
-		cucumber {
-			// steps, hooks etc that will be compiled
-		    sources = ["test/cucumber"]
-		
-		    // .. and where cucumber will find the compiled steps & hooks
-			glue = ["classpath:<the steps and hooks package>"]
-		}
+        cucumber {
+            // steps, hooks etc that will be compiled
+            sources = ["test/cucumber"]
 
-	A layout that separates the feature files from the step code may look like this:
+            // .. and where cucumber will find the compiled steps & hooks
+            glue = ["classpath:<the steps and hooks package>"]
+        }
 
-		cucumber {
-		    // here we save the feature files...
-		    features = ["test/cucumber"]
+    A layout that separates the feature files from the step code may look like this:
 
-			// steps, hooks etc that will be compiled
-			// if the steps are in "test/functional" we do not need to configure it
-		    // sources = ["test/functional"]
-	
-		    // .. and where cucumber will find the compiled steps & hooks
-			glue = ["classpath:<the steps and hooks package>"]
-		}
+        cucumber {
+            // here we save the feature files...
+            features = ["test/cucumber"]
+
+            // steps, hooks etc that will be compiled
+            // if the steps are in "test/functional" we do not need to configure it
+            // sources = ["test/functional"]
+
+            // .. and where cucumber will find the compiled steps & hooks
+            glue = ["classpath:<the steps and hooks package>"]
+        }
 
 
-	#### Note ####
-	The steps should be in their own package and there should be no other (normal) classes in this package.  Cucumber will load **all** classes in the given package(s). To avoid complications it is recommended to keep the steps in isolation. It is ok to put (normal) classes into the `sources` directories to compile them but they should be in a different package that is not listed in the `glue` configuration.
+    #### Note ####
+    The steps should be in their own package and there should be no other (normal) classes in this package.  Cucumber will load **all** classes in the given package(s). To avoid complications it is recommended to keep the steps in isolation. It is ok to put (normal) classes into the `sources` directories to compile them but they should be in a different package that is not listed in the `glue` configuration.
 
     See also [compiling steps in the guide][plugin guide compile] and the [compiled step article][compiled steps].
 
