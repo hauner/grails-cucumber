@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Martin Hauner
+ * Copyright 2012-2013 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package grails.plugin.cucumber
 
 import cucumber.runtime.RuntimeOptions
 import cucumber.runtime.PathWithLines
+import cucumber.runtime.formatter.FormatterFactory
 
 
 class RuntimeOptionsBuilder {
@@ -114,9 +115,14 @@ class RuntimeOptionsBuilder {
         }
     }
 
-    private static void addFormatter (RuntimeOptions options) {
+    private void addFormatter (RuntimeOptions options) {
         // clear the 'default' cucumber formatter
         options.formatters.clear ()
+
+        FormatterFactory factory = new FormatterFactory()
+        configObject.cucumber.formats.each {
+            options.formatters << factory.create (it)
+        }
     }
 
     private void addTags (RuntimeOptions options) {

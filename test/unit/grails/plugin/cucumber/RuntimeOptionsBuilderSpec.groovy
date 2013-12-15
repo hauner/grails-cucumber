@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Martin Hauner
+ * Copyright 2012-2013 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,24 @@ package grails.plugin.cucumber
 
 import spock.lang.Specification
 import cucumber.runtime.RuntimeOptions
+import cucumber.runtime.formatter.HTMLFormatter
+import gherkin.formatter.JSONFormatter
 
 
 class RuntimeOptionsBuilderSpec extends Specification {
-    def TAGS = ["@tags1", "@tags2"]
+    def TAGS = [
+        "@tags1",
+        "@tags2"
+    ]
+
     def FEATURE_PATH = ["test", "cucumber"].join (File.separator)
     def GLUE_PATH = FEATURE_PATH
-    def CUSTOM_PATHS = ["path_a", "path_b"]
+
+    def CUSTOM_PATHS = [
+        "path_a",
+        "path_b"
+    ]
+
     def configObject = new ConfigObject ()
 
 
@@ -271,4 +282,20 @@ class RuntimeOptionsBuilderSpec extends Specification {
             options.filters.find { Pattern p -> p.pattern () == "@short" }
             options.filters.find { Pattern p -> p.pattern () == "@full" }
     }*/
+
+    @SuppressWarnings ("GroovyAccessibility")
+    def "add format(s) from configuration to options" () {
+        given:
+        configObject.cucumber.formats = [
+            "json:target/results.json",
+            "html:target/result.html"
+        ]
+
+        when:
+        def options = createRuntimeOptions (configObject)
+
+        then:
+        options.formatters.find { it.class == JSONFormatter.class }
+        options.formatters.find { it.class == HTMLFormatter.class }
+    }
 }
