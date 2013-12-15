@@ -17,8 +17,6 @@
 package grails.plugin.cucumber
 
 import cucumber.runtime.Runtime
-import cucumber.runtime.RuntimeOptions
-import cucumber.runtime.io.ResourceLoader
 import cucumber.runtime.model.CucumberFeature
 import cucumber.runtime.model.CucumberTagStatement
 import cucumber.runtime.snippets.SummaryPrinter
@@ -29,7 +27,6 @@ class CucumberSpec extends Specification {
     private static final int SCENARIO_COUNT_A = 2
     private static final int SCENARIO_COUNT_B = 3
     def summaryPrinter = Mock (SummaryPrinter)
-    def resourceLoader = Mock (ResourceLoader)
     def options = Mock (RuntimeOptions)
     def runtime = Mock (Runtime)
 
@@ -55,22 +52,22 @@ class CucumberSpec extends Specification {
 
     def "should load features" () {
         given:
-        def cucumber = new Cucumber (resourceLoader, runtime, options, null)
+        def cucumber = new Cucumber (runtime, options, null)
 
         when:
         cucumber.loadFeatures ()
 
         then:
-        (1) * options.cucumberFeatures (resourceLoader)
+        (1) * options.cucumberFeatures (runtime)
     }
 
     def "should count scenarios" () {
         given:
-        options.cucumberFeatures (_) >> [
+        options.cucumberFeatures (runtime) >> [
             featureStub (scenarioStubs (SCENARIO_COUNT_A)),
             featureStub (scenarioStubs (SCENARIO_COUNT_B))
         ]
-        def cucumber = new Cucumber (resourceLoader, runtime, options, null)
+        def cucumber = new Cucumber (runtime, options, null)
         cucumber.loadFeatures ()
 
         when:
@@ -85,9 +82,12 @@ class CucumberSpec extends Specification {
         def formatter = Mock (CucumberFormatter)
         def featureA = featureStub (null)
         def featureB = featureStub (null)
-        options.cucumberFeatures (_) >> [featureA, featureB]
 
-        def cucumber = new Cucumber (resourceLoader, runtime, options, summaryPrinter)
+        options.cucumberFeatures (runtime) >> [featureA, featureB]
+        options.getOptionsFormatter (runtime) >> formatter
+        options.getOptionsReporter (runtime) >> formatter
+
+        def cucumber = new Cucumber (runtime, options, summaryPrinter)
         cucumber.loadFeatures ()
 
         when:
@@ -101,12 +101,13 @@ class CucumberSpec extends Specification {
         (1) * formatter.done ()
     }
 
-    def "should report summary after done ()/close ()" () {
+    def "should report summary after done () but before close ()" () {
         given:
         def formatter = Mock (CucumberFormatter)
-        options.cucumberFeatures (_) >> []
+        options.cucumberFeatures (runtime) >> []
+        options.getOptionsFormatter (runtime) >> formatter
 
-        def cucumber = new Cucumber (resourceLoader, runtime, options, summaryPrinter)
+        def cucumber = new Cucumber (runtime, options, summaryPrinter)
         cucumber.loadFeatures ()
 
         when:
@@ -116,10 +117,10 @@ class CucumberSpec extends Specification {
         (1) * formatter.done ()
 
         then:
-        (1) * formatter.close ()
+        (1) * summaryPrinter.print (runtime)
 
         then:
-        (1) * summaryPrinter.print (runtime)
+        (1) * formatter.close ()
     }
 
     def "should return formatter result after running features" () {
@@ -127,9 +128,10 @@ class CucumberSpec extends Specification {
         def formatter = Mock (CucumberFormatter)
         def expectedResult = Mock (CucumberTestTypeResult)
         formatter.getResult() >> expectedResult
-        options.cucumberFeatures (_) >> []
+        options.cucumberFeatures (runtime) >> []
+        options.getOptionsFormatter (runtime) >> formatter
 
-        def cucumber = new Cucumber (resourceLoader, runtime, options, summaryPrinter)
+        def cucumber = new Cucumber (runtime, options, summaryPrinter)
         cucumber.loadFeatures ()
 
         when:

@@ -16,7 +16,6 @@
 
 package grails.plugin.cucumber
 
-import cucumber.runtime.RuntimeOptions
 import cucumber.runtime.PathWithLines
 import cucumber.runtime.formatter.FormatterFactory
 
@@ -28,15 +27,12 @@ class RuntimeOptionsBuilder {
         this.configObject = configObject
     }
 
-    RuntimeOptions build (List<String> args) {
-        def options = new RuntimeOptions (new Properties ())
-
+    RuntimeOptions init (RuntimeOptions options, List<String> args) {
         addTags (options)
         addFormatter (options)
         addGluePaths (options)
         addFeaturePaths (options)
         addCliFilter (options, args)
-
         options
     }
 

@@ -16,31 +16,28 @@
 
 package grails.plugin.cucumber
 
+import gherkin.formatter.Formatter
+import gherkin.formatter.Reporter
 import cucumber.runtime.Runtime
-import cucumber.runtime.RuntimeOptions
-import cucumber.runtime.io.ResourceLoader
 import cucumber.runtime.model.CucumberFeature
 import cucumber.runtime.snippets.SummaryPrinter
 
 
 class Cucumber {
-    def summaryPrinter
-    def resourceLoader
-    def runtimeOptions
-    def runtime
+    Runtime        runtime
+    RuntimeOptions runtimeOptions
+    SummaryPrinter summaryPrinter
 
-    def features
+    List<CucumberFeature> features
 
-    Cucumber (ResourceLoader resourceLoader, Runtime runtime, RuntimeOptions runtimeOptions,
-        SummaryPrinter summaryPrinter) {
+    Cucumber (Runtime runtime, RuntimeOptions runtimeOptions, SummaryPrinter summaryPrinter) {
         this.summaryPrinter = summaryPrinter
-        this.resourceLoader = resourceLoader
         this.runtimeOptions = runtimeOptions
         this.runtime = runtime
     }
 
     void loadFeatures () {
-        features = runtimeOptions.cucumberFeatures (resourceLoader)
+        features = runtimeOptions.cucumberFeatures (runtime)
     }
 
     int countScenarios () {
@@ -51,19 +48,22 @@ class Cucumber {
         scenarioCount
     }
 
-    CucumberTestTypeResult run (CucumberFormatter formatter) {
-        //runtimeOptions.formatters << formatter
+    CucumberTestTypeResult run (CucumberFormatter cucumberFormatter) {
+        runtimeOptions.addOptionsFormatter (cucumberFormatter)
+
+        // more or less Runtime.run (), we could simply call it...!?
+        Formatter formatter = runtimeOptions.getOptionsFormatter (runtime)
+        Reporter  reporter  = runtimeOptions.getOptionsReporter (runtime)
 
         features.each { CucumberFeature feature ->
-            feature.run (formatter, formatter, runtime)
-            //private: _runtime.run (feature)
+            feature.run (formatter, reporter, runtime)
         }
 
         formatter.done ()
-        formatter.close ()
         summaryPrinter.print (runtime)
+        formatter.close ()
 
-        formatter.result
+        cucumberFormatter.result
     }
 }
 

@@ -17,7 +17,6 @@
 package grails.plugin.cucumber
 
 import spock.lang.Specification
-import cucumber.runtime.RuntimeOptions
 import cucumber.runtime.formatter.HTMLFormatter
 import gherkin.formatter.JSONFormatter
 
@@ -40,11 +39,11 @@ class RuntimeOptionsBuilderSpec extends Specification {
 
 
     RuntimeOptions createRuntimeOptions (ConfigObject configObject) {
-        new RuntimeOptionsBuilder (configObject).build ([])
+        new RuntimeOptionsBuilder (configObject).init (new RuntimeOptions(), [])
     }
 
     RuntimeOptions createRuntimeOptions (ConfigObject configObject, List<String> args) {
-        new RuntimeOptionsBuilder (configObject).build (args)
+        new RuntimeOptionsBuilder (configObject).init (new RuntimeOptions(), args)
     }
 
     def "adds tags from configuration to options" () {
@@ -288,7 +287,7 @@ class RuntimeOptionsBuilderSpec extends Specification {
         given:
         configObject.cucumber.formats = [
             "json:target/results.json",
-            "html:target/result.html"
+            "html:target/results"
         ]
 
         when:

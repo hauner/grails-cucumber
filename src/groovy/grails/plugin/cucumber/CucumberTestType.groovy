@@ -22,7 +22,6 @@ import org.codehaus.groovy.grails.test.report.junit.JUnitReportsFactory
 import org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport
 import grails.util.Environment
 import cucumber.runtime.Runtime
-import cucumber.runtime.RuntimeOptions
 import cucumber.runtime.groovy.GroovyBackend
 import cucumber.runtime.snippets.SummaryPrinter
 import cucumber.runtime.io.MultiLoader
@@ -69,15 +68,14 @@ class CucumberTestType extends GrailsTestTypeSupport {
         def multiLoader = new MultiLoader (classLoader)
         def groovyShell = new GroovyShell (classLoader, createBinding ())
         def groovyBackend = new GroovyBackend (groovyShell, multiLoader)
+        def runtimeOptions = initOptions (new RuntimeOptions (), buildBinding.argsMap.params)
 
-        def summaryPrinter = new SummaryPrinter (System.out)
-        def runtimeOptions = buildOptions (buildBinding.argsMap.params)
         def runtime = new Runtime (multiLoader, classLoader, [groovyBackend], runtimeOptions)
 
-        cucumber = new Cucumber (multiLoader, runtime, runtimeOptions, summaryPrinter)
+        cucumber = new Cucumber (runtime, runtimeOptions, new SummaryPrinter (System.out))
     }
 
-    private RuntimeOptions buildOptions (def args) {
+    private RuntimeOptions initOptions (RuntimeOptions options, def args) {
         def configSlurper = new ConfigSlurper (ENVIRONMENT)
         configSlurper.setBinding ([
             basedir: buildBinding.basedir,
@@ -89,7 +87,9 @@ class CucumberTestType extends GrailsTestTypeSupport {
         configObject.cucumber.defaultFeaturePath = featurePath ()
         configObject.cucumber.defaultGluePath = featurePath ()
 
-        new RuntimeOptionsBuilder (configObject).build (args)
+        new RuntimeOptionsBuilder (configObject).init (options, args)
+
+        options
     }
 
     // called from _Events.groovy to get the source dirs we should compile
