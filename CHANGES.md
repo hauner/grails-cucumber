@@ -15,6 +15,12 @@ unreleased ([source code](https://github.com/hauner/grails-cucumber/master))
             ]
         }
 
+    The configuration of the additional formatters can be overridden on the command line (one time only):
+
+        grails test-app :cucumber --format=json:target/test-reports/override.json
+
+    The plugins (default) grails formatter will always run.
+
 
 ### 0.9.0 ###
 
