@@ -5,6 +5,7 @@ unreleased ([source code](https://github.com/hauner/grails-cucumber/master))
     ### Note ###
     grails-cucumber will NOT (yet) work with grails 2.3.x.
 
+* updated to cucumber-jvm 1.1.5
 * configure additional formatters. It is now possible to configure additional formatters in `CucumberConfig.groovy`:
 
         cucumber {
