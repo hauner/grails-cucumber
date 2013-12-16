@@ -16,7 +16,7 @@
 
 package grails.plugin.cucumber
 
-import cucumber.runtime.PendingException
+import cucumber.api.PendingException
 import gherkin.formatter.model.Result
 import gherkin.formatter.model.Match
 
