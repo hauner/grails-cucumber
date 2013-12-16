@@ -39,10 +39,10 @@ class RuntimeOptionsBuilderSpec extends Specification {
 
 
     RuntimeOptions createRuntimeOptions (ConfigObject configObject) {
-        new RuntimeOptionsBuilder (configObject).init (new RuntimeOptions(), [])
+        new RuntimeOptionsBuilder (configObject).init (new RuntimeOptions(), [:])
     }
 
-    RuntimeOptions createRuntimeOptions (ConfigObject configObject, List<String> args) {
+    RuntimeOptions createRuntimeOptions (ConfigObject configObject, Map<String, Object> args) {
         new RuntimeOptionsBuilder (configObject).init (new RuntimeOptions(), args)
     }
 
@@ -152,32 +152,38 @@ class RuntimeOptionsBuilderSpec extends Specification {
 
     def "evaluate args if first arg contains ':cucumber'" () {
         given:
-        def args = [':cucumber', '@tag']
+        def args = [
+            params: [':cucumber', '@tag']
+        ]
 
         when:
         def options = createRuntimeOptions (configObject, args)
 
         then:
-        ! options.filters.contains (args[0])
-        options.filters.contains (args[1])
+        ! options.filters.contains (args.params[0])
+        options.filters.contains (args.params[1])
     }
 
     def "ignore args if first arg is not ':cucumber'" () {
         given:
-        def args = ['functional:', '@tag']
+        def args = [
+            params: ['functional:', '@tag']
+        ]
 
         when:
         def options = createRuntimeOptions (configObject, args)
 
         then:
-        ! options.filters.contains (args[0])
-        ! options.filters.contains (args[1])
+        ! options.filters.contains (args.params[0])
+        ! options.filters.contains (args.params[1])
     }
 
     def "tag filter override config filter" () {
         given:
         configObject.cucumber.tags = TAGS
-        def args = [':cucumber', '@tag']
+        def args = [
+            params: [':cucumber', '@tag']
+        ]
 
         when:
         def options = createRuntimeOptions (configObject, args)
@@ -190,7 +196,9 @@ class RuntimeOptionsBuilderSpec extends Specification {
     def "line filter override config filter" () {
         given:
         configObject.cucumber.tags = TAGS
-        def args = [':cucumber', 'some.feature:10']
+        def args = [
+            params: [':cucumber', 'some.feature:10']
+        ]
 
         when:
         def options = createRuntimeOptions (configObject, args)
@@ -202,22 +210,26 @@ class RuntimeOptionsBuilderSpec extends Specification {
 
     def "adds auto detected tag filter from cli" () {
         given:
-        def args = [':cucumber', '@tag1', '~@tag2', '@tagA,@tagB', '@tag:9']
+        def args = [
+            params: [':cucumber', '@tag1', '~@tag2', '@tagA,@tagB', '@tag:9']
+        ]
 
         when:
         def options = createRuntimeOptions (configObject, args)
 
         then:
-        options.filters.contains (args[1])
-        options.filters.contains (args[2])
-        options.filters.contains (args[3])
-        options.filters.contains (args[4])
+        options.filters.contains (args.params[1])
+        options.filters.contains (args.params[2])
+        options.filters.contains (args.params[3])
+        options.filters.contains (args.params[4])
     }
 
     def "non tag dir/file args overwrite the feature path" () {
         given:
         configObject.cucumber.defaultFeaturePath = ""
-        def args = [':cucumber', 'some dir', 'some.feature']
+        def args = [
+            params: [':cucumber', 'some dir', 'some.feature']
+        ]
 
         when:
         def options = createRuntimeOptions (configObject, args)
@@ -230,7 +242,9 @@ class RuntimeOptionsBuilderSpec extends Specification {
     def "dir/file line filters are added as filter" () {
         given:
         configObject.cucumber.defaultFeaturePath = ""
-        def args = [':cucumber', 'some.feature:10:20:30']
+        def args = [
+            params: [':cucumber', 'some.feature:10:20:30']
+        ]
 
         when:
         def options = createRuntimeOptions (configObject, args)
@@ -243,7 +257,9 @@ class RuntimeOptionsBuilderSpec extends Specification {
     def "add feature path to any dir/file that does not start with the feature path" () {
         given:
         configObject.cucumber.defaultFeaturePath = FEATURE_PATH
-        def args = [':cucumber', 'some.feature', [FEATURE_PATH, 'other.feature'].join (File.separator)]
+        def args = [
+            params: [':cucumber', 'some.feature', [FEATURE_PATH, 'other.feature'].join (File.separator)]
+        ]
 
         when:
         def options = createRuntimeOptions (configObject, args)
@@ -256,7 +272,9 @@ class RuntimeOptionsBuilderSpec extends Specification {
     def "do not add feature path to any dir/file if we have multiple feature paths" () {
         given:
         configObject.cucumber.features = CUSTOM_PATHS
-        def args = [':cucumber', 'some.feature']
+        def args = [
+            params: [':cucumber', 'some.feature']
+        ]
 
         when:
         def options = createRuntimeOptions (configObject, args)
@@ -296,5 +314,22 @@ class RuntimeOptionsBuilderSpec extends Specification {
         then:
         options.formatters.find { it.class == JSONFormatter.class }
         options.formatters.find { it.class == HTMLFormatter.class }
+    }
+
+    def "command line --format= overwrites config formats" () {
+        given:
+        configObject.cucumber.formats = [
+            "html:target/results"
+        ]
+        def args = [
+            'format': "json:target/override.json"
+        ]
+
+        when:
+        def options = createRuntimeOptions (configObject, args)
+
+        then:
+        options.formatters.size () == 1
+        options.formatters.find { it.class == JSONFormatter.class }
     }
 }

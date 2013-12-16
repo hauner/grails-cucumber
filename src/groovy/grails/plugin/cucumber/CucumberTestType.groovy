@@ -68,14 +68,14 @@ class CucumberTestType extends GrailsTestTypeSupport {
         def multiLoader = new MultiLoader (classLoader)
         def groovyShell = new GroovyShell (classLoader, createBinding ())
         def groovyBackend = new GroovyBackend (groovyShell, multiLoader)
-        def runtimeOptions = initOptions (new RuntimeOptions (), buildBinding.argsMap.params)
+        def runtimeOptions = initOptions (new RuntimeOptions ())
 
         def runtime = new Runtime (multiLoader, classLoader, [groovyBackend], runtimeOptions)
 
         cucumber = new Cucumber (runtime, runtimeOptions, new SummaryPrinter (System.out))
     }
 
-    private RuntimeOptions initOptions (RuntimeOptions options, def args) {
+    private RuntimeOptions initOptions (RuntimeOptions options) {
         def configSlurper = new ConfigSlurper (ENVIRONMENT)
         configSlurper.setBinding ([
             basedir: buildBinding.basedir,
@@ -87,7 +87,7 @@ class CucumberTestType extends GrailsTestTypeSupport {
         configObject.cucumber.defaultFeaturePath = featurePath ()
         configObject.cucumber.defaultGluePath = featurePath ()
 
-        new RuntimeOptionsBuilder (configObject).init (options, args)
+        new RuntimeOptionsBuilder (configObject).init (options, buildBinding.argsMap)
 
         options
     }

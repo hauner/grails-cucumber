@@ -27,16 +27,16 @@ class RuntimeOptionsBuilder {
         this.configObject = configObject
     }
 
-    RuntimeOptions init (RuntimeOptions options, List<String> args) {
+    RuntimeOptions init (RuntimeOptions options, Map<String, Object> args) {
         addTags (options)
-        addFormatter (options)
+        addFormatter (options, args.format as String)
         addGluePaths (options)
         addFeaturePaths (options)
-        addCliFilter (options, args)
+        addFilter (options, args.params as List<String> ?: [])
         options
     }
 
-    static def addCliFilter (RuntimeOptions options, List<String> args) {
+    static def addFilter (RuntimeOptions options, List<String> args) {
         if (args.size() < 2 || ! args.first().contains(":cucumber")) {
             return
         }
@@ -111,13 +111,18 @@ class RuntimeOptionsBuilder {
         }
     }
 
-    private void addFormatter (RuntimeOptions options) {
+    private void addFormatter (RuntimeOptions options, String format) {
         // clear the 'default' cucumber formatter
         options.formatters.clear ()
 
         FormatterFactory factory = new FormatterFactory()
-        configObject.cucumber.formats.each {
-            options.formatters << factory.create (it)
+        if (format) {
+            options.formatters << factory.create (format)
+        }
+        else {
+            configObject.cucumber.formats.each {
+                options.formatters << factory.create (it)
+            }
         }
     }
 
