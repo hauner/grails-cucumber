@@ -8,6 +8,12 @@ grails.release.scm.enabled = false
 grails.project.repos.default = "grailsCentral"
 
 
+/*
+grails.project.fork = [
+]
+*/
+
+grails.project.dependency.resolver = "maven"
 grails.project.dependency.resolution = {
 
     // inherit Grails' default dependencies
@@ -19,26 +25,11 @@ grails.project.dependency.resolution = {
     log "warn" // Ivy resolver: 'error', 'warn', 'info', 'debug' or 'verbose'
 
     repositories {
-        grailsPlugins ()
-        grailsHome ()
-        grailsCentral ()
-
-        mavenLocal (null)
-        mavenCentral ()
-
-        grailsRepo "http://grails.org/plugins"
-        //mavenRepo "https://oss.sonatype.org/content/repositories/snapshots"
-    }
-
-    plugins {
-        build (":release:2.2.1", ':rest-client-builder:1.0.3') {
-            export = false
-        }
-
-        test (':spock:0.7') {
-            exclude "spock-grails-support"
-            export = false
-        }
+        grailsPlugins()
+        grailsHome()
+        mavenLocal()
+        grailsCentral()
+        mavenCentral()
     }
 
     dependencies {
@@ -46,11 +37,27 @@ grails.project.dependency.resolution = {
         compile ("info.cukes:cucumber-groovy:1.1.5") {
            excludes 'ant'   // avoid ant version conflict
         }
+    }
 
-        // spock
-        test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
-        test ('org.objenesis:objenesis:1.2') {
-            export = false
-        }
+    plugins {
+        // plugins for the build system only
+        build ":tomcat:7.0.47"
+        build ":release:3.0.1"
+//        build (":release:2.2.1", ':rest-client-builder:1.0.3') {
+//            export = false
+//        }
+
+        // plugins for the compile step
+        compile ":scaffolding:2.0.1"
+        //compile ':cache:1.1.1'
+
+        // plugins needed at runtime but not for compilation
+        runtime ":hibernate:3.6.10.6" // or ":hibernate4:4.1.11.6"
+        runtime ":database-migration:1.3.8"
+        //runtime ":jquery:1.10.2.2"
+        runtime ":resources:1.2.1"
+        // Uncomment these (or add new ones) to enable additional resources capabilities
+        //runtime ":zipped-resources:1.0.1"
+        //runtime ":cached-resources:1.1"
     }
 }
