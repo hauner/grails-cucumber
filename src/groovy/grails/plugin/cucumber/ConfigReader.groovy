@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Martin Hauner
+ * Copyright 2012-2013 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ class ConfigReader {
 
     ConfigObject parse () {
         if (configFile.exists ()) {
-            configSlurper.parse (configFile.toURL ())
+            configSlurper.parse (configFile.toURI ().toURL () as URL)
         }
         else {
             new ConfigObject ()
