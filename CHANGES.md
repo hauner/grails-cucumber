@@ -1,9 +1,11 @@
 ### 0.10.0 ###
 
-unreleased ([source code](https://github.com/hauner/grails-cucumber/master))
+29th December 2013 ([source code](https://github.com/hauner/grails-cucumber/tree/0.10.0))
 
-    ### Note ###
-    grails-cucumber will NOT (yet) work with grails 2.3.x.
+> **Note**
+grails-cucumber is not yet compatible with grails 2.3.x: **forked mode** does not work at all and **non forked mode** does not work with *in process* code that is directly calling domain classes, services or controllers in step code (like the 'Books' example). 
+
+> **non forked mode** will be fixed in 0.11.0. **forked mode** requires a few fixes in grails. 
 
 * updated to cucumber-jvm 1.1.5
 * configure additional formatters. It is now possible to configure additional formatters in `CucumberConfig.groovy`:
