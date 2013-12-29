@@ -32,7 +32,7 @@ eventTestCompileEnd = {
     }
 
     projectCompiler.srcDirectories.addAll (sourceDirs)
-    projectCompiler.compile (testDirPath)
+    projectCompiler.compile ([testDirPath, currentTestPhaseName].join (File.separator))
 }
 
 
