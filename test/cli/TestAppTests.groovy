@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Martin Hauner
+ * Copyright 2011-2013 Martin Hauner
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ class TestAppTests extends AbstractCliTestCase {
 
     private void verifyTestFeatureAssertionFailure () {
         assertTrue (
-            "assertion failure does not match exeption",
+            "assertion failure does not match exception",
             output.contains ("java.lang.AssertionError")
         )
 
@@ -74,7 +74,7 @@ class TestAppTests extends AbstractCliTestCase {
 
     private void verifyTestFeatureExceptionError () {
         assertTrue (
-            "exception error does not match exeption",
+            "exception error does not match exception",
             output.contains ("java.lang.ArithmeticException: Division by zero")
         )
 
