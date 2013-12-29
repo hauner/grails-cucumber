@@ -98,9 +98,10 @@ class TestAppTests extends AbstractCliTestCase {
     }
 
     private void verifyTestCounts () {
-        assertTrue (
-            "test counts do not match",
-            output.contains ("Completed " +TEST_COUNT+ " cucumber tests, " +TEST_FAILED+ " failed")
-        )
+        boolean scenarioCounts = output =~ /(?s)6 Scenarios.*3 failed.*1 undefined.*2 passed/
+        assertTrue ("scenario counts do not match", scenarioCounts)
+
+        boolean stepCounts = output =~ /(?s)21 Steps.*2 failed.*6 skipped.*1 undefined.*12 passed/
+        assertTrue ("scenario counts do not match", stepCounts)
     }
 }
