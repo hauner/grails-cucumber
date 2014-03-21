@@ -126,9 +126,6 @@ class CucumberTestType extends GrailsTestTypeSupport {
 
         if (!variables.containsKey ('functionalBaseUrl')) {
             String baseUrl = buildBinding.grailsSettings.functionalTestBaseUrl
-//            if(!baseUrl.endsWith ('/')) {
-//                baseUrl += '/'
-//            }
             variables.put ('functionalBaseUrl', baseUrl)
             variables.put ('functionalTestBaseUrl', baseUrl)
         }
