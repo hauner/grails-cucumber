@@ -16,6 +16,7 @@
 
 package grails.plugin.cucumber
 
+import grails.util.BuildSettings
 import org.codehaus.groovy.grails.test.GrailsTestTypeResult
 import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
 import org.codehaus.groovy.grails.test.report.junit.JUnitReportsFactory
@@ -107,6 +108,7 @@ class CucumberTestType extends GrailsTestTypeSupport {
         variables.remove ("getMetaClass")
         variables.remove ("setMetaClass")
         setAppCtx (variables)
+        setFunctionalTestBaseUrl (variables)
         new Binding (variables)
     }
 
@@ -116,6 +118,19 @@ class CucumberTestType extends GrailsTestTypeSupport {
         // for plugin backward compatibility we add it if possible, i.e. not forked!
         if (!forked && !variables.containsKey('appCtx')) {
             variables.put('appCtx', getApplicationContext())
+        }
+    }
+
+    private void setFunctionalTestBaseUrl (Map variables) {
+        // functionalBaseUrl may not be in the (test-app) binding since grails 2.3
+
+        if (!variables.containsKey ('functionalBaseUrl')) {
+            String baseUrl = buildBinding.grailsSettings.functionalTestBaseUrl
+//            if(!baseUrl.endsWith ('/')) {
+//                baseUrl += '/'
+//            }
+            variables.put ('functionalBaseUrl', baseUrl)
+            variables.put ('functionalTestBaseUrl', baseUrl)
         }
     }
 
