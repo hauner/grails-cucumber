@@ -1,3 +1,10 @@
+### 0.11.0 ###
+
+unreleased ([source code](https://github.com/hauner/grails-cucumber))
+
+* this release adds grails 2.3 support. To use fork mode at least grails 2.3.8 is required.
+
+
 ### 0.10.0 ###
 
 29th December 2013 ([source code](https://github.com/hauner/grails-cucumber/tree/0.10.0))
