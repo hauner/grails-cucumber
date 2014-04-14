@@ -1,3 +1,4 @@
+grails.project.work.dir = "target/work"
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
@@ -41,21 +42,21 @@ grails.project.dependency.resolution = {
 
     plugins {
         // plugins for the build system only
-        build ":tomcat:7.0.47"
+        build ":tomcat:7.0.52.1"
         build ":release:3.0.1"
 //        build (":release:2.2.1", ':rest-client-builder:1.0.3') {
 //            export = false
 //        }
 
         // plugins for the compile step
-        compile ":scaffolding:2.0.1"
+        compile ":scaffolding:2.0.3"
         //compile ':cache:1.1.1'
 
         // plugins needed at runtime but not for compilation
-        runtime ":hibernate:3.6.10.6" // or ":hibernate4:4.1.11.6"
+        runtime ":hibernate:3.6.10.12" // or ":hibernate4:4.1.11.6"
         runtime ":database-migration:1.3.8"
         //runtime ":jquery:1.10.2.2"
-        runtime ":resources:1.2.1"
+        runtime ":resources:1.2.7"
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0.1"
         //runtime ":cached-resources:1.1"
