@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Martin Hauner
+ * Copyright 2012, 2014 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,8 +46,8 @@ class ConfigReaderSpec extends Specification {
     def "returns config object if config file does exist" () {
         given:
         configFile.exists () >> true
-        configFile.toURL () >> null
-        configSlurper.parse (null) >> configObject
+        configFile.toURI () >> new URI ('file://dummy')
+        configSlurper.parse (_) >> configObject
         def reader = new ConfigReader (configFile, configSlurper)
 
         when:
