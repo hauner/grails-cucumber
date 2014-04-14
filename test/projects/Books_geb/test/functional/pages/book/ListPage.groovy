@@ -6,7 +6,7 @@ import books.Book
 
 
 class ListPage extends Page {
-    static url = "book/list"
+    static url = "book/index"
 
     static at = {
         title ==~ /Book List/
