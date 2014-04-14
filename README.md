@@ -3,12 +3,8 @@
 grails-cucumber is a [Grails][] plugin for [Cucumber][] based on [Cucumber-JVM][]. Cucumber-JVM
 is the JVM implementation of cucumber with support for many JVM languages.
 
-The plugin runs cucumber *inside* grails which allows us to call the grails api. For example it is possible
-to call dynamic finders in the step implementations. You can populate the database with test data or check
-domain objects written to the database.
-
 See the [wiki][github wiki]  for more information, especially the [plugin guide][] or the
-[introductional  article][article] that walks through a simple example.
+[articles][] that walk through simple examples.
 
 [grails]: http://grails.org
 [cucumber]: http://cukes.info
@@ -16,7 +12,7 @@ See the [wiki][github wiki]  for more information, especially the [plugin guide]
 [github wiki]: https://github.com/hauner/grails-cucumber/wiki
 [plugin guide]: https://github.com/hauner/grails-cucumber/wiki/Plugin-Guide
 [article geb]: https://github.com/hauner/grails-cucumber/wiki/Testing-Grails-with-Cucumber-and-Geb
-[article]: https://github.com/hauner/grails-cucumber/wiki/Automating-Specification-with-Cucumber-and-Grails
+[articles]: https://github.com/hauner/grails-cucumber/wiki#articles
 
 # Quick Usage #
 
