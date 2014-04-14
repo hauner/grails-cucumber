@@ -14,43 +14,25 @@
  * limitations under the License.
  */
 
-includeTargets << grailsScript ("_GrailsCompile")
+import org.codehaus.groovy.grails.compiler.GrailsProjectCompiler
+
+
+GrailsProjectCompiler projectCompiler = new GrailsProjectCompiler(pluginSettings)
+projectCompiler.configureClasspath()
 
 
 // compile step code given by CucumberConfig:cucumber.sources = [] after anything else was compiled.
 eventTestCompileEnd = {
     def testType = loadTestType()
 
-    def sourceDirs = testType.getGlueSources ()
+    List sourceDirs = testType.getGlueSources ()
     sourceDirs = sourceDirs - ["test/functional"]  // grails compiles this automatically
     if (sourceDirs.empty) {
         return
     }
 
-    try {
-        boolean verbose = grailsSettings.verboseCompile // true
-
-        // compile to  testDirPath, defaults to ../target/test-classes
-        File dst = new File ([testDirPath, "functional"].join (File.separator))
-
-        def classpathId = "grails.test.classpath"
-        ant.mkdir (dir: dst)
-        ant.groovyc (
-            destdir: dst, classpathref: classpathId, verbose: verbose,
-            listfiles: verbose) {
-                javac(classpathref: classpathId, debug: "yes")
-                src {
-                    sourceDirs.collect { dir ->
-                        pathelement (location: dir)
-                    }
-                }
-            }
-    }
-    catch (e) {
-        grailsConsole.error ("""Compilation error compiling cucumber glue code:
-            ${e.cause ? e.cause.message : e.message}""", e.cause ? e.cause : e)
-        exit 1
-    }
+    projectCompiler.srcDirectories.addAll (sourceDirs)
+    projectCompiler.compile ([testDirPath, currentTestPhaseName].join (File.separator))
 }
 
 
@@ -83,7 +65,7 @@ loadClass = { className ->
     try {
         load (className)
     } catch (ClassNotFoundException ignored) {
-        compile ()
+        projectCompiler.compileAll()
         load (className)
     }
 }

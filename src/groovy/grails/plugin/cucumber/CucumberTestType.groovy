@@ -16,6 +16,7 @@
 
 package grails.plugin.cucumber
 
+import grails.util.BuildSettings
 import org.codehaus.groovy.grails.test.GrailsTestTypeResult
 import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
 import org.codehaus.groovy.grails.test.report.junit.JUnitReportsFactory
@@ -106,7 +107,33 @@ class CucumberTestType extends GrailsTestTypeSupport {
         variables.remove ("metaClass")
         variables.remove ("getMetaClass")
         variables.remove ("setMetaClass")
+        setAppCtx (variables)
+        setFunctionalTestBaseUrl (variables)
         new Binding (variables)
+    }
+
+    private void setAppCtx (Map variables) {
+        // appCtx is no longer available in the (test-app) binding since grails 2.3
+
+        // for plugin backward compatibility we add it if possible, i.e. not forked!
+        if (!forked && !variables.containsKey('appCtx')) {
+            variables.put('appCtx', getApplicationContext())
+        }
+    }
+
+    private void setFunctionalTestBaseUrl (Map variables) {
+        // functionalBaseUrl may not be in the (test-app) binding since grails 2.3
+
+        if (!variables.containsKey ('functionalBaseUrl')) {
+            String baseUrl = buildBinding.grailsSettings.functionalTestBaseUrl
+            variables.put ('functionalBaseUrl', baseUrl)
+            variables.put ('functionalTestBaseUrl', baseUrl)
+        }
+    }
+
+    private boolean isForked () {
+        // todo should be test, but it is wrong in grails 2.3.4
+        buildBinding.variables.buildSettings?.forkSettings?.run
     }
 
     private void loadFeatures () {

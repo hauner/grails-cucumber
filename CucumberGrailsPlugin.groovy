@@ -15,15 +15,14 @@
  */
 
 class CucumberGrailsPlugin {
-    def version = "0.10.0"
-    def grailsVersion = "1.3.0 > *"
+    def version = "0.11.0"
+    def grailsVersion = "2.0.0 > *"
     def dependsOn = [:]
     def pluginExcludes = [
         "**/.gitignore",
         "grails-app/**",
         "src/java/**",
         "web-app/**",
-        "lib/spock-*"
     ]
 
     def author = "Martin Hauner"
