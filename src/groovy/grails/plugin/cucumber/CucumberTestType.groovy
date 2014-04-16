@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Martin Hauner
+ * Copyright 2011-2014 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport
 import grails.util.Environment
 import cucumber.runtime.Runtime
 import cucumber.runtime.groovy.GroovyBackend
-import cucumber.runtime.snippets.SummaryPrinter
+import cucumber.runtime.SummaryPrinter
 import cucumber.runtime.io.MultiLoader
 
 
