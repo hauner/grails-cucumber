@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Martin Hauner
+ * Copyright 2011-2014 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import gherkin.formatter.Formatter
 import gherkin.formatter.Reporter
 import cucumber.runtime.Runtime
 import cucumber.runtime.model.CucumberFeature
-import cucumber.runtime.snippets.SummaryPrinter
+import cucumber.runtime.SummaryPrinter
 
 
 class Cucumber {
