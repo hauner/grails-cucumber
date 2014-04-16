@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Martin Hauner
+ * Copyright 2011-2012, 2014 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,8 +81,18 @@ class DebugFormatter implements Formatter, Reporter {
         sysout << "F(examples): (${examples.getName ()})\n"
     }
 
+    @Override
+    void startOfScenarioLifeCycle (Scenario scenario) {
+        sysout << "F(startOfScenarioLifeCycle)"
+    }
+
     void step (Step step) {
         sysout << "F(step): (${step.getName ()})\n"
+    }
+
+    @Override
+    void endOfScenarioLifeCycle (Scenario scenario) {
+        sysout << "F(endOfScenarioLifeCycle)"
     }
 
     void eof () {
