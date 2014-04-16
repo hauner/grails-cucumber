@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Martin Hauner
+ * Copyright 2011-2012, 2014 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,14 @@ package grails.plugin.cucumber
 
 import gherkin.formatter.Formatter
 import gherkin.formatter.Reporter
+import gherkin.formatter.model.Scenario
 
 
 @SuppressWarnings("GroovyPointlessArithmetic")
 class CucumberFormatterDelegatingSpec extends GherkinSpec {
     def formatter = Mock (Formatter)
     def reporter = Mock (Reporter)
+    def scenario = Mock (Scenario)
     def uat = formatter (formatter, reporter)
 
     
@@ -114,7 +116,23 @@ class CucumberFormatterDelegatingSpec extends GherkinSpec {
         uat.syntaxError ("", "", null, "", 0)
 
         then:
-        1 * formatter.syntaxError (_, _, _, _, 0)
+        1 * formatter.syntaxError (_, _, [], _, 0)
+    }
+
+    def "delegates startOfScenarioLifeCycle() to formatter" () {
+        when:
+        uat.startOfScenarioLifeCycle (scenario)
+
+        then:
+        1 * formatter.startOfScenarioLifeCycle (scenario)
+    }
+
+    def "delegates endOfScenarioLifeCycle() to formatter" () {
+        when:
+        uat.endOfScenarioLifeCycle (scenario)
+
+        then:
+        1 * formatter.endOfScenarioLifeCycle (scenario)
     }
 
     def "delegates before() to reporter" () {
