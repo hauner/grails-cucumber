@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Martin Hauner
+ * Copyright 2013-2014 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,11 @@ import cucumber.runtime.model.CucumberFeature
 class RuntimeOptions extends cucumber.runtime.RuntimeOptions {
 
     RuntimeOptions () {
-        super (new Properties(), [])
+        super ([])
     }
 
     void addOptionsFormatter (CucumberFormatter formatter) {
-        formatters << formatter
+        addFormatter (formatter)
     }
 
     @SuppressWarnings ("GroovyAccessibility")
