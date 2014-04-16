@@ -49,7 +49,7 @@ class Cucumber {
     }
 
     CucumberTestTypeResult run (CucumberFormatter cucumberFormatter) {
-        runtimeOptions.addOptionsFormatter (cucumberFormatter)
+        runtimeOptions.addFormatter (cucumberFormatter)
 
         // more or less Runtime.run (), we could simply call it...!?
         Formatter formatter = runtimeOptions.getOptionsFormatter (runtime)

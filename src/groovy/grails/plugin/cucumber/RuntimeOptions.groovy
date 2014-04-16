@@ -28,10 +28,6 @@ class RuntimeOptions extends cucumber.runtime.RuntimeOptions {
         super ([])
     }
 
-    void addOptionsFormatter (CucumberFormatter formatter) {
-        addFormatter (formatter)
-    }
-
     @SuppressWarnings ("GroovyAccessibility")
     List<CucumberFeature> cucumberFeatures (Runtime runtime) {
         cucumberFeatures (runtime.resourceLoader)
