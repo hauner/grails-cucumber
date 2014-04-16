@@ -116,7 +116,7 @@ class CucumberFormatterDelegatingSpec extends GherkinSpec {
         uat.syntaxError ("", "", null, "", 0)
 
         then:
-        1 * formatter.syntaxError (_, _, [], _, 0)
+        1 * formatter.syntaxError (_, _, null, _, 0)
     }
 
     def "delegates startOfScenarioLifeCycle() to formatter" () {
