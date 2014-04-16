@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Martin Hauner
+ * Copyright 2011-2012, 2014 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,8 +69,18 @@ class PrettyFormatterWrapper implements Formatter, Reporter {
         pretty.examples (examples)
     }
 
+    @Override
+    void startOfScenarioLifeCycle (Scenario scenario) {
+        pretty.startOfScenarioLifeCycle (scenario)
+    }
+
     void step (Step step) {
         pretty.step (step)
+    }
+
+    @Override
+    void endOfScenarioLifeCycle (Scenario scenario) {
+        pretty.endOfScenarioLifeCycle (scenario)
     }
 
     void eof () {
