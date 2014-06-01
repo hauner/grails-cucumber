@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Martin Hauner
+ * Copyright 2011-2012, 2014 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package grails.plugin.cucumber
 
 import gherkin.formatter.Formatter
 import gherkin.formatter.Reporter
+import gherkin.formatter.model.Scenario
 
 
 @SuppressWarnings("GroovyPointlessArithmetic")
@@ -174,4 +175,25 @@ class CucumberFormatterDelegatingSpec extends GherkinSpec {
         1 * reporter.embedding (_, _)
     }
 
+    def "delegates startOfScenarioLifeCycle() to formatter" () {
+        given:
+        def scenario = Mock (Scenario)
+
+        when:
+        uat.startOfScenarioLifeCycle (scenario)
+
+        then:
+        1 * formatter.startOfScenarioLifeCycle (scenario)
+    }
+
+    def "delegates endOfScenarioLifeCycle() to formatter" () {
+        given:
+        def scenario = Mock (Scenario)
+
+        when:
+        uat.endOfScenarioLifeCycle (scenario)
+
+        then:
+        1 * formatter.endOfScenarioLifeCycle (scenario)
+    }
 }

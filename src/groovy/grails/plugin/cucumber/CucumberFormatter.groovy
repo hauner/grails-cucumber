@@ -103,9 +103,19 @@ class CucumberFormatter implements Formatter, Reporter {
         formatter.examples (examples)
     }
 
+    @Override
+    void startOfScenarioLifeCycle (Scenario scenario) {
+        formatter.startOfScenarioLifeCycle (scenario)
+    }
+
     void step (Step step) {
         steps.add (step)
         formatter.step (step)
+    }
+
+    @Override
+    void endOfScenarioLifeCycle (Scenario scenario) {
+        formatter.endOfScenarioLifeCycle (scenario)
     }
 
     void eof () {
