@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2013 Martin Hauner
+ * Copyright 2012-2013, 2014 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@
 package grails.plugin.cucumber
 
 import cucumber.runtime.Runtime
+import cucumber.runtime.SummaryPrinter
 import cucumber.runtime.model.CucumberFeature
 import cucumber.runtime.model.CucumberTagStatement
-import cucumber.runtime.snippets.SummaryPrinter
 import spock.lang.Specification
 
 
