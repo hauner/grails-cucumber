@@ -1,9 +1,22 @@
-### 0.11.0 ###
+### 1.0.0 ###
 
 unreleased ([source code](https://github.com/hauner/grails-cucumber))
 
-* this release adds grails 2.3 support. To use fork mode at least grails 2.3.8 is required.
+* updated to cucumber-jvm 1.1.7
+* this release adds grails 2.3/2.4 support including forked-mode. To use forked-mode at least grails 2.3.8 is required. 
 
+> **Notes**
+To run cucumber features in forked-mode you can not call grails (gorm or services) in the steps
+*directly* because application and features run in different JVMs. You can still run code in the
+application by using the remote-control plugin. 
+
+>If you are using geb you will probably have no grails (gorm or services) code in your steps but
+the remote-control plugin might be still of interest for test data setup and tear down. 
+
+>See [Cucumber with HTTPBuilder & RemoteControl](remote-control). 
+
+
+[remote-control]:http://softnoise.wordpress.com/2014/01/27/grails-cucumber-with-httpbuilder-remotecontrol/
 
 ### 0.10.0 ###
 
