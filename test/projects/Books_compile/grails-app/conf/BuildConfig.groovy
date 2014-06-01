@@ -34,16 +34,26 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://repository.jboss.com/maven2/"
     }
     dependencies {
-        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-
-        // runtime 'mysql:mysql-connector-java:5.1.16'
+//        compile "org.springframework:spring-orm:$springVersion"
+        compile "org.springframework:spring-expression:$springVersion"
+        compile "org.springframework:spring-aop:$springVersion"
     }
 
     plugins {
-        runtime ":hibernate:$grailsVersion"
-        runtime ":jquery:1.7.1"
-        runtime ":resources:1.1.6"
+        // plugins for the build system only
+        build ":tomcat:7.0.53"
 
-        build ":tomcat:$grailsVersion"
+        // plugins for the compile step
+        compile ":scaffolding:2.1.0"
+        //compile ':cache:1.1.1'
+
+        // plugins needed at runtime but not for compilation
+        runtime ":hibernate4:4.3.5.3" // or ":hibernate:3.6.10.15"
+        runtime ":database-migration:1.4.0"
+        //runtime ":jquery:1.10.2.2"
+        runtime ":resources:1.2.8"
+        // Uncomment these (or add new ones) to enable additional resources capabilities
+        //runtime ":zipped-resources:1.0.1"
+        //runtime ":cached-resources:1.1"
     }
 }
