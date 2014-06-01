@@ -39,7 +39,9 @@ grails.project.dependency.resolution = {
     def seleniumVersion = "2.41.0"
 
     dependencies {
-        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
+//        compile "org.springframework:spring-orm:$springVersion"
+        compile "org.springframework:spring-expression:$springVersion"
+        compile "org.springframework:spring-aop:$springVersion"
 
         test ("org.seleniumhq.selenium:selenium-htmlunit-driver:$seleniumVersion") {
             exclude "xml-apis"
@@ -52,22 +54,20 @@ grails.project.dependency.resolution = {
 
     plugins {
         // plugins for the build system only
-        build ":tomcat:7.0.52.1"
+        build ":tomcat:7.0.53"
 
         // plugins for the compile step
-        compile ":scaffolding:2.0.1"
-        compile ':cache:1.1.1'
-        compile ":remote-control:1.4"
+        compile ":scaffolding:2.1.0"
+        //compile ':cache:1.1.1'
 
         // plugins needed at runtime but not for compilation
-        runtime ":hibernate:3.6.10.12"
-        runtime ":database-migration:1.3.8"
-        runtime ":jquery:1.11.0.1"
-        runtime ":resources:1.2.7"
+        runtime ":hibernate4:4.3.5.3" // or ":hibernate:3.6.10.15"
+        runtime ":database-migration:1.4.0"
+        //runtime ":jquery:1.10.2.2"
+        runtime ":resources:1.2.8"
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0.1"
         //runtime ":cached-resources:1.1"
-        //runtime ":yui-minify-resources:0.1.5"
 
         // test
         test ":geb:$gebVersion"
