@@ -3,27 +3,29 @@
 unreleased ([source code](https://github.com/hauner/grails-cucumber))
 
 * updated to cucumber-jvm 1.1.7
-* this release adds grails 2.3/2.4 support including forked-mode. To use forked-mode at least grails 2.3.8 is required. 
+* this release adds grails 2.3/2.4 support including forked-mode. To use forked-mode at least grails 2.3.8 is required, together with remote-control plugin at least grails 2.4.0.
 
 > **Notes**
-To run cucumber features in forked-mode you can not call grails (gorm or services) in the steps
+
+>To run cucumber features in forked-mode you can not call grails (gorm or services) in the steps
 *directly* because application and features run in different JVMs. You can still run code in the
 application by using the remote-control plugin. 
 
 >If you are using geb you will probably have no grails (gorm or services) code in your steps but
 the remote-control plugin might be still of interest for test data setup and tear down. 
 
->See [Cucumber with HTTPBuilder & RemoteControl](remote-control). 
+>See [Cucumber with HTTPBuilder & RemoteControl][remote-control]. 
 
 
-[remote-control]:http://softnoise.wordpress.com/2014/01/27/grails-cucumber-with-httpbuilder-remotecontrol/
+[remote-control]: http://softnoise.wordpress.com/2014/01/27/grails-cucumber-with-httpbuilder-remotecontrol/
 
 ### 0.10.0 ###
 
 29th December 2013 ([source code](https://github.com/hauner/grails-cucumber/tree/0.10.0))
 
 > **Note**
-grails-cucumber is not yet compatible with grails 2.3.x: **forked mode** does not work at all and **non forked mode** does not work with *in process* code that is directly calling domain classes, services or controllers in step code (like the 'Books' example). 
+
+> grails-cucumber is not yet compatible with grails 2.3.x: **forked mode** does not work at all and **non forked mode** does not work with *in process* code that is directly calling domain classes, services or controllers in step code (like the 'Books' example). 
 
 > **non forked mode** will be fixed in 0.11.0. **forked mode** requires a few fixes in grails. 
 
