@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Martin Hauner
+ * Copyright 2011-2014 Martin Hauner
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ class TestAppTests extends AbstractCliTestCase {
     /* cli test are very slow, so we test the output of a single run */
     void testCucumberTestOutput () {
         runTestApp ()
-        verifyHeader ()
 
+        verifyHeader ()
         verifyRunningCount ()
         verifyTestFeaturePassed ()
         verifyTestFeatureAssertionFailure ()
@@ -44,7 +44,7 @@ class TestAppTests extends AbstractCliTestCase {
 
     private void verifyRunningCount () {
         assertTrue (
-            "running output not match",
+            "running output does not match",
             output.contains ("Running " +TEST_COUNT+ " cucumber tests...")
         )
     }
@@ -93,7 +93,7 @@ class TestAppTests extends AbstractCliTestCase {
 
         assertTrue (
             "missing unimplemented step snippet",
-            output.contains ("When(~'^an unimplemented step is found\$')")
+            output.contains ("When(~/^an unimplemented step is found\$/)")
         )
     }
 
