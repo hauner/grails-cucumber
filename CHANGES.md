@@ -1,13 +1,13 @@
 ### 1.0.0 ###
 
-unreleased ([source code](https://github.com/hauner/grails-cucumber))
+unreleased ([source code](https://github.com/hauner/grails-cucumber/tree/1.0.0))
 
 * updated to cucumber-jvm 1.1.7
 * this release adds grails 2.3/2.4 support including forked-mode. To use forked-mode at least grails 2.3.8 is required, together with remote-control plugin at least grails 2.4.0.
 
 > **Notes**
 
->To run cucumber features in forked-mode you can not call grails (gorm or services) in the steps
+>To run cucumber features in forked-mode you must not call grails (gorm or services) in the steps
 *directly* because application and features run in different JVMs. You can still run code in the
 application by using the remote-control plugin. 
 
