@@ -1,6 +1,6 @@
 ### 1.0.0 ###
 
-unreleased ([source code](https://github.com/hauner/grails-cucumber/tree/1.0.0))
+29th June 2014 ([source code](https://github.com/hauner/grails-cucumber/tree/1.0.0))
 
 * updated to cucumber-jvm 1.1.7
 * this release adds grails 2.3/2.4 support including forked-mode. To use forked-mode at least grails 2.3.8 is required, together with remote-control plugin at least grails 2.4.0.
