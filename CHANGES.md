@@ -1,3 +1,10 @@
+### 1.0.1 ###
+
+23rd August 2014 ([source code](https://github.com/hauner/grails-cucumber/tree/1.0.1))
+
+* do not export unnecessary dependencies to avoid dependency issues in projects that use the plugin. 
+
+
 ### 1.0.0 ###
 
 29th June 2014 ([source code](https://github.com/hauner/grails-cucumber/tree/1.0.0))
