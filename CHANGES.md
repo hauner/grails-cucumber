@@ -1,3 +1,10 @@
+### 1.1.0 ###
+
+unreleased ([source code](https://github.com/hauner/grails-cucumber))
+
+* updated to cucumber-jvm 1.1.8
+
+
 ### 1.0.1 ###
 
 23rd August 2014 ([source code](https://github.com/hauner/grails-cucumber/tree/1.0.1))
