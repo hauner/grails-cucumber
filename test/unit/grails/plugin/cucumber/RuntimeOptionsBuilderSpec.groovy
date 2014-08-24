@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2013 Martin Hauner
+ * Copyright 2012-2014 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 package grails.plugin.cucumber
 
-import spock.lang.Specification
+import cucumber.runtime.formatter.CucumberJSONFormatter
 import cucumber.runtime.formatter.HTMLFormatter
-import gherkin.formatter.JSONFormatter
+import spock.lang.Specification
 
 
 class RuntimeOptionsBuilderSpec extends Specification {
@@ -312,7 +312,7 @@ class RuntimeOptionsBuilderSpec extends Specification {
         def options = createRuntimeOptions (configObject)
 
         then:
-        options.formatters.find { it.class == JSONFormatter.class }
+        options.formatters.find { it.class == CucumberJSONFormatter.class }
         options.formatters.find { it.class == HTMLFormatter.class }
     }
 
@@ -330,6 +330,6 @@ class RuntimeOptionsBuilderSpec extends Specification {
 
         then:
         options.formatters.size () == 1
-        options.formatters.find { it.class == JSONFormatter.class }
+        options.formatters.find { it.class == CucumberJSONFormatter.class }
     }
 }
