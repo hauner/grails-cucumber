@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 Martin Hauner
+ * Copyright 2013-2015 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,22 @@ package grails.plugin.cucumber
 import gherkin.formatter.Formatter
 import gherkin.formatter.Reporter
 import cucumber.runtime.Runtime
+import cucumber.runtime.RuntimeOptions as RuntimeOptionsBase
 import cucumber.runtime.model.CucumberFeature
 
 
-class RuntimeOptions extends cucumber.runtime.RuntimeOptions {
+class RuntimeOptions extends RuntimeOptionsBase {
 
     RuntimeOptions () {
         super ([])
     }
 
-    void addOptionsFormatter (CucumberFormatter formatter) {
-        formatters << formatter
+    void clearDefaultPlugins () {
+        getPluginNames ().clear ()
+    }
+
+    void addPlugin (String name) {
+        getPluginNames ().add (name)
     }
 
     @SuppressWarnings ("GroovyAccessibility")
@@ -45,6 +50,11 @@ class RuntimeOptions extends cucumber.runtime.RuntimeOptions {
     @SuppressWarnings ("GroovyAccessibility")
     Reporter getOptionsReporter (Runtime runtime) {
         reporter (runtime.classLoader)
+    }
+
+    private List<String> getPluginNames () {
+        // get access to private field of cucumber.runtime.RuntimeOptions
+        metaClass.getProperty (RuntimeOptionsBase, this, 'pluginNames', false, true) as List<String>
     }
 
 }

@@ -2,7 +2,7 @@
 
 unreleased ([source code](https://github.com/hauner/grails-cucumber))
 
-* updated to cucumber-jvm 1.1.8
+* updated to cucumber-jvm 1.2.0
 
 
 ### 1.0.1 ###

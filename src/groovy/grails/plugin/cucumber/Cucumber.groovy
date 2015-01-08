@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 Martin Hauner
+ * Copyright 2011-2015 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ class Cucumber {
     }
 
     CucumberTestTypeResult run (CucumberFormatter cucumberFormatter) {
-        runtimeOptions.addOptionsFormatter (cucumberFormatter)
+        runtimeOptions.addPlugin (cucumberFormatter)
 
         // more or less Runtime.run (), we could simply call it...!?
         Formatter formatter = runtimeOptions.getOptionsFormatter (runtime)

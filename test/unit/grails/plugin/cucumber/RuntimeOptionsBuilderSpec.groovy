@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 Martin Hauner
+ * Copyright 2012-2015 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package grails.plugin.cucumber
 
-import cucumber.runtime.formatter.CucumberJSONFormatter
-import cucumber.runtime.formatter.HTMLFormatter
 import spock.lang.Specification
 
 
@@ -142,12 +140,12 @@ class RuntimeOptionsBuilderSpec extends Specification {
         !options.dryRun
     }
 
-    def "clears default formatter" () {
+    def "clears default plugins" () {
         when:
         def options = createRuntimeOptions (new ConfigObject ())
 
         then:
-        options.formatters.empty
+        options.pluginNames.empty
     }
 
     def "evaluate args if first arg contains ':cucumber'" () {
@@ -301,6 +299,7 @@ class RuntimeOptionsBuilderSpec extends Specification {
     }*/
 
     @SuppressWarnings ("GroovyAccessibility")
+    @Deprecated
     def "add format(s) from configuration to options" () {
         given:
         configObject.cucumber.formats = [
@@ -312,10 +311,10 @@ class RuntimeOptionsBuilderSpec extends Specification {
         def options = createRuntimeOptions (configObject)
 
         then:
-        options.formatters.find { it.class == CucumberJSONFormatter.class }
-        options.formatters.find { it.class == HTMLFormatter.class }
+        options.pluginNames.containsAll (configObject.cucumber.formats)
     }
 
+    @Deprecated
     def "command line --format= overwrites config formats" () {
         given:
         configObject.cucumber.formats = [
@@ -329,7 +328,7 @@ class RuntimeOptionsBuilderSpec extends Specification {
         def options = createRuntimeOptions (configObject, args)
 
         then:
-        options.formatters.size () == 1
-        options.formatters.find { it.class == CucumberJSONFormatter.class }
+        options.pluginNames.size () == 1
+        options.pluginNames.containsAll (args.format)
     }
 }
