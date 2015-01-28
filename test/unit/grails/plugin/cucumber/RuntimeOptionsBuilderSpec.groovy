@@ -331,4 +331,37 @@ class RuntimeOptionsBuilderSpec extends Specification {
         options.pluginNames.size () == 1
         options.pluginNames.containsAll (args.format)
     }
+
+    def "add plugin(s) from configuration to options" () {
+        given:
+        configObject.cucumber.plugins = [
+            "json:target/results.json",
+            "html:target/results"
+        ]
+
+        when:
+        def options = createRuntimeOptions (configObject)
+
+        then:
+        options.pluginNames.containsAll (configObject.cucumber.plugins)
+    }
+
+    @Deprecated
+    def "command line --plugin= overwrites config plugins" () {
+        given:
+        configObject.cucumber.plugins = [
+            "html:target/results"
+        ]
+        def args = [
+            'plugin': "json:target/override.json"
+        ]
+
+        when:
+        def options = createRuntimeOptions (configObject, args)
+
+        then:
+        options.pluginNames.size () == 1
+        options.pluginNames.containsAll (args.plugin)
+    }
+
 }

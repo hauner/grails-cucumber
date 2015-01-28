@@ -28,7 +28,9 @@ class RuntimeOptionsBuilder {
 
     RuntimeOptions init (RuntimeOptions options, Map<String, Object> args) {
         addTags (options)
+        clearDefaultPlugins (options)
         addFormatter (options, args.format as String)
+        addPlugins (options, args.plugin as String)
         addGluePaths (options)
         addFeaturePaths (options)
         addFilter (options, args.params as List<String> ?: [])
@@ -110,14 +112,29 @@ class RuntimeOptionsBuilder {
         }
     }
 
-    private void addFormatter (RuntimeOptions options, String format) {
+    private void clearDefaultPlugins (RuntimeOptions options) {
         options.clearDefaultPlugins ()
+    }
 
+    // compatibility with 1.0.1 and earlier
+    private void addFormatter (RuntimeOptions options, String format) {
         if (format) {
             options.addPlugin (format)
         }
         else {
             configObject.cucumber.formats.each {
+                options.addPlugin (it)
+            }
+        }
+    }
+
+    // replaces formats/--format configuration
+    private void addPlugins (RuntimeOptions options, String plugin) {
+        if (plugin) {
+            options.addPlugin (plugin)
+        }
+        else {
+            configObject.cucumber.plugins.each {
                 options.addPlugin (it)
             }
         }
