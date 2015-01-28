@@ -3,6 +3,7 @@
 28th January 2015 ([source code](https://github.com/hauner/grails-cucumber/tree/1.1.0))
 
 * updated to cucumber-jvm 1.2.2
+* renamed --format/format options to --plugin/plugins (old name will still work)
 
 
 ### 1.0.1 ###
