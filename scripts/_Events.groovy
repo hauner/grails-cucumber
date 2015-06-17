@@ -22,7 +22,11 @@ projectCompiler.configureClasspath()
 
 
 // compile step code given by CucumberConfig:cucumber.sources = [] after anything else was compiled.
-eventTestCompileEnd = {
+eventTestCompileEnd = { type ->
+    if ( !type.contains('cucumber')) {
+        return
+    }
+
     def testType = loadTestType()
 
     List sourceDirs = testType.getGlueSources ()
