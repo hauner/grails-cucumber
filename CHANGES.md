@@ -1,3 +1,9 @@
+### 1.1.1 ###
+
+unreleased ([source code](https://github.com/hauner/grails-cucumber))
+
+* compiling step files (if enabled by setting `cucumber.sources`) will only happen when running cucumber features (it was triggered for each type type).
+
 ### 1.1.0 ###
 
 28th January 2015 ([source code](https://github.com/hauner/grails-cucumber/tree/1.1.0))
