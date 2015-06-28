@@ -22,8 +22,10 @@ projectCompiler.configureClasspath()
 
 
 // compile step code given by CucumberConfig:cucumber.sources = [] after anything else was compiled.
-eventTestCompileEnd = {
-    def testType = loadTestType()
+eventTestCompileEnd = { testType ->
+    if (testType.toString() != 'cucumber') {
+        return
+    }
 
     List sourceDirs = testType.getGlueSources ()
     sourceDirs = sourceDirs - ["test/functional"]  // grails compiles this automatically
