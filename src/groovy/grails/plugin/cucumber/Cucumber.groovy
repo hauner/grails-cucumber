@@ -18,8 +18,8 @@ package grails.plugin.cucumber
 
 import gherkin.formatter.Formatter
 import gherkin.formatter.Reporter
+import cucumber.api.SummaryPrinter
 import cucumber.runtime.Runtime
-import cucumber.runtime.SummaryPrinter
 import cucumber.runtime.model.CucumberFeature
 
 

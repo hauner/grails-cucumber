@@ -54,7 +54,7 @@ class RuntimeOptions extends RuntimeOptionsBase {
 
     private List<String> getPluginNames () {
         // get access to private field of cucumber.runtime.RuntimeOptions
-        metaClass.getProperty (RuntimeOptionsBase, this, 'pluginNames', false, true) as List<String>
+        metaClass.getProperty (RuntimeOptionsBase, this, 'pluginFormatterNames', false, true) as List<String>
     }
 
 }

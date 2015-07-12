@@ -22,7 +22,7 @@ import org.codehaus.groovy.grails.test.report.junit.JUnitReportsFactory
 import org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport
 import grails.util.Environment
 import cucumber.runtime.Runtime
-import cucumber.runtime.SummaryPrinter
+import cucumber.runtime.DefaultSummaryPrinter
 import cucumber.runtime.groovy.GroovyBackend
 import cucumber.runtime.io.MultiLoader
 
@@ -72,7 +72,7 @@ class CucumberTestType extends GrailsTestTypeSupport {
 
         def runtime = new Runtime (multiLoader, classLoader, [groovyBackend], runtimeOptions)
 
-        cucumber = new Cucumber (runtime, runtimeOptions, new SummaryPrinter (System.out))
+        cucumber = new Cucumber (runtime, runtimeOptions, new DefaultSummaryPrinter ())
     }
 
     private RuntimeOptions initOptions (RuntimeOptions options) {

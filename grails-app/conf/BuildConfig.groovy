@@ -30,7 +30,7 @@ grails.project.dependency.resolution = {
 
     dependencies {
         // cucumber
-        compile ("info.cukes:cucumber-groovy:1.2.2") {
+        compile ("info.cukes:cucumber-groovy:1.2.3") {
            excludes 'ant' // avoid ant version conflict
         }
 
