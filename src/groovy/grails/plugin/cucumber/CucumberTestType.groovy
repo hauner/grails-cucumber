@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 Martin Hauner
+ * Copyright 2011-2015 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package grails.plugin.cucumber
 
-import grails.util.BuildSettings
 import org.codehaus.groovy.grails.test.GrailsTestTypeResult
 import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
 import org.codehaus.groovy.grails.test.report.junit.JUnitReportsFactory
@@ -77,29 +76,35 @@ class CucumberTestType extends GrailsTestTypeSupport {
     }
 
     private RuntimeOptions initOptions (RuntimeOptions options) {
-        def configSlurper = new ConfigSlurper (ENVIRONMENT)
-        configSlurper.setBinding ([
-            basedir: buildBinding.basedir,
-            testDirPath: buildBinding.testDirPath
-        ])
-        def configReader = new ConfigReader (new File (CONFIG_PATH), configSlurper)
-        def configObject = configReader.parse ()
+        def configObject = getConfig(buildBinding.grailsSettings.config, [
+                basedir: buildBinding.basedir,
+                testDirPath: buildBinding.testDirPath
+            ])
 
         configObject.cucumber.defaultFeaturePath = featurePath ()
         configObject.cucumber.defaultGluePath = featurePath ()
 
         new RuntimeOptionsBuilder (configObject).init (options, buildBinding.argsMap)
-
         options
     }
 
-    // called from _Events.groovy to get the source dirs we should compile
-    static List getGlueSources () {
-        def configSlurper = new ConfigSlurper (ENVIRONMENT)
-        def configReader = new ConfigReader (new File (CONFIG_PATH), configSlurper)
-        def configObject = configReader.parse ()
+    // called from _Events.groovy
+    public List getGlueSources (def grailsConfig) {
+        (getConfig(grailsConfig).cucumber.sources) ?: []
+    }
 
-        (configObject.cucumber.sources) ?: []
+    private static def getConfig(def grailsConfig, Map binding = [:]) {
+        def configSlurper = new ConfigSlurper (ENVIRONMENT)
+        configSlurper.setBinding (binding)
+
+        def configReader = new ConfigReader (new File (CONFIG_PATH), configSlurper)
+
+        if (configReader.exists ()) {
+            return configReader.parse ()
+        }
+        else {
+            return grailsConfig
+        }
     }
 
     private Binding createBinding () {

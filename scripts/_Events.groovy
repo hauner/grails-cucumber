@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 Martin Hauner
+ * Copyright 2011-2013, 2015 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ eventTestCompileEnd = { testType ->
         return
     }
 
-    List sourceDirs = testType.getGlueSources ()
+    List sourceDirs = testType.getGlueSources (grailsSettings.config)
     sourceDirs = sourceDirs - ["test/functional"]  // grails compiles this automatically
     if (sourceDirs.empty) {
         return
