@@ -1,6 +1,6 @@
 ### 1.2.0 ###
 
-12th July 2015 ([source code](https://github.com/hauner/grails-cucumber))
+12th July 2015 ([source code](https://github.com/hauner/grails-cucumber/tree/1.2.0))
 
 * updated to cucumber-jvm 1.2.3
 * compiling step files (if enabled by setting `cucumber.sources`) will only happen when running cucumber features (it was triggered for each type type).
