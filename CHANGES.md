@@ -1,9 +1,14 @@
-### 1.1.1 ###
+### 1.2.0 ###
 
-unreleased ([source code](https://github.com/hauner/grails-cucumber))
+12th July 2015 ([source code](https://github.com/hauner/grails-cucumber))
 
+* updated to cucumber-jvm 1.2.3
 * compiling step files (if enabled by setting `cucumber.sources`) will only happen when running cucumber features (it was triggered for each type type).
-
+ ([#42](https://github.com/hauner/grails-cucumber/issues/42))
+* `CucumberConfig.groovy` is now optional. If it exists it is used otherwise not. The configuration can be placed into `BuildConfig.groovy`. The format
+ is unchanged, you can simply copy the content of `CucumberConfig.groovy` to `BuildConfig.groovy` to drop it. 
+ ([#43](https://github.com/hauner/grails-cucumber/issues/43))
+ 
 ### 1.1.0 ###
 
 28th January 2015 ([source code](https://github.com/hauner/grails-cucumber/tree/1.1.0))

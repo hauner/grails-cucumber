@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 Martin Hauner
+ * Copyright 2011-2015 Martin Hauner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 class CucumberGrailsPlugin {
-    def version = "1.1.0"
+    def version = "1.2.0"
     def grailsVersion = "2.0.0 > *"
     def dependsOn = [:]
     def pluginExcludes = [
